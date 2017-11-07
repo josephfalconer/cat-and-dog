@@ -311,3 +311,12 @@
 	}
 }
 
+@mixin sides($w, $h) {
+	width: $w;
+	height: $h;
+}
+
+@mixin square($val) {
+	width: $val;
+	height: $val;
+}

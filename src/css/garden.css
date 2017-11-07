@@ -54,6 +54,7 @@ button {
   height: 100%; }
 
 .garden {
+  position: relative;
   border: 3px solid #3c761e;
   display: inline-block;
   vertical-align: top;
@@ -164,33 +165,6 @@ i {
       i.obstruction {
         border: 2px black solid;
         box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5); } }
-  i.cat {
-    width: 80%;
-    height: 80%; }
-  i.dog-up {
-    background: url(../img/dog/dog-up.svg) no-repeat center;
-    background-size: 100%; }
-  i.dog-down {
-    background: url(../img/dog/dog-down.svg) no-repeat center;
-    background-size: 100%; }
-  i.dog-left {
-    background: url(../img/dog/dog-left.svg) no-repeat center;
-    background-size: 100%; }
-  i.dog-right {
-    background: url(../img/dog/dog-right.svg) no-repeat center;
-    background-size: 100%; }
-  i.cat-up {
-    background: url(../img/cat/cat-up.svg) no-repeat center;
-    background-size: 100%; }
-  i.cat-down {
-    background: url(../img/cat/cat-down.svg) no-repeat center;
-    background-size: 100%; }
-  i.cat-left {
-    background: url(../img/cat/cat-left.svg) no-repeat center;
-    background-size: 100%; }
-  i.cat-right {
-    background: url(../img/cat/cat-right.svg) no-repeat center;
-    background-size: 100%; }
   i.slice {
     /*background: url('../img/food/slice.png') no-repeat center;*/
     background: url(../img/food/slice.svg) no-repeat center;
@@ -219,6 +193,46 @@ i {
     /*background: url('../img/food/meat.png') no-repeat center;*/
     background: url(../img/food/meat.svg) no-repeat center;
     background-size: 50%; }
+
+.cat {
+  display: block;
+  position: absolute;
+  bottom: 0.0625rem;
+  right: 0.0625rem;
+  width: 3.9375rem;
+  height: 3.9375rem; }
+
+.dog-up {
+  background: url(../img/dog/dog-up.svg) no-repeat center;
+  background-size: 80%; }
+
+.dog-down {
+  background: url(../img/dog/dog-down.svg) no-repeat center;
+  background-size: 80%; }
+
+.dog-left {
+  background: url(../img/dog/dog-left.svg) no-repeat center;
+  background-size: 80%; }
+
+.dog-right {
+  background: url(../img/dog/dog-right.svg) no-repeat center;
+  background-size: 80%; }
+
+.cat-up {
+  background: url(../img/cat/cat-up.svg) no-repeat center;
+  background-size: 80%; }
+
+.cat-down {
+  background: url(../img/cat/cat-down.svg) no-repeat center;
+  background-size: 80%; }
+
+.cat-left {
+  background: url(../img/cat/cat-left.svg) no-repeat center;
+  background-size: 80%; }
+
+.cat-right {
+  background: url(../img/cat/cat-right.svg) no-repeat center;
+  background-size: 80%; }
 
 .food.shrink {
   width: 60%;

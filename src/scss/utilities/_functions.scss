@@ -7,3 +7,9 @@
 @if variable-exists(font-url--google) {
   @import url($font-url--google);
 }
+
+// convert to rem
+@function remcalc($size) {
+	$rem-size: $size / 16;
+	@return #{$rem-size}rem;
+}

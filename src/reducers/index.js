@@ -1,13 +1,9 @@
 import { combineReducers } from 'redux';
 
-import ShuttersReducer from './reducer_shutters';
-import CatReducer from './reducer_cat';
-import TimerReducer from './reducer_timer';
+import GardenReducer from './reducer_garden';
 
 const rootReducer = combineReducers({
-	shutters: ShuttersReducer,
-	cat: CatReducer,
-	timer: TimerReducer
+	garden: GardenReducer
 });
 
 export default rootReducer;
