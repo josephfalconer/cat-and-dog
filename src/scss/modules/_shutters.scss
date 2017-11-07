@@ -1,0 +1,136 @@
+// ====================================
+// Shutters
+// ===================================
+
+$ft-sz-info		: 2em;
+$ft-sz-info--sm	: 1em;
+
+$shutter-edge-br: rgba(0,0,0,.275) solid 1px;
+
+%shutter {
+	@include dimensions(50%,100%);
+	@include transition($tn-norm: width 1s);
+	position: absolute;
+	z-index: 1000;
+	overflow: hidden;
+	background: darken($brown, 10%);
+}
+
+%shutter-inner {
+	width: 450px;
+	height: 100%;
+	position: absolute;
+	@include transition($tn-norm: background .5s);
+	@include mq(small) {
+		width: 220px;
+	}
+	span {
+		position: absolute;
+		&.message {
+			top: 50%;
+			width: 500px;
+			font-size: $ft-sz-info;
+			padding: 0 20px;
+			@include mq(small) {
+				font-size: $ft-sz-info--sm;
+				width: 300px
+			}
+		}	
+		&.game-over {
+			top: 10%;
+			width: 350px;
+			font-size: 3em;
+			display: none;
+			@include mq(small) {
+				font-size: 2em;
+				width: 300px;
+			}
+		}
+	}
+}
+	    
+	
+.shutters {
+	@include box(100%);
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.shutter {
+    			
+	@include m(left) {
+		@extend %shutter;
+		left: 0;
+
+		span.message {
+			@include transform(translate3d(50% , -50%, 0));
+			top: 50%;
+			right: 0;
+		}
+	}
+
+	@include m(right) {
+		@extend %shutter;
+		right: 0;
+
+		span.message {
+			@include transform(translate3d(-50% , -50%, 0));
+			top: 50%;
+			left: 0;
+		}
+	}
+
+	@include e(lining) {
+		position: absolute;
+		background: rgba(0,0,0,0.25);
+		z-index: 200;
+
+		&.hori {
+			@include dimensions(100%, 5px);
+			right: 0;
+
+			&.top {
+				top: 0;
+			}
+
+			&.bottom {
+				bottom: 0;
+			}
+		}
+
+		&.vert {
+			@include dimensions(5px, 100%);
+			top: 0;
+
+			&.right {
+				right: 0;
+				border-right: $shutter-edge-br;
+			}
+
+			&.left {
+				left: 0;
+				border-left: $shutter-edge-br;
+			}
+		}
+	}
+}
+
+.shutter__inner {
+    			
+	@include m(left) {
+		@extend %shutter-inner;
+		right: 0;
+	}
+	@include m(right) {
+		@extend %shutter-inner;
+		left: 0;
+	}
+}
+
+
+
+
+
+
+

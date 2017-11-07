@@ -1,0 +1,313 @@
+// ====================================
+// Mixins
+// ===================================
+
+// BEM selectors
+
+@mixin e($element) {
+	&__#{$element} {
+    @content;
+  }
+}
+@mixin m($modifier) {
+  &--#{$modifier} {
+    @content;
+  }
+}
+
+// Media queries
+
+@mixin mq($break) {
+	//Target ONLY iphone4
+	@if $break == "iphone4" {
+		@media only screen and (min-device-width: 320px) 
+		and (max-device-width: 480px) 
+		and (-webkit-device-pixel-ratio: 2) 
+		and (device-aspect-ratio: 2/3) {
+			@content; 
+		}
+	}
+	@else if $break == "iphone6" {
+		@media (min-width: 375px) and (max-width: $brkpoint-md) {
+			@content; 
+		}
+	}
+	@else if $break == "small" {
+		@media (min-width: $brkpoint-sm) and (max-width: $brkpoint-md) {
+			@content; 
+		}
+	}
+	@else if $break == "tablets" {
+		@media (min-width: $brkpoint-md + 1) and (max-width: $brkpoint-lg - 1) {
+			@content; 
+		}
+	}
+	@else if $break == "hand-devices" {
+		@media (max-width: $brkpoint-lg - 1) {
+			@content; 
+		}
+	}
+	@else if $break == "medium" {
+		@media (min-width: $brkpoint-md + 1) {
+			@content; 
+		}
+	}
+	@else if $break == "large" {
+		@media (min-width: $brkpoint-lg) {
+			@content; 
+		}
+	}
+	@else if $break == "xlarge" {
+		@media (min-width: $brkpoint-lg + 100) {
+			@content; 
+		}
+	}
+	@else if $break == "xxlarge" {
+		@media (min-width: $brkpoint-lg + 300) {
+			@content; 
+		}
+	}
+	@else if $break == "landscape" {
+		@media screen and (orientation: landscape) {
+			@content; 
+		}
+	}
+	@else if $break == "landscape-sm" {
+		@media screen and (orientation: landscape) and (max-width: 677px) {
+			@content; 
+		}
+	}
+	@else {
+		@error "Whoops! No value could be retrieved for '#{$break}'."
+	}
+}
+
+
+
+
+@mixin dimensions($w, $h) {
+	width: $w;
+	height: $h;
+}
+
+@mixin box ($v) {
+	width: $v;
+	height: $v;
+}
+
+
+// TRANSITIONS AND TRANSFORMS
+
+@mixin transition($tn: null, $timings: null, $tn-norm: null, $tn-norm-sd: null) {
+	@if $tn {
+		-webkit-transition: -webkit-#{$tn} #{$timings}, $tn-norm;
+		-moz-transition: -moz-#{$tn} #{$timings}, $tn-norm;
+		-ms-transition: -ms-#{$tn} #{$timings}, $tn-norm;
+		-o-transition: -o-#{$tn} #{$timings}, $tn-norm;
+		transition: #{$tn} #{$timings}, $tn-norm;
+	} @else if $tn-norm-sd {
+		-webkit-transition: $tn-norm, $tn-norm-sd;
+		-moz-transition: $tn-norm, $tn-norm-sd;
+		-ms-transition: $tn-norm, $tn-norm-sd;
+		-o-transition: $tn-norm, $tn-norm-sd;
+		transition: $tn-norm, $tn-norm-sd;
+	} @else {
+		-webkit-transition: $tn-norm;
+		-moz-transition: $tn-norm;
+		-ms-transition: $tn-norm;
+		-o-transition: $tn-norm;
+		transition: $tn-norm;
+	}
+}
+
+@mixin transform($trm, $trm-scnd: null) {
+	-webkit-transform: $trm $trm-scnd;
+	-moz-transform: $trm $trm-scnd;
+	-o-transform: $trm $trm-scnd;
+	-ms-transform: $trm $trm-scnd;
+	transform: $trm $trm-scnd;
+}
+
+@mixin tn-delay($dy) {
+	-webkit-transition-delay: $dy;
+	-moz-transition-delay: $dy;
+	-o-transition-delay: $dy;
+	-ms-transition-delay: $dy;
+	transition-delay: $dy;
+}
+
+@mixin tform-origin($o) {
+	-webkit-transform-origin: $o;
+	-moz-transform-origin: $o;
+	-o-transform-origin: $o;
+	-ms-transform-origin: $o;
+	transform-origin: $o;
+}
+
+
+// KEYFRAME ANIMATIONS
+
+@mixin keyframes-pfx($nm, $pnts, $tfrms) {
+	@-webkit-keyframes #{$nm} {
+		@each $p in $pnts {
+			$i: index($pnts, $p);
+			#{$p} { -webkit-transform: nth($tfrms, $i); }
+		}
+		@content;
+	}
+	@-moz-keyframes #{$nm} {
+		@each $p in $pnts {
+			$i: index($pnts, $p);
+			#{$p} { -moz-transform: nth($tfrms, $i); }
+		}
+		@content;
+	}
+	@-o-keyframes #{$nm} {
+		@each $p in $pnts {
+			$i: index($pnts, $p);
+			#{$p} { -o-transform: nth($tfrms, $i); }
+		}
+		@content;
+	}
+	@-ms-keyframes #{$nm} {
+		@each $p in $pnts {
+			$i: index($pnts, $p);
+			#{$p} { -ms-transform: nth($tfrms, $i); }
+		}
+		@content;
+	}
+	@keyframes #{$nm} {
+		@each $p in $pnts {
+			$i: index($pnts, $p);
+			#{$p} { transform: nth($tfrms, $i); }
+		}
+		@content;
+	}
+}
+
+@mixin keyframes($nm) {
+	@-webkit-keyframes #{$nm} {
+		@content;
+	}
+	@-moz-keyframes #{$nm} {
+		@content;
+	}
+	@-o-keyframes #{$nm} {
+		@content;
+	}
+	@-ms-keyframes #{$nm} {
+		@content;
+	}
+	@keyframes #{$nm} {
+		@content;
+	}
+}
+
+@mixin animation($animation, $animation-2: null, $animation-3: null) {
+	-webkit-animation: $animation, $animation-2, $animation-3; // Safari 4+ 
+	-moz-animation:    $animation, $animation-2, $animation-3; // Fx 5+ 
+	-o-animation:      $animation, $animation-2, $animation-3; // Opera 12+ 
+	-ms-animation:     $animation, $animation-2, $animation-3; // Old IE? 
+	animation:         $animation, $animation-2, $animation-3; // IE 10+, Fx 29+ 
+}
+
+
+// Generating :before or :after pseudo-element shapes
+
+@mixin p-el(
+	$el,
+	$el-w: null,
+	$el-h: null) {
+	@if $el == "before" or $el == "after" { 
+		&::#{$el} {
+			display: block;
+			content: ''; 
+			position: absolute;
+			width: $el-w;
+			height: $el-h;
+			@content;
+		}
+	} 
+	@else {
+    	@error "`#{$el}` is not a valid pseudo-element.";
+	}
+}
+
+
+// 	ELEMENTS
+
+@mixin standard-btn($width, $height, $background: none, $height-nw: null, $width-nw: null) {
+	border: none;
+	outline: none;
+	background: $background;
+	height: $height;
+	width: $width;
+	@include mq(medium) {
+		height: $height-nw;
+		width: $width-nw;
+	}
+}
+
+
+// BACKGROUNDS
+
+@mixin bg-img($bgs...){
+	@each $bg in $bgs {
+		.#{$bg} {
+			background: url("../painter/img/square/bw-#{$bg}-square.jpg") no-repeat center;
+			background-size: cover;
+		}
+	}
+}
+
+
+// SVG HIGHLIGHTS
+
+@mixin svg-highlights($clr, $order) {
+	
+	@if $order == "f" {
+
+		.highlight-fill {
+			@extend %fill-#{$clr};
+		}
+	} 
+	@else if $order == "s" {
+
+		.highlight-stroke {
+			@extend %stroke-#{$clr};
+		}
+	} 
+	@else if $order == "f-s" {
+
+		.highlight-fill {
+			@extend %fill-#{$clr};
+		}
+		.highlight-stroke {
+			@extend %stroke-#{$clr};
+		}
+	} 
+	@else if $order == "b" {
+		
+		.highlight-both {
+			@extend %fill-#{$clr};
+			@extend %stroke-#{$clr};
+		}
+	} 
+	@else if $order == "f-s-b" {
+		
+		.highlight-fill {
+			@extend %fill-#{$clr};
+		}
+		.highlight-stroke {
+			@extend %stroke-#{$clr};
+		} 
+		.highlight-both {
+			@extend %fill-#{$clr};
+			@extend %stroke-#{$clr};
+		}
+	} 
+	@else {
+		@error "'#{$order}' is not a valid order!"
+	}
+}
+

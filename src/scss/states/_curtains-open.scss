@@ -1,0 +1,7 @@
+// ====================================
+// open curtains
+// ===================================
+
+.garden__curtain--left, .garden__curtain--right {
+	&.open { width: 0; }
+}

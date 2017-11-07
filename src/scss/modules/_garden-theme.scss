@@ -1,0 +1,111 @@
+// ====================================
+// To top link
+// ===================================
+
+#root {
+	@include box(100%);
+}
+
+.main-container {
+	@include box(100%);
+}
+
+.garden {
+	border: 3px solid $green;
+    display: inline-block;
+    vertical-align: top;
+    z-index: 100;
+
+    @include e(contr) {
+    	@include transform(translate3d(-50%,-50%,0) rotate(-90deg));
+	    position: relative;
+	    top: 50%;
+	    left: 50%;
+	    width: 100%;
+	    background: $brown;
+	    border: $brown-dark 1px solid;
+	    min-height: 280px;
+	    
+	    @include mq(landscape) {
+	    	@include transform( translate3d(-50%,-50%,0) );
+	    }
+
+	    @include mq(iphone6) {
+	    	min-height: 325px
+	    }
+
+	    @include mq(medium) {
+	    	min-height: 560px;
+	    }
+
+	    @include mq(large) {
+	    	width: 65%;
+	    	min-height: 39.03rem;
+	    }
+    }
+
+    @include e(bg) {
+    	@include box(100%);
+    	@include transition($tn-norm: background 3s);
+    	position: fixed;
+    	top: 0;
+    	left: 0;
+    	z-index: -1;
+    	&.brown {
+    		background: rgb(173, 149, 73);
+    	}
+    }
+
+    @include e(column) {
+    	float: left;
+    	
+    }
+
+	@include e(space) {
+		@extend %no-user-select;
+	    text-align: center;
+	    position: relative;
+	    overflow: hidden;
+    	width: $space-sm;
+	    height: $space-sm;
+	    line-height: $space-sm;
+	    font-size: $space-sm;
+
+	    @include mq(iphone6) {
+	    	width: $space-ip6;
+		    height: $space-ip6;
+		    line-height: $space-ip6;
+		    font-size: $space-ip6;
+	    }
+	    @include mq(landscape-sm) {
+	    	width: $space-l-sm;
+		    height: $space-l-sm;
+		    line-height: $space-l-sm;
+		    font-size: $space-l-sm;
+	    }
+	    @include mq(medium) {
+	    	width: $space-md;
+		    height: $space-md;
+		    line-height: $space-md;
+		    font-size: $space-md;
+	    }
+	    @include mq(large) {
+	    	width: $space-lg;
+		    height: $space-lg;
+		    line-height: $space-lg;
+		    font-size: $space-lg;
+	    }
+	    
+	    &.edge {
+	    	background: $xLightBrown;
+	    	border: 1px solid $lightBrown;
+	    }
+	    &.grass {
+	    	background: $green;
+	    	border: 1px solid $green;
+	    }
+		
+	}
+
+}
+

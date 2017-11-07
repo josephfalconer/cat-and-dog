@@ -1,0 +1,64 @@
+// ====================================
+// controls
+// ===================================
+
+@mixin b-radius($r) {
+    -webkit-border-radius: $r;
+    -moz-border-radius: $r;
+    border-radius: $r;
+}
+
+$btn-br     :  100%;
+
+$darkBrown  : darken($brown, 20%);
+
+.garden__controls {
+    @include box(100%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 500;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+
+    @include mq(large) {
+        display: none;
+    }    
+
+    button {
+        @include dimensions(50%,50%);
+        display: inline-block;
+        margin: 0;
+        background: none;
+        border: none;
+        outline: none;
+        float: left;
+        -webkit-tap-highlight-color: transparent;
+       
+        
+        span {
+            @include transform(rotate(-45deg));
+            line-height: 100px;
+            font-size: 1.3em
+        }
+    }
+}
+
+.controls {
+    @include e(inner) {
+        @include box(500px);
+        @include transform(translate3d(-50%,-50%,0) rotateZ(45deg));
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        @include mq(medium) {
+            @include box(950px);
+        }
+    }
+    
+}
+
+
+

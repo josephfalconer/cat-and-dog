@@ -1,0 +1,85 @@
+// ====================================
+// Mesages
+// ===================================
+
+.info {
+    @include dimensions(100%, $info-bar-ht-sm);
+    background: $xLightBrown;
+    border: solid 2px $lightBrown;
+    margin: 0 auto;
+    
+    @include mq(medium) {
+    	@include dimensions($space-md * 10, $info-bar-ht-md);
+    }
+
+    @include mq(large) {
+        width: $space-lg * 10;
+        height: $info-bar-ht-lg;
+        line-height: $info-bar-ht-lg;
+    }
+   
+	span { 
+		line-height: $info-bar-ht-sm - 2;
+		height: $info-bar-ht-sm - 2;
+		display: inline-block;
+		font-size: .75em;
+		float: left;
+
+		&:first-child {
+        	padding-left: 20px;
+        }
+
+		@include mq(medium) { 
+			font-size: 1.3em; 
+			height: $info-bar-ht-md - 2;
+	        line-height: $info-bar-ht-md - 2;
+		}
+
+		@include mq(large) {
+	        height: $info-bar-ht-lg - 2;
+	        line-height: $info-bar-ht-lg - 2;
+	        
+	    }
+	}
+}
+
+
+
+.stats {
+	@include box(100%);
+	background: white;
+	z-index: 800;
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	@include e(inner) {
+		@include box(100%);
+		position: relative;
+		padding-top: 1px;
+	}
+
+	@include e(text) {
+		color: black;
+		margin: 3em auto 0;
+		font-size: $ft-sz-info;
+		text-align: left;
+		width: 60%;
+		h4 { margin-top: 0; }
+		
+		@include mq(small) {
+			font-size: $ft-sz-info--sm;
+		}
+	}
+
+	.stat {
+		width: 100%;
+		@include mq(small) {
+			margin: 5px 0;
+		}
+	}
+}
+
+
+
+

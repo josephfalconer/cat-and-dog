@@ -1,0 +1,148 @@
+// ==========================================================================
+// Helpers
+// ==========================================================================
+
+// COLORS
+
+%txt-clr-white {
+	color: $white;
+}
+
+%fill-active {
+	fill: $clr--active;
+}
+
+%stroke-active {
+	stroke: $clr--active;
+}
+
+
+// TEXT ALIGN
+
+%center-align-txt {
+	text-align: center;
+}
+
+%left-align-text {
+	text-align: left;
+}
+
+
+// SIZE
+
+%line-height {
+	line-height: 22px;
+}
+
+%full-size {
+	height: 100%;
+	width: 100%;
+}
+
+// TEXT WEIGHT
+
+%font-bold {
+	font-weight: $font-weight--bold;
+}
+
+
+// POSITIONING ==========================
+
+
+%clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+
+// DISPLAY ==========================
+
+%disp-i {
+	display: inline;
+}
+
+%disp-b {
+	display: block;
+}
+
+%disp-i-b {
+	display: inline-block;
+}
+
+%disp-n {
+	display: none;
+}
+
+%disp-flex {
+	display: flex;
+}
+
+
+// LAYOUT ==========================
+
+%m-t {
+	margin-top: 2em;
+}
+
+%no-padding {
+	padding: 0;
+}
+
+
+
+// ELEMENTS
+
+%list-plain {
+	margin-left: 0;
+	padding-left: 0;
+	list-style: none;
+}
+
+%nav-list {
+	margin: 0;
+	list-style: none;
+}
+
+%img {
+	width: 100%;
+	border-radius: $br--default;
+}
+
+%btn-transparent {
+	outline: none;
+	border: none;
+	background: none;
+}
+
+
+// SUNDRY
+
+%csr-ptr {
+	cursor: pointer;
+}
+
+%round {
+	border-radius: 50%;
+}
+
+%no-user-select {
+	-webkit-user-select: none;  
+	-moz-user-select: none;     
+	-ms-user-select: none;      
+	user-select: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+

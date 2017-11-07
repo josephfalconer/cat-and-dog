@@ -1,0 +1,64 @@
+// ====================================
+// Dog, cat, obstacles and food
+// ===================================
+
+$svg: '.svg';
+
+@mixin food-bgs($foods...) {
+	@each $food in $foods {
+		&.#{$food} {
+			$url: #{$static-image-path}food/#{$food}#{$svg};
+			/*background: url('../img/food/#{$food}.png') no-repeat center;*/
+			background: url($url) no-repeat center;
+			background-size: 50%;
+		}
+	}
+}
+@mixin animal-bgs($animals, $angles) {
+	@each $animal in $animals {
+		@each $angle in $angles {
+			&.#{$animal}-#{$angle} {
+				$url: #{$static-image-path}#{$animal}/#{$animal}-#{$angle}#{$svg};
+				// background: url(#{$static-image-path}#{$animal}-#{$angle}.png) no-repeat center;
+				background: url($url) no-repeat center;
+				background-size: 100%;
+			}
+		}
+	}	
+}
+
+$animals	: dog, cat;
+$angles		: up, down, left, right;
+
+i {
+	@include transition($tn-norm: width 50ms, $tn-norm-sd: opacity 1s);
+	@include box(100%);
+	@extend %total-centered;
+	display: block;
+    opacity: 1;
+	&.obstruction {
+		@include dimensions(90%, 90%);
+		background: $brown;
+		border-radius: 50%;
+		border: 4px black solid;
+	    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+	    @include mq(small) {
+	    	border: 2px black solid;
+		    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+	    }
+	}
+
+	&.cat {
+		@include dimensions(80%, 80%);
+	}
+	@include animal-bgs($animals, $angles);
+	
+
+	@include food-bgs(slice, steak, fish, drumstick, salami, sausage, meat)
+
+}
+
+.food.shrink {
+	width: 60%;
+	opacity: 0;
+}

@@ -1,0 +1,42 @@
+// ====================================
+// Vertical centering
+// ===================================
+
+%total-centered {
+	@include transform(translate3d(-50%,-50%,0));
+	position: absolute;
+	top: 50%;
+	left: 50%;
+}
+
+
+%go-arrow {
+	.go-arrow {
+		@include transition(padding-left, .4s, padding-left .4s);
+	}	
+	@include mq(small) {
+		text-align: center;
+		width: 100%;
+		.go-arrow {
+			text-align: left;
+			display: inline-block;
+			width: 10px;
+		}
+	}
+}
+
+%tn-opacity {
+	@include transition($tn-norm: opacity .1s);
+}
+
+%move-arrow {
+	.go-arrow {
+		padding-left: 10px;
+	}
+}
+
+
+%link-default {
+	@include transition(color, .4s, color .4s);
+	font-weight: bold;
+}

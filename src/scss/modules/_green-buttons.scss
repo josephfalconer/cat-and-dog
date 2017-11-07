@@ -1,0 +1,62 @@
+// ====================================
+// Skip, next and new game buttons
+// ===================================
+
+$btn-offset-hints : 20px;
+$btn-offset-sm : 10px;
+
+$btn-wt-hints : 90px;
+$btn-wt-sm : 65px;
+
+.shutter__ctrl {
+	@include transition($tn-norm: background .4s);
+    background: $lightGreen;
+    padding: 6px;
+    margin-top: 10px;
+    border: $darkBrown;
+    outline: none;
+    border-radius: 10px;
+    position: absolute;
+    z-index: 300;
+
+    @include mq(small) { font-size: .8em; padding: 3px; }
+
+    &.skip {
+    	right: $btn-offset-hints;
+	    width: $btn-wt-hints;
+        @include mq(small) { width: $btn-wt-sm; right: $btn-offset-sm;}
+    }
+
+    &.next {
+    	left: $btn-offset-hints;
+	    width: $btn-wt-hints;
+        @include mq(small) { width: $btn-wt-sm; left: $btn-offset-sm;}
+    }
+
+    &.new {
+        left: 51%;
+        z-index: 300;
+        margin-top: 9px;
+    }
+    
+    &.difficulty {
+        left: 8px; 
+        color: white; 
+        padding: 8px; 
+        z-index: 1010;
+        @include mq(small) { width: $btn-wt-sm;font-size: .8em; padding: 3px;}
+        &.with-stats {
+            left: initial;
+            right: 51%;
+            z-index: 850;
+        }
+        &.hidden {
+            display: none;
+        }
+    }
+    &:hover {
+        background: $green;
+    }
+    @include mq(medium) { font-size: 1.2em; }
+}
+	

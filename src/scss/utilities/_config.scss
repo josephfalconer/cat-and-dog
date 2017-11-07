@@ -1,0 +1,83 @@
+// ==========================================================================
+// Global Config
+// ==========================================================================
+
+// Font Stacks 
+$font-url--google        : 'https://fonts.googleapis.com/css?family=Proza+Libre';
+$font-family--primary    : 'Proza Libre', Helvetica, Arial, sans-serif;
+$font-family--secondary  : null;
+
+// Font Weights 
+
+$font-weight--thin       : 100;
+$font-weight--light      : 300;
+$font-weight--medium     : 400;
+$font-weight--bold       : 700;
+$font-weight--ultra-bold : 900;
+
+
+// Colors ===========================================
+
+$white			: #fff;
+$black			: #000;
+$black-c-thru	: rgba(0,0,0,.5);
+
+
+// Color usage =====================================
+
+$clr--primary	: null;
+$clr--accent	: null;
+$clr--active	: null;
+
+
+// TEXT
+
+$txt-clr--main	: null;
+$txt-clr--hov	: null;
+
+
+// Border radius
+
+$br--default    : .4em;
+$br--round      : 50%;
+
+// Transitions
+
+$trns-duration  : .4s;
+
+
+// Path to Assets
+
+$static-image-path      : "../img/";
+
+
+// Breakpoints
+
+$brkpoint-sm	: 1px;
+$brkpoint-md	: 767px;
+$brkpoint-lg	: 1100px;
+
+
+// Borders
+
+$border--white	: dashed 1px $white;
+
+
+// Garden variables
+$green		: #3c761e;
+$lightGreen : lighten($green, 10%);
+
+$brown		: #65572b;
+$brown-dark : darken($brown, 10%);
+$lightBrown : lighten($brown, 5%);
+$xLightBrown: lighten($brown, 20%);
+
+$space-sm	: 1.4em;
+$space-ip6	: 1.5em;
+$space-l-sm	: 1.6em;
+$space-md	: 4rem;
+$space-lg	: 4.5rem;
+
+$info-bar-ht-sm: 20px;
+$info-bar-ht-md: 30px;
+$info-bar-ht-lg: 40px;
