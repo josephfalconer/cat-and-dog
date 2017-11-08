@@ -2,6 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import * as GardenActionCreators from '../actions/actions_garden';
+import * as helpers from '../actions/helpers';
+
+
 class Cat extends Component {
 
     static propTypes = {
@@ -9,39 +13,83 @@ class Cat extends Component {
     }
 
     state = {
-        x: 
-        transform: 'translate(0,0)',
+        style: helpers.writeTransform()
     }
     
     componentDidMount() {
+        this.updateFace('left');
+        this.move(9, 7);
+        // set energy-decreasing interval
         document.addEventListener('keydown', this.arrowKeys);
     }
 
-    arrowKeys = e => {
+    // same as Dog.js?
+    move = (x, y) => {
+        const { dispatch } = this.props,
+            updateGarden = bindActionCreators(GardenActionCreators.updateGarden, dispatch),
+            squareWidth = 72;
 
-        let transform
+        updateGarden({ x: x, y: y }, 'UPDATE_CAT_POSITION');
+
+        this.setState({
+            ...this.state,
+            x: x,
+            y: y,
+            style: helpers.writeTransform(x * squareWidth, y * squareWidth),
+        });
+    }
+
+    // same as Dog.js?
+    updateFace = face => {
+        this.setState({
+            ...this.state,
+            className: `cat cat-${face}`
+        });
+    }
+
+    arrowKeys = e => {
+        const { spaces } = this.props;
+        let { x, y } = this.state,
+            face;
        
-        if(e.which == 37) {
+        if(e.which === 37) {
             // left
-            console.log('left');
-        } else if (e.which===38) {
+            x--;
+            face = 'left';
+
+        } else if (e.which === 38) {
             // up 
-            console.log('left');
-        } else if (e.which===39) {
+            y--;
+            face = 'up';
+
+        } else if (e.which === 39) {
             // right
-            console.log('right');
-        } else if (e.which===40) {
+            x++;
+            face = 'right';
+
+        } else if (e.which === 40) {
             // down
-            console.log('down');
+            y++;
+            face = 'down';
+
+        } else {
+            return;
         }
 
-    };
+        this.updateFace(face);
+
+        if (!helpers.checkMove(x, y, spaces)) 
+            return;
+
+        this.move(x, y, face);
+    }
 
     render() {
-    	const catClass = `cat cat-left`;
+    	const { style, className } = this.state;
+        style.backgroundSize = '75%';
 
     	return (
-	        <span className={catClass}></span>
+	        <span className={className} style={style}></span>
 	    )
     }
 }

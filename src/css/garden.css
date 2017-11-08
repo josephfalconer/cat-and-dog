@@ -144,6 +144,19 @@ button {
       background: #3c761e;
       border: 1px solid #3c761e; }
 
+.cat, .dog {
+  display: block;
+  position: absolute;
+  top: 0.0625rem;
+  left: 0.0625rem;
+  width: 3.9375rem;
+  height: 3.9375rem;
+  transition: transform 0.2s; }
+  @media (min-width: 1100px) {
+    .cat, .dog {
+      width: 4.375rem;
+      height: 4.375rem; } }
+
 i {
   -webkit-transition: width 50ms, opacity 1s;
   -moz-transition: width 50ms, opacity 1s;
@@ -194,45 +207,29 @@ i {
     background: url(../img/food/meat.svg) no-repeat center;
     background-size: 50%; }
 
-.cat {
-  display: block;
-  position: absolute;
-  bottom: 0.0625rem;
-  right: 0.0625rem;
-  width: 3.9375rem;
-  height: 3.9375rem; }
-
 .dog-up {
-  background: url(../img/dog/dog-up.svg) no-repeat center;
-  background-size: 80%; }
+  background: url(../img/dog/dog-up.svg) no-repeat center; }
 
 .dog-down {
-  background: url(../img/dog/dog-down.svg) no-repeat center;
-  background-size: 80%; }
+  background: url(../img/dog/dog-down.svg) no-repeat center; }
 
 .dog-left {
-  background: url(../img/dog/dog-left.svg) no-repeat center;
-  background-size: 80%; }
+  background: url(../img/dog/dog-left.svg) no-repeat center; }
 
 .dog-right {
-  background: url(../img/dog/dog-right.svg) no-repeat center;
-  background-size: 80%; }
+  background: url(../img/dog/dog-right.svg) no-repeat center; }
 
 .cat-up {
-  background: url(../img/cat/cat-up.svg) no-repeat center;
-  background-size: 80%; }
+  background: url(../img/cat/cat-up.svg) no-repeat center; }
 
 .cat-down {
-  background: url(../img/cat/cat-down.svg) no-repeat center;
-  background-size: 80%; }
+  background: url(../img/cat/cat-down.svg) no-repeat center; }
 
 .cat-left {
-  background: url(../img/cat/cat-left.svg) no-repeat center;
-  background-size: 80%; }
+  background: url(../img/cat/cat-left.svg) no-repeat center; }
 
 .cat-right {
-  background: url(../img/cat/cat-right.svg) no-repeat center;
-  background-size: 80%; }
+  background: url(../img/cat/cat-right.svg) no-repeat center; }
 
 .food.shrink {
   width: 60%;

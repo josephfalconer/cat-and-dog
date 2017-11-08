@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import * as GardenActionCreators from '../actions/actions_garden';
 import Space from './Space';
 import Cat from './Cat';
+import Dog from './Dog';
 
 
 class Garden extends Component {
@@ -16,12 +17,12 @@ class Garden extends Component {
 
 	componentDidMount() {
         const { dispatch } = this.props,
-            setSpaces = bindActionCreators(GardenActionCreators.setSpaces, dispatch);
+            updateGarden = bindActionCreators(GardenActionCreators.updateGarden, dispatch);
 
         let SPACES = this.layoutSpaces();
 
         SPACES = this.setObstructions(SPACES);
-        setSpaces(SPACES);
+        updateGarden(SPACES, 'SET_SPACES');
 	}
 
 	layoutSpaces = () => {
@@ -36,6 +37,8 @@ class Garden extends Component {
             for (let y = 0; y < height; y++) {
 
                 SPACES[x][y] = {
+                    x: x,
+                    y: y,
                     occupant: false,
                     isEdge: false
                 };
@@ -88,6 +91,7 @@ class Garden extends Component {
                 })}
 
                 <Cat />
+                <Dog />
             </div>
     	);
     }

@@ -1,8 +1,8 @@
 import * as GardenActionTypes from '../actiontypes/actiontypes_garden';
 
-export const setSpaces = spaces => {
+export const updateGarden = (data, type) => {
 	return {
-		type: GardenActionTypes.SET_SPACES,
-		spaces
+		type: GardenActionTypes[type],
+		data
 	}
 }

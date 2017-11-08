@@ -4,6 +4,19 @@
 
 $svg: '.svg';
 
+%animal {
+	display: block;
+	position: absolute;
+	top: remcalc(1);
+	left: remcalc(1);
+	@include square(remcalc(63));
+	transition: transform 0.2s;
+
+	@include mq(large) {
+		@include square(remcalc(70));
+	}
+}
+
 @mixin food-bgs($foods...) {
 	@each $food in $foods {
 		&.#{$food} {
@@ -21,7 +34,6 @@ $svg: '.svg';
 				$url: #{$static-image-path}#{$animal}/#{$animal}-#{$angle}#{$svg};
 				// background: url(#{$static-image-path}#{$animal}-#{$angle}.png) no-repeat center;
 				background: url($url) no-repeat center;
-				background-size: 80%;
 			}
 		}
 	}	
@@ -56,11 +68,11 @@ i {
 }
 
 .cat {
-	display: block;
-	position: absolute;
-	bottom: remcalc(1);
-	right: remcalc(1);
-	@include square(remcalc(63));
+	@extend %animal;
+}
+
+.dog {
+	@extend %animal;
 }
 
 @include animal-bgs($animals, $angles);

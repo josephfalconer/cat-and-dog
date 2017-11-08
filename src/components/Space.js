@@ -6,7 +6,6 @@ const Space = props => {
     const { data } = props,
         className = data.isEdge ? 'edge' : 'grass';
 
-
     const occupants = {
         // food: () => {
         //     return <i className={data.classFood}></i>
@@ -19,8 +18,9 @@ const Space = props => {
     const Occupant = occupants[data.occupant];
 
     return (
-        <div className={`garden__space ${className}`}>
+        <div className={`garden__space ${className}`} style={{fontSize: '14px'}} >
             {Occupant && Occupant.call()}
+
         </div>
     );
 } 
@@ -28,5 +28,5 @@ const Space = props => {
 Space.propTypes = {
     data: PropTypes.object.isRequired
 }
-
+//{`x: ${data.x}, y: ${data.y}`}
 export default Space;
