@@ -47,6 +47,8 @@ class Cat extends Creature {
             default:
                 return;
         }
+
+        this.setState({ ...this.state, face: face });
     
         validXY = this.checkMove(x, y, face);
 
