@@ -38,6 +38,9 @@ class Dog extends Creature {
     }
 
     findPath = () => {
+        if (!this.isInGame)
+            return;
+
         if (this.isStuck) {
             this.getRoundObstacle();
                 
@@ -116,7 +119,8 @@ class Dog extends Creature {
     }
 
     turn = direction => {
-        this.setState({ ...this.state, face: direction });
+        if (this.isInGame)
+            this.setState({ ...this.state, face: direction });
     }
 
     attemptStep = axis => {
@@ -124,7 +128,8 @@ class Dog extends Creature {
             newDirection = axis === 'x' ? this.askX(x) : this.askY(y),
             validXY = this.checkMove(x, y, newDirection);
 
-        this.setState({ ...this.state, face: newDirection });
+        if (this.isInGame)
+            this.setState({ ...this.state, face: newDirection });
 
         if (validXY) {
             this.moveForward(validXY.x, validXY.y, newDirection);

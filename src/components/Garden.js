@@ -51,7 +51,7 @@ class Garden extends Component {
             }
         }
 
-        
+        SPACES[9][7].occupant = 'CAT';
 
         return SPACES;
 	}

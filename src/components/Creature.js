@@ -69,7 +69,6 @@ export default class extends Component {
             updateStats(false, 'UPDATE_GAME_STATUS');
             console.log('Found the dog!');
         }
-            
 
         if (nextSpace.occupant === 'CAT') {
             updateStats(false, 'UPDATE_GAME_STATUS');
