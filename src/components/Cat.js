@@ -9,8 +9,8 @@ class Cat extends Creature {
 
     constructor(props) {
         super(props);
-        this.updateType = 'UPDATE_CAT_POSITION';
-        this.name = 'cat';
+        this.actionType = 'UPDATE_CAT_POSITION';
+        this.name = 'CAT';
     }
 
     static propTypes = {
@@ -26,6 +26,10 @@ class Cat extends Creature {
         this.moveForward(9, 7, 'left');
         // TODO energy-decrease interval
         document.addEventListener('keydown', this.arrowKeys);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.arrowKeys);
     }
 
     arrowKeys = e => {

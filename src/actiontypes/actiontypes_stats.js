@@ -1,0 +1,1 @@
+export const UPDATE_GAME_STATUS = 'stats/UPDATE_GAME_STATUS';

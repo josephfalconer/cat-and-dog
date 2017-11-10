@@ -10,7 +10,7 @@ const Space = props => {
         // food: () => {
         //     return <i className={data.classFood}></i>
         // },
-        obstruction: () => {
+        OBSTRUCTION: () => {
             return <i className="obstruction"></i>
         },
     }

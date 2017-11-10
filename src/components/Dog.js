@@ -9,8 +9,9 @@ class Dog extends Creature {
 
     constructor(props) {
         super(props);
-        this.updateType = 'UPDATE_DOG_POSITION';
+        this.actionType = 'UPDATE_DOG_POSITION';
         this.isStuck = false;
+        this.name = 'DOG';
     }
 
     static propTypes = {
@@ -24,6 +25,7 @@ class Dog extends Creature {
 
     componentDidMount() {
         this.moveForward(0, 0, 'right');
+        this.isInGame = true;
 
         // set movement interval
         this.intervalID = setInterval(this.findPath, 1000);
@@ -31,45 +33,95 @@ class Dog extends Creature {
 
     componentWillUnmount() {
     	// clear movement interval
-    	window.clearInterval(this.intervalID);
+        this.isInGame = false;
+    	clearInterval(this.intervalID);
     }
 
     findPath = () => {
-        const Dog = this,
-            { x, y, face } = this.state,
-            { cat } = this.props;
-
-        let gotStuck = false;
-
-        if (Dog.isStuck) {
-            console.log('stuck');
-            // try a right-left movement
-            Dog.takeDoubleStep(face, 'RIGHT');
-
-            // try left-right instead
-            if (Dog.isStuck) {
-                Dog.takeDoubleStep(face, 'LEFT');
-            }                    
+        if (this.isStuck) {
+            this.getRoundObstacle();
                 
         } else {
-            // staircase-shaped movement
-            if (cat.x !== x || cat.y !== y) {
-                gotStuck = Dog.takeStep('x');
-                Dog.isStuck = gotStuck;
-            }
+            this.pursueCat();
+        }
+    }
+
+    pursueCat = () => {
+
+        // move on x axis
+        if (this.props.cat.x !== this.state.x) 
+            this.isStuck = this.attemptStep('x');
+
+        setTimeout(() => {
+            if (!this.isInGame)
+                return;
+
+            // then y axis - with fresh data
+            if (this.props.cat.y !== this.state.y) 
+                this.isStuck = this.attemptStep('y');
+
+        }, 500);
+    }
+
+    getRoundObstacle = () => {
+        const { x, y, face } = this.state,
+            newLeft = this.getLeft(face),
+            validXY = this.checkMove(x, y, newLeft);
+
+        this.turn(newLeft);
+
+        if (validXY) {
+            this.moveForward(validXY.x, validXY.y, newLeft);
+            this.isStuck = false;
 
             setTimeout(() => {
-                if (cat.y !== y) {
-                    gotStuck = Dog.takeStep('y');
-                    Dog.isStuck = gotStuck;
+                if (!this.isInGame)
+                    return;
+
+                const { x, y } = this.state,
+                    newRight = this.getRight(newLeft),
+                    validXY = this.checkMove(x, y, newRight);
+
+                this.turn(newRight);
+
+                if (validXY) {
+                    this.moveForward(validXY.x, validXY.y, newRight);
+                } else {
+                    this.isStuck = true;
                 }
             }, 500);
         }
     }
 
-    takeStep = axis => {
+    getLeft = face => {
+        const lefts = {
+            up: 'left',
+            right: 'up',
+            down: 'right',
+            left: 'down'
+        }
+
+        return lefts[face];
+    }
+
+    getRight = face => {
+        const rights = {
+            up: 'right',
+            right: 'down',
+            down: 'left',
+            left: 'up'
+        }
+
+        return rights[face];
+    }
+
+    turn = direction => {
+        this.setState({ ...this.state, face: direction });
+    }
+
+    attemptStep = axis => {
         const { x, y } = this.state,
-            newDirection = axis === 'x' ? this.lookHorizontal(x) : this.lookVertical(y),
+            newDirection = axis === 'x' ? this.askX(x) : this.askY(y),
             validXY = this.checkMove(x, y, newDirection);
 
         this.setState({ ...this.state, face: newDirection });
@@ -82,70 +134,12 @@ class Dog extends Creature {
         return true;
     }
 
-    lookHorizontal = x => {
+    askX = x => {
         return this.props.cat.x > x ? 'right' : 'left';
     }
 
-    lookVertical = y => {
+    askY = y => {
         return this.props.cat.y > y ? 'down' : 'up';
-    }
-
-    takeDoubleStep = (currentFace, firstTurn) => {
-        const Dog = this,
-            turns = Dog.getTurns(currentFace, firstTurn),
-            rightFirst = firstTurn === 'RIGHT';
-
-        Dog.stepRound(rightFirst ? turns.right : turns.left);
-
-        setTimeout(() => {
-            Dog.stepRound(rightFirst ? turns.left : turns.right);
-        }, 500);
-    }
-
-    stepRound = direction => {
-        const { x, y } = this.state,
-            goodStep = this.checkMove(x, y, direction);
-
-        if (goodStep) {
-            this.moveForward(goodStep.x, goodStep.y, direction);
-            this.isStuck = false;
-        }
-    }
-
-    getTurns = (currentFace, firstTurn) => {
-        const rights = {
-                up: 'right',
-                right: 'down',
-                down: 'left',
-                left: 'up'
-            },
-            lefts = {
-                up: 'left',
-                right: 'up',
-                down: 'right',
-                left: 'down'
-            };
-
-        switch (firstTurn) {
-            case 'RIGHT': {
-                const rightTurn = rights[currentFace],
-                    leftTurn = lefts[rightTurn];
-
-                return {
-                    right: rightTurn,
-                    left: leftTurn
-                }
-            }
-            case 'LEFT': {
-                const leftTurn = lefts[currentFace],
-                    rightTurn = rights[leftTurn];
-
-                return {
-                    left: leftTurn,
-                    right: rightTurn
-                }
-            }
-        }                
     }
 
     render() {

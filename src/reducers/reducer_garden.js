@@ -7,7 +7,7 @@ const initialState = {
 export default function Timer(state=initialState, action) {
 
 	switch (action.type) {
-		case GardenActionTypes.SET_SPACES:
+		case GardenActionTypes.UPDATE_SPACES:
 			return {
 				...state,
 				spaces: action.data

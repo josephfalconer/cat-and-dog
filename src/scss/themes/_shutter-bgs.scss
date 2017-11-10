@@ -8,27 +8,12 @@ $hint-bgs	: 'get-food', 'too-tired', 'too-big', 'avoid-dog', 'move-cat', 'time-l
 $png: '.png';
 
 @each $hint-bg in $hint-bgs {
-
-
-	.shutter__inner {
-
-		@include m(right) {
-			&.#{$hint-bg} {
-				$url: #{$static-image-path}hints/#{$hint-bg}#{$png};
-				background: #41381c url($url) no-repeat 100% center;
-			    background-size: 200%;
-			}
-			
-		}
-
-		@include m(left) {
-			&.#{$hint-bg} {
-				$url: #{$static-image-path}hints/#{$hint-bg}#{$png};
-				background: #41381c url($url) no-repeat 0% center;
-			    background-size: 200%;
-			}
+	.hints {
+		&.#{$hint-bg} {
+			$url: #{$static-image-path}hints/#{$hint-bg}#{$png};
+			background: #41381c url($url) no-repeat center;
+		    background-size: cover;
 		}
 	}
-	
 }
 

@@ -336,6 +336,28 @@ i {
 .shutter__inner--right {
   left: 0; }
 
+.hints {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #65572b;
+  justify-content: center;
+  align-items: center; }
+  .hints__message {
+    max-width: 53.125rem;
+    padding: 1.25rem;
+    font-size: 1.125rem; }
+    @media (min-width: 768px) {
+      .hints__message {
+        font-size: 1.5625rem; } }
+    @media (min-width: 1100px) {
+      .hints__message {
+        font-size: 2.1875rem; } }
+
 .garden__controls {
   width: 100%;
   height: 100%;
@@ -563,81 +585,48 @@ i {
 .garden__curtain--left.open, .garden__curtain--right.open {
   width: 0; }
 
-.shutter__inner--right.get-food {
-  background: #41381c url(../img/hints/get-food.png) no-repeat 100% center;
-  background-size: 200%; }
-.shutter__inner--left.get-food {
-  background: #41381c url(../img/hints/get-food.png) no-repeat 0% center;
-  background-size: 200%; }
+.hints.get-food {
+  background: #41381c url(../img/hints/get-food.png) no-repeat center;
+  background-size: cover; }
 
-.shutter__inner--right.too-tired {
-  background: #41381c url(../img/hints/too-tired.png) no-repeat 100% center;
-  background-size: 200%; }
-.shutter__inner--left.too-tired {
-  background: #41381c url(../img/hints/too-tired.png) no-repeat 0% center;
-  background-size: 200%; }
+.hints.too-tired {
+  background: #41381c url(../img/hints/too-tired.png) no-repeat center;
+  background-size: cover; }
 
-.shutter__inner--right.too-big {
-  background: #41381c url(../img/hints/too-big.png) no-repeat 100% center;
-  background-size: 200%; }
-.shutter__inner--left.too-big {
-  background: #41381c url(../img/hints/too-big.png) no-repeat 0% center;
-  background-size: 200%; }
+.hints.too-big {
+  background: #41381c url(../img/hints/too-big.png) no-repeat center;
+  background-size: cover; }
 
-.shutter__inner--right.avoid-dog {
-  background: #41381c url(../img/hints/avoid-dog.png) no-repeat 100% center;
-  background-size: 200%; }
-.shutter__inner--left.avoid-dog {
-  background: #41381c url(../img/hints/avoid-dog.png) no-repeat 0% center;
-  background-size: 200%; }
+.hints.avoid-dog {
+  background: #41381c url(../img/hints/avoid-dog.png) no-repeat center;
+  background-size: cover; }
 
-.shutter__inner--right.move-cat {
-  background: #41381c url(../img/hints/move-cat.png) no-repeat 100% center;
-  background-size: 200%; }
-.shutter__inner--left.move-cat {
-  background: #41381c url(../img/hints/move-cat.png) no-repeat 0% center;
-  background-size: 200%; }
+.hints.move-cat {
+  background: #41381c url(../img/hints/move-cat.png) no-repeat center;
+  background-size: cover; }
 
-.shutter__inner--right.time-limit {
-  background: #41381c url(../img/hints/time-limit.png) no-repeat 100% center;
-  background-size: 200%; }
-.shutter__inner--left.time-limit {
-  background: #41381c url(../img/hints/time-limit.png) no-repeat 0% center;
-  background-size: 200%; }
+.hints.time-limit {
+  background: #41381c url(../img/hints/time-limit.png) no-repeat center;
+  background-size: cover; }
 
-.shutter__inner--right.get-ready {
-  background: #41381c url(../img/hints/get-ready.png) no-repeat 100% center;
-  background-size: 200%; }
-.shutter__inner--left.get-ready {
-  background: #41381c url(../img/hints/get-ready.png) no-repeat 0% center;
-  background-size: 200%; }
+.hints.get-ready {
+  background: #41381c url(../img/hints/get-ready.png) no-repeat center;
+  background-size: cover; }
 
-.shutter__inner--right.dog-caught {
-  background: #41381c url(../img/hints/dog-caught.png) no-repeat 100% center;
-  background-size: 200%; }
-.shutter__inner--left.dog-caught {
-  background: #41381c url(../img/hints/dog-caught.png) no-repeat 0% center;
-  background-size: 200%; }
+.hints.dog-caught {
+  background: #41381c url(../img/hints/dog-caught.png) no-repeat center;
+  background-size: cover; }
 
-.shutter__inner--right.ran-into {
-  background: #41381c url(../img/hints/ran-into.png) no-repeat 100% center;
-  background-size: 200%; }
-.shutter__inner--left.ran-into {
-  background: #41381c url(../img/hints/ran-into.png) no-repeat 0% center;
-  background-size: 200%; }
+.hints.ran-into {
+  background: #41381c url(../img/hints/ran-into.png) no-repeat center;
+  background-size: cover; }
 
-.shutter__inner--right.no-stamina {
-  background: #41381c url(../img/hints/no-stamina.png) no-repeat 100% center;
-  background-size: 200%; }
-.shutter__inner--left.no-stamina {
-  background: #41381c url(../img/hints/no-stamina.png) no-repeat 0% center;
-  background-size: 200%; }
+.hints.no-stamina {
+  background: #41381c url(../img/hints/no-stamina.png) no-repeat center;
+  background-size: cover; }
 
-.shutter__inner--right.you-win {
-  background: #41381c url(../img/hints/you-win.png) no-repeat 100% center;
-  background-size: 200%; }
-.shutter__inner--left.you-win {
-  background: #41381c url(../img/hints/you-win.png) no-repeat 0% center;
-  background-size: 200%; }
+.hints.you-win {
+  background: #41381c url(../img/hints/you-win.png) no-repeat center;
+  background-size: cover; }
 
 /*# sourceMappingURL=garden.css.map */

@@ -129,6 +129,31 @@ $shutter-edge-br: rgba(0,0,0,.275) solid 1px;
 }
 
 
+.hints {
+	display: flex;
+	flex-direction: column;
+	position: fixed;
+	top: 0;
+	left: 0;
+	@include square(100%);
+	background-color: $brown;
+	justify-content: center;
+	align-items: center;
+
+	&__message {
+		max-width: remcalc(850);
+		padding: remcalc(20);
+		font-size: remcalc(18);
+
+		@include mq(medium) {
+			font-size: remcalc(25);
+		}
+
+		@include mq(large) {
+			font-size: remcalc(35);
+		}
+	}
+}
 
 
 

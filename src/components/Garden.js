@@ -22,10 +22,11 @@ class Garden extends Component {
         let SPACES = this.layoutSpaces();
 
         SPACES = this.setObstructions(SPACES);
-        updateGarden(SPACES, 'SET_SPACES');
+        updateGarden(SPACES, 'UPDATE_SPACES');
 	}
 
 	layoutSpaces = () => {
+
 		const { width, height } = this.props;
         let SPACES = [];
         
@@ -50,6 +51,8 @@ class Garden extends Component {
             }
         }
 
+        
+
         return SPACES;
 	}
 
@@ -62,7 +65,7 @@ class Garden extends Component {
 
             // edges don't have obstructions
             if (!spaces[ranX][ranY].isEdge) {
-                spaces[ranX][ranY].occupant = 'obstruction';
+                spaces[ranX][ranY].occupant = 'OBSTRUCTION';
             }   
         }
 
