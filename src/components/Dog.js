@@ -28,7 +28,7 @@ class Dog extends Creature {
         this.isInGame = true;
 
         // set movement interval
-        this.intervalID = setInterval(this.findPath, 1000);
+        // this.intervalID = setInterval(this.findPath, 1000);
     }
 
     componentWillUnmount() {

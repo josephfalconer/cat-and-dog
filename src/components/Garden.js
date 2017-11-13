@@ -23,6 +23,9 @@ class Garden extends Component {
 
         SPACES = this.setObstructions(SPACES);
         updateGarden(SPACES, 'UPDATE_SPACES');
+
+        this.freeSpaces = this.updateFreeSpaces(SPACES);
+        this.setFood();
 	}
 
 	layoutSpaces = () => {
@@ -51,25 +54,56 @@ class Garden extends Component {
             }
         }
 
-        SPACES[9][7].occupant = 'CAT';
+        SPACES[width - 1][height - 1].occupant = 'CAT';
+        SPACES[0][0].occupant = 'DOG';
 
         return SPACES;
 	}
 
     setObstructions = spaces => {
-        // TODO - quantity will be defined by difficulty
-        for (let i = 0; i < 10; i++) {
+        const noOfObstructions = 10;
+
+        for (let i = 0; i < noOfObstructions; i++) {
 
             let ranX = Math.floor(Math.random() * this.props.width), 
                 ranY = Math.floor(Math.random() * this.props.height);
 
-            // edges don't have obstructions
             if (!spaces[ranX][ranY].isEdge) {
                 spaces[ranX][ranY].occupant = 'OBSTRUCTION';
             }   
         }
 
         return spaces;
+    }
+
+    updateFreeSpaces = spaces => {
+        let freeSpaces = [];
+
+        for (let x = 0; x < spaces.length; x++) {
+            for (let y = 0; y < spaces[x].length; y++) {
+                if (!spaces[x][y].occupant) {
+                    freeSpaces.push({ x: x, y: y });
+                } 
+            }
+        }
+
+        return freeSpaces
+    }
+
+    setFood = () => {
+        const noOfFood = 5,
+            randomNumbers = [];
+
+        for (var i = 0; i < noOfFood; i++) {
+            let ran = Math.floor(Math.random() * this.freeSpaces.length);
+
+            while ( randomNumbers.indexOf(ran) ) {
+                
+            }
+
+            console.log('hello', ran);
+        }
+
     }
 
     render() {
