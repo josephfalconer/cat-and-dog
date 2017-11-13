@@ -25,7 +25,11 @@ class Garden extends Component {
         updateGarden(SPACES, 'UPDATE_SPACES');
 
         this.freeSpaces = this.updateFreeSpaces(SPACES);
-        this.setFood();
+
+        setTimeout(() => {
+            this.setFood();
+        }, 1000);
+        
 	}
 
 	layoutSpaces = () => {
@@ -92,18 +96,28 @@ class Garden extends Component {
 
     setFood = () => {
         const noOfFood = 5,
-            randomNumbers = [];
+            { spaces } = this.props;
+            // ,
+            // randomNumbers = [];
 
         for (var i = 0; i < noOfFood; i++) {
-            let ran = Math.floor(Math.random() * this.freeSpaces.length);
+            let ran = Math.floor(Math.random() * this.freeSpaces.length),
+                space = this.freeSpaces[ran];
 
-            while ( randomNumbers.indexOf(ran) ) {
+            console.log(space);
+
+            // spaces[space.x][spaces.y].occupant = 'FOOD';
+
+
+            // console.log(this.freeSpaces[ran]);
+
+            // find a space not already taken
+            // while ( randomNumbers.indexOf(ran) ) {
                 
-            }
-
-            console.log('hello', ran);
+            // }
         }
 
+        console.log(spaces);
     }
 
     render() {
