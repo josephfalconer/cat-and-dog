@@ -3,7 +3,7 @@ export function writeTransform(x = 0, y = 0) {
     y = y > 0 ? y / 16 : 0;
 
     return {
-        WebkitTansform: `translate(${x}rem, ${y}rem)`,
+        WebkitTransform: `translate(${x}rem, ${y}rem)`,
         MozTransform: `translate(${x}rem, ${y}rem)`,
         msTransform: `translate(${x}rem, ${y}rem)`,
         OTransform: `translate(${x}rem, ${y}rem)`,

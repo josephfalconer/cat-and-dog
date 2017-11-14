@@ -15,22 +15,38 @@ class Garden extends Component {
 		height: PropTypes.number.isRequired,
 	}
 
+    state = {
+        spaces: []
+    }
+
 	componentDidMount() {
+        const Garden = this;
+
+        this.isInGame = true;
+
+        let SPACES = this.layoutSpaces();
+        SPACES = this.setObstructions(SPACES);
+        this.updateSpaces(SPACES);
+        this.freeSpaces = this.updateFreeSpaces(SPACES);
+
+        setTimeout(function() {
+            Garden.setFood();
+        }, 1000);
+	}
+
+    componentWillUnmount() {
+        this.isInGame = false;
+    }
+
+    updateSpaces = SPACES => {
         const { dispatch } = this.props,
             updateGarden = bindActionCreators(GardenActionCreators.updateGarden, dispatch);
 
-        let SPACES = this.layoutSpaces();
-
-        SPACES = this.setObstructions(SPACES);
-        updateGarden(SPACES, 'UPDATE_SPACES');
-
-        this.freeSpaces = this.updateFreeSpaces(SPACES);
-
-        setTimeout(() => {
-            this.setFood();
-        }, 1000);
-        
-	}
+        if (this.isInGame) {
+            this.setState({ ...this.state, spaces: SPACES });
+            updateGarden(SPACES, 'UPDATE_SPACES');
+        }
+    }
 
 	layoutSpaces = () => {
 
@@ -95,34 +111,30 @@ class Garden extends Component {
     }
 
     setFood = () => {
-        const noOfFood = 5,
-            { spaces } = this.props;
-            // ,
-            // randomNumbers = [];
+        const { spaces } = this.state,
+            noOfFood = 5;
 
         for (var i = 0; i < noOfFood; i++) {
+
             let ran = Math.floor(Math.random() * this.freeSpaces.length),
                 space = this.freeSpaces[ran];
 
-            console.log(space);
-
-            // spaces[space.x][spaces.y].occupant = 'FOOD';
-
-
-            // console.log(this.freeSpaces[ran]);
-
-            // find a space not already taken
-            // while ( randomNumbers.indexOf(ran) ) {
-                
-            // }
+            spaces[space.x][space.y].occupant = 'FOOD';
+            spaces[space.x][space.y].className = this.getFoodType();
         }
 
-        console.log(spaces);
+        this.updateSpaces(spaces);
+    }
+
+    getFoodType = () => {
+        const foods = [ 'fish', 'meat', 'steak', 'slice', 'drumstick', 'salami', 'sausage' ],
+            ran = Math.floor(Math.random() * foods.length);
+
+        return `food ${foods[ran]}`;
     }
 
     render() {
-
-        const { spaces:columns } = this.props;
+        const { spaces:columns } = this.state;
 
     	return (
     		<div className="garden">

@@ -7,9 +7,9 @@ const Space = props => {
         className = data.isEdge ? 'edge' : 'grass';
 
     const occupants = {
-        // food: () => {
-        //     return <i className={data.classFood}></i>
-        // },
+        FOOD: () => {
+            return <i className={data.className}></i>
+        },
         OBSTRUCTION: () => {
             return <i className="obstruction"></i>
         },
