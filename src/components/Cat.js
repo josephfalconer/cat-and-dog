@@ -1,9 +1,10 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import * as GardenActionCreators from '../actions/actions_garden';
 import * as GameActionCreators from '../actions/actions_game';
-import * as StatsActionCreators from '../actions/actions_stats';
+// import * as StatsActionCreators from '../actions/actions_stats';
 import * as helpers from '../actions/helpers';
 import Creature from './Creature';
 
@@ -14,10 +15,6 @@ class Cat extends Creature {
         super(props);
         this.actionType = 'UPDATE_CAT_POSITION';
         this.name = 'CAT';
-    }
-
-    static propTypes = {
-        spaces: PropTypes.array.isRequired,
     }
 
     state = {
@@ -42,19 +39,18 @@ class Cat extends Creature {
 
     handleKeyPress = e => {
         const { x, y } = this.state,
+            { dispatch, updateSpaces, spaces } = this.props,
+            updateGame = bindActionCreators(GameActionCreators.updateGame, dispatch),
+            updateGarden = bindActionCreators(GardenActionCreators.updateGarden, dispatch),
             face = this.getFace(e.which),
-            validXY = this.checkMove(x, y, face);
+            validXY = this.checkMove(x, y, face, spaces);
 
-        const { dispatch } = this.props,
-            updateGame = bindActionCreators(GameActionCreators.updateGame, dispatch);
-
-        if (this.isInGame)
+        if (this.isInGame && face)
             // always face attempted direction
             this.setState({ ...this.state, face: face });
     
         if (!validXY) 
             return;
-
 
         if (validXY.occupant === 'FOOD') 
             this.feed();
@@ -66,7 +62,9 @@ class Cat extends Creature {
             return;
         }
 
-        this.moveForward(validXY.x, validXY.y, face);
+        const updatedSpaces = this.moveForward(validXY.x, validXY.y, face);
+        updateGarden({x: validXY.x, y: validXY.y}, 'UPDATE_CAT_POSITION');
+        updateSpaces(updatedSpaces);
     }
 
     getFace = key => {
@@ -89,7 +87,7 @@ class Cat extends Creature {
     }
 
     feed = () => {
-        console.log('feed');
+        // console.log('feed');
         // const { dispatch } = this.props,
         //     updateStats = bindActionCreators(StatsActionCreators.updateStats, dispatch);
 
@@ -97,10 +95,7 @@ class Cat extends Creature {
             ...this.state,
             mealsEaten: this.state.mealsEaten + 1,
             energy: this.state.energy + 1
-        });
-
-        console.log(this.state);
-        
+        });        
     }
 
     render() {
@@ -115,10 +110,6 @@ class Cat extends Creature {
     }
 }
 
-const mapStateToProps = state => (
-    {
-        spaces: state.garden.spaces
-    }
-);
+const mapStateToProps = state => ({});
 
 export default connect(mapStateToProps)(Cat);

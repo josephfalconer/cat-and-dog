@@ -1,14 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 
-import * as GardenActionCreators from '../actions/actions_garden';
 import Space from './Space';
 import Cat from './Cat';
 import Dog from './Dog';
 
 
-class Garden extends Component {
+export default class extends Component {
 
 	static propTypes = {
 		width: PropTypes.number.isRequired,
@@ -26,30 +23,24 @@ class Garden extends Component {
 
         let SPACES = this.layoutSpaces();
         SPACES = this.setObstructions(SPACES);
-        this.updateSpaces(SPACES);
         this.freeSpaces = this.updateFreeSpaces(SPACES);
+        this.updateSpaces(SPACES);
 
         setTimeout(function() {
             Garden.setFood();
-        }, 1000);
+        }, 5000);
 	}
 
     componentWillUnmount() {
         this.isInGame = false;
     }
 
-    updateSpaces = SPACES => {
-        const { dispatch } = this.props,
-            updateGarden = bindActionCreators(GardenActionCreators.updateGarden, dispatch);
-
-        if (this.isInGame) {
-            this.setState({ ...this.state, spaces: SPACES });
-            updateGarden(SPACES, 'UPDATE_SPACES');
-        }
+    updateSpaces = spaces => {
+        if (this.isInGame) 
+            this.setState({ ...this.state, spaces: spaces });
     }
 
 	layoutSpaces = () => {
-
 		const { width, height } = this.props;
         let SPACES = [];
         
@@ -64,7 +55,8 @@ class Garden extends Component {
                     x: x,
                     y: y,
                     occupant: false,
-                    isEdge: false
+                    isEdge: false,
+                    className: null
                 };
 
                 // garden edges
@@ -134,11 +126,11 @@ class Garden extends Component {
     }
 
     render() {
-        const { spaces:columns } = this.state;
+        const { spaces } = this.state;
 
     	return (
     		<div className="garden">
-                {columns && columns.map((column, index) => {
+                {spaces && spaces.map((column, index) => {
                     return (
                         <div className="garden__column" key={index}>
                             {column.map((space, index) => {
@@ -153,17 +145,9 @@ class Garden extends Component {
                     );
                 })}
 
-                <Cat />
-                <Dog />
+                <Cat updateSpaces={this.updateSpaces} spaces={spaces} />
+                <Dog updateSpaces={this.updateSpaces} spaces={spaces}  />
             </div>
     	);
     }
 }
-
-const mapStateToProps = state => (
-    {
-        spaces: state.garden.spaces
-    }
-);
-
-export default connect(mapStateToProps)(Garden);

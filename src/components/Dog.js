@@ -1,6 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
+import * as GameActionCreators from '../actions/actions_game';
 import * as helpers from '../actions/helpers';
 import Creature from './Creature';
 
@@ -14,10 +16,6 @@ class Dog extends Creature {
         this.name = 'DOG';
     }
 
-    static propTypes = {
-        spaces: PropTypes.array.isRequired,
-    }
-
     state = {
         style: helpers.writeTransform(),
         face: 'right'
@@ -28,7 +26,7 @@ class Dog extends Creature {
         this.isInGame = true;
 
         // set movement interval
-        // this.intervalID = setInterval(this.findPath, 1000);
+        this.intervalID = setInterval(this.findPath, 1000);
     }
 
     componentWillUnmount() {
@@ -68,13 +66,14 @@ class Dog extends Creature {
 
     getRoundObstacle = () => {
         const { x, y, face } = this.state,
+            { spaces } = this.props,
             newLeft = this.getLeft(face),
-            validXY = this.checkMove(x, y, newLeft);
+            validXY = this.checkMove(x, y, newLeft, spaces);
 
         this.turn(newLeft);
 
         if (validXY) {
-            this.moveForward(validXY.x, validXY.y, newLeft);
+            this.moveDogForward(validXY, newLeft);
             this.isStuck = false;
 
             setTimeout(() => {
@@ -82,17 +81,33 @@ class Dog extends Creature {
                     return;
 
                 const { x, y } = this.state,
+                    { spaces } = this.props,
                     newRight = this.getRight(newLeft),
-                    validXY = this.checkMove(x, y, newRight);
+                    validXY = this.checkMove(x, y, newRight, spaces);
 
                 this.turn(newRight);
 
                 if (validXY) {
-                    this.moveForward(validXY.x, validXY.y, newRight);
+                    this.moveDogForward(validXY, newRight);
                 } else {
                     this.isStuck = true;
                 }
             }, 500);
+        }
+    }
+
+    moveDogForward = (nextSpace, face) => {
+        const { x, y, occupant } = nextSpace,
+            { dispatch } = this.props,
+            updateGame = bindActionCreators(GameActionCreators.updateGame, dispatch)
+
+        if (occupant === 'CAT') {
+            console.log('Found the cat!');
+            updateGame(false, 'UPDATE_GAME_STATUS');
+
+        } else {
+            const updatedSpaces = this.moveForward(x, y, face);
+            this.props.updateSpaces(updatedSpaces);
         }
     }
 
@@ -125,14 +140,15 @@ class Dog extends Creature {
 
     attemptStep = axis => {
         const { x, y } = this.state,
+            { spaces } = this.props,
             newDirection = axis === 'x' ? this.askX(x) : this.askY(y),
-            validXY = this.checkMove(x, y, newDirection);
+            validXY = this.checkMove(x, y, newDirection, spaces);
 
         if (this.isInGame)
             this.setState({ ...this.state, face: newDirection });
 
         if (validXY) {
-            this.moveForward(validXY.x, validXY.y, newDirection);
+            this.moveDogForward(validXY, newDirection);
             return false;
         }
 
@@ -161,7 +177,6 @@ class Dog extends Creature {
 
 const mapStateToProps = state => (
     {
-        spaces: state.garden.spaces,
         cat: state.garden.cat
     }
 );

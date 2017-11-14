@@ -11,14 +11,13 @@ export function writeTransform(x = 0, y = 0) {
     }
 }
 
-export function cleanSpaces(spaces, occupant) {
+export function removeOccupant(spaces, occupant) {
     for (let x = 0; x < spaces.length; x++) {
-        for (let y = 0; y < spaces[x].length; y++) {
-            if (spaces[x][y].occupant === occupant) {
+        for (let y = 0; y < spaces[y].length; y++) {
+            if (spaces[x][y].occupant === occupant)
+                // also removes food when cat/dog leaves a space
                 spaces[x][y].occupant = false;
-            }
         }
     }
-
     return spaces;
 }

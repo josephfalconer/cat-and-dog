@@ -17,8 +17,7 @@ export default class LiveInfo extends Component {
     }
 
     componentDidMount() {
-        this.intervalID = setInterval(this.countDown, 1000);
-        console.log('hello');
+        // this.intervalID = setInterval(this.countDown, 1000);
     }
 
     componentWillUnmount() {
@@ -26,9 +25,7 @@ export default class LiveInfo extends Component {
     }
 
     countDown = () => {
-        console.log('countdown');
         this.setState({ ...this.state, secondsRemaining: this.state.secondsRemaining - 1 })
-        
     }
 
     render() {

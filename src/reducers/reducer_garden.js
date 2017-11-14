@@ -1,7 +1,11 @@
 import * as GardenActionTypes from '../actiontypes/actiontypes_garden';
 
 const initialState = {
-	spaces: []
+	spaces: [],
+	cat: {
+		x: 9,
+		y: 7
+	}
 }
 
 export default function Timer(state=initialState, action) {

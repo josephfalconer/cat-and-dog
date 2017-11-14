@@ -1,25 +1,24 @@
-import { Component } from 'react';
-import { bindActionCreators } from 'redux';
+import { Component, PropTypes } from 'react';
 
-import * as GardenActionCreators from '../actions/actions_garden';
 import * as helpers from '../actions/helpers';
 
 
 export default class extends Component {
+
+    static propTypes = {
+        spaces: PropTypes.array.isRequired,
+        updateSpaces: PropTypes.func.isRequired
+    }
+
     moveForward(x, y, newdirection){
-        const { dispatch } = this.props,
-            updateGarden = bindActionCreators(GardenActionCreators.updateGarden, dispatch),
+        let { spaces } = this.props,
             squareWidth = 72;
 
-        updateGarden({ x: x, y: y }, this.actionType);
-
-
-        let { spaces } = this.props;
         if (spaces.length) {
-            spaces = this.cleanSpaces(spaces);
+            spaces = helpers.removeOccupant(spaces, this.name);
             spaces[x][y].occupant = this.name;
+            spaces[x][y].className = null;
         }
-        
 
         this.setState({
             ...this.state,
@@ -28,23 +27,11 @@ export default class extends Component {
             style: helpers.writeTransform(x * squareWidth, y * squareWidth),
             face: newdirection ? newdirection : this.state.face
         });
-    }
 
-    cleanSpaces(spaces) {
-        for (let x = 0; x < spaces.length; x++) {
-            for (let y = 0; y < spaces[y].length; y++) {
-                if (spaces[x][y].occupant === this.name)
-                    // this also removes food when cat/dog leaves a space
-                    spaces[x][y].occupant = false;
-            }
-        }
         return spaces;
     }
 
-    checkMove(x, y, direction) {
-        const { spaces } = this.props;
-
-        let nextSpace;
+    checkMove(x, y, direction, spaces) {
 
         if (direction === 'right') {
             x++;
@@ -56,20 +43,11 @@ export default class extends Component {
             y++;
         }
 
-
         // limited to garden dimensions
         if (x < 0 || y < 0 || x > spaces.length - 1 || y > spaces[0].length - 1)
             return false;
 
-
-        nextSpace = spaces[x][y];
-
-
-        // if (nextSpace.occupant === 'CAT') {
-        //     updateStats(false, 'UPDATE_GAME_STATUS');
-        //     console.log('Found the cat!');
-        // }
-            
+        const nextSpace = spaces[x][y];
 
         if (nextSpace.occupant === 'OBSTRUCTION') 
             return false;
