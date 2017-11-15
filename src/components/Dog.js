@@ -1,8 +1,6 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import * as GameActionCreators from '../actions/actions_game';
 import * as helpers from '../actions/helpers';
 import Creature from './Creature';
 
@@ -14,6 +12,13 @@ class Dog extends Creature {
         this.actionType = 'UPDATE_DOG_POSITION';
         this.isStuck = false;
         this.name = 'DOG';
+    }
+
+    static propTypes = {
+        isGameOver: PropTypes.bool.isRequired,
+        cat: PropTypes.object.isRequired,
+        spaceWidth: PropTypes.number.isRequired,
+        endTheGame: PropTypes.func.isRequired
     }
 
     state = {
@@ -36,7 +41,7 @@ class Dog extends Creature {
     }
 
     findPath = () => {
-        if (!this.isInGame)
+        if (!this.isInGame || this.props.isGameOver)
             return;
 
         if (this.isStuck) {
@@ -98,16 +103,14 @@ class Dog extends Creature {
 
     moveDogForward = (nextSpace, face) => {
         const { x, y, occupant } = nextSpace,
-            { dispatch } = this.props,
-            updateGame = bindActionCreators(GameActionCreators.updateGame, dispatch)
+            { updateSpaces, endTheGame } = this.props;
 
         if (occupant === 'CAT') {
-            console.log('Found the cat!');
-            // updateGame(false, 'UPDATE_GAME_STATUS');
-
+            endTheGame('The dog caught you!');
+            
         } else {
             const updatedSpaces = this.moveForward(x, y, face);
-            this.props.updateSpaces(updatedSpaces);
+            updateSpaces(updatedSpaces);
         }
     }
 
@@ -177,6 +180,7 @@ class Dog extends Creature {
 
 const mapStateToProps = state => (
     {
+        isGameOver: state.game.isGameOver,
         cat: state.garden.cat,
         spaceWidth: state.garden.spaceWidth
     }

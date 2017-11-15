@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 
 const hints = [
@@ -15,6 +15,8 @@ const hints = [
 export default class Hints extends Component {
 
     static propTypes = {
+        moveHints: PropTypes.func.isRequired,
+        isShowing: PropTypes.bool.isRequired
     }
 
     state = {
@@ -24,20 +26,20 @@ export default class Hints extends Component {
     componentDidMount() {
         this.getHint(0);
 
-        this.intervalID = setInterval(() => {
-            this.getHint(1);
-        }, 1000);
+        // this.intervalID = setInterval(() => {
+        //     this.getHint(1, false);
+        // }, 5000);
     }
 
     componentWillUnmount() {
         clearInterval(this.intervalID);
     }
 
-    getHint = increment => {
+    getHint = (increment, breakInterval) => {
         const newIndex = this.state.hintIndex + increment,
             nextHint = hints[newIndex];
 
-        if (newIndex === hints.length)
+        if (newIndex === hints.length || breakInterval)
             clearInterval(this.intervalID);
 
         if (nextHint)
@@ -49,18 +51,19 @@ export default class Hints extends Component {
     }
 
     render() {
-        const { currentHint } = this.state;
+        const { currentHint } = this.state,
+            { isShowing, moveHints } = this.props,
+            className = `hints ${currentHint && currentHint.className} ${isShowing ? 'js-showing-hints' : ''}`;
 
         return (
-            <div className={`hints ${currentHint && currentHint.className}`}>
+            <div className={className}>
+                <div className="hints__controls">
+                    <button className="" onClick={()=>{ this.getHint(-1, true); }}>Previous</button>
+                    <button className="" onClick={()=>{ this.getHint(1, true); }}>Next</button>
+                    <button className="" onClick={()=>{ this.getHint(0, true); moveHints(false); }}>Hide</button>
+                </div>
 
                 <div className="hints__message">{currentHint && currentHint.hint}</div>
-
-                <div className="hints__controls">
-                    <button className="" onClick={()=>{this.getHint(-1)}}>Previous</button>
-                    <button className="" onClick={()=>{this.getHint(1)}}>Next</button>
-                    <button className="" onClick={()=>{this.getHint(1)}}>Hide</button>
-                </div>
             </div>
         );
     };

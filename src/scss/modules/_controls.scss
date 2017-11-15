@@ -60,5 +60,14 @@ $darkBrown  : darken($brown, 20%);
     
 }
 
+.gametrigger {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    z-index: $hints-z-index + 1;
+    width: remcalc(20%);
+    transform: translate(-50%);
+}
+
 
 

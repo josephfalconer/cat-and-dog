@@ -7,14 +7,6 @@ $ft-sz-info--sm	: 1em;
 
 $shutter-edge-br: rgba(0,0,0,.275) solid 1px;
 
-%shutter {
-	@include dimensions(50%,100%);
-	@include transition($tn-norm: width 1s);
-	position: absolute;
-	z-index: 1000;
-	overflow: hidden;
-	background: darken($brown, 10%);
-}
 
 %shutter-inner {
 	width: 450px;
@@ -51,16 +43,22 @@ $shutter-edge-br: rgba(0,0,0,.275) solid 1px;
 	    
 	
 .shutters {
-	@include box(100%);
-	position: absolute;
-	top: 0;
-	left: 0;
+	// @include box(100%);
+	// position: absolute;
+	// top: 0;
+	// left: 0;
 }
 
 .shutter {
-    			
+    @include dimensions(50%,100%);
+	@include transition($tn-norm: width 1s);
+	position: fixed;
+	top: 0;
+	z-index: $hints-z-index - 1;
+	overflow: hidden;
+	background: darken($brown, 10%);
+
 	@include m(left) {
-		@extend %shutter;
 		left: 0;
 
 		span.message {
@@ -71,7 +69,6 @@ $shutter-edge-br: rgba(0,0,0,.275) solid 1px;
 	}
 
 	@include m(right) {
-		@extend %shutter;
 		right: 0;
 
 		span.message {
@@ -131,14 +128,27 @@ $shutter-edge-br: rgba(0,0,0,.275) solid 1px;
 
 .hints {
 	display: flex;
+	position: relative;
 	flex-direction: column;
 	position: fixed;
-	top: 0;
+	top: -100%;
 	left: 0;
+	z-index: $hints-z-index;
 	@include square(100%);
 	background-color: $brown;
 	justify-content: center;
 	align-items: center;
+
+	border-bottom: remcalc(5) whitesmoke solid;
+
+	transition: transform 1s;
+
+	&__controls {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translate(-50%);
+	}
 
 	&__message {
 		max-width: remcalc(850);

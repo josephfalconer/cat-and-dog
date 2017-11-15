@@ -1,75 +1,53 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 
 
-const hints = [
-    { hint: "Get the yummy food.", className: "get-food" },
-    { hint: "If you get too tired it's game over.", className: "too-tired" },
-    { hint: "If your stamina gets to 12 or more, you'll be stuck with indigestion until your stamina gets back down to 10.", className: "too-big" },
-    { hint: "Watch out for the dog - Not only does he chase your fluffy self, but he eats the food too.", className: "avoid-dog" },
-    { hint: "Hit the \u2190 \u2191 \u2192 \u2193 keys on your keyboard to move. On mobile your screen is the button pad, tap it to move.", className: "move-cat" },
-    { hint: "Try to last for 60 seconds!", className: 'time-limit' },
-    { hint: "Ready?", className: 'get-ready' }
-];
-
-
-export default class Shutters extends Component {
+class Shutters extends Component {
 
     static propTypes = {
-    }
-
-    state = {
-        hintIndex: 0,
-    }
-
-    componentDidMount() {
-        // Display first hint
-        this.getHint(0);
-    
-    }
-
-    getHint = increment => {
-        const nextHint = hints[this.state.hintIndex + increment];
-
-        if (nextHint)
-            this.setState({...this.state, currentHint: hints[this.state.hintIndex + increment] });
+        isOpen: PropTypes.bool.isRequired,
+        isGameOver: PropTypes.bool.isRequired,
+        shuttersMessage: PropTypes.string.isRequired
     }
 
     render() {
-        const { currentHint } = this.state;
-        console.log(currentHint);
+        const { isOpen, isGameOver, shuttersMessage } = this.props,
+            className = `shutters ${isOpen ? 'js-open-shutters' : ''}`;
+
         return (
-            <div className="shutters">
-                <div className="shutter--left" >
+            <div className={className}>
+                <div className="shutter shutter--left" >
                     <span className="shutter__lining hori top"></span>
                     <span className="shutter__lining hori bottom"></span>
                     <span className="shutter__lining vert right"></span>
 
-                    <div className={`shutter__inner--left ${'this.state.currentHint.className'}`}>
-                        <span className="message">{currentHint && currentHint.hint}</span>
+                    <div className={`shutter__inner--left ${'null'}`}>
+                        <span className="message">{shuttersMessage}</span>
                     </div>
 
                 </div>
 
-                <div className="shutter--right" >
+                <div className="shutter shutter--right" >
                     <span className="shutter__lining hori top"></span>
                     <span className="shutter__lining hori bottom"></span>
                     <span className="shutter__lining vert left"></span>
 
-                    <div className={`shutter__inner--right ${'this.state.currentHint.className'}`}>
-                        <span className="message">{currentHint && currentHint.hint}</span>
+                    <div className={`shutter__inner--right ${'null'}`}>
+                    <span className="message">{shuttersMessage}</span>
                     </div>
 
-                </div>
-
-                <div style={{position: 'fixed', zIndex: '500'}}>
-                    <button className="shutter__ctrl" onClick={()=>{this.getHint(-1)}}>Previous</button>
-                    <button className="shutter__ctrl" onClick={()=>{this.getHint(1)}}>Next</button>
                 </div>
             </div>
         );
     };
 }
 
+const mapStateToProps = state => (
+    {
+        isGameOver: state.game.isGameOver,
+        shuttersMessage: state.game.shuttersMessage
+    }
+);
 
-
+export default connect(mapStateToProps)(Shutters);
 

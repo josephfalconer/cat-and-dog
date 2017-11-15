@@ -1,15 +1,17 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 
 import Space from './Space';
 import Cat from './Cat';
 import Dog from './Dog';
 
 
-export default class extends Component {
+class Garden extends Component {
 
 	static propTypes = {
 		width: PropTypes.number.isRequired,
 		height: PropTypes.number.isRequired,
+        endTheGame: PropTypes.func.isRequired,
 	}
 
     state = {
@@ -126,7 +128,8 @@ export default class extends Component {
     }
 
     render() {
-        const { spaces } = this.state;
+        const { spaces } = this.state,
+            { endTheGame } = this.props;
 
     	return (
     		<div className="garden">
@@ -145,9 +148,16 @@ export default class extends Component {
                     );
                 })}
 
-                <Cat updateSpaces={this.updateSpaces} spaces={spaces} />
-                <Dog updateSpaces={this.updateSpaces} spaces={spaces}  />
+                <Cat updateSpaces={this.updateSpaces} spaces={spaces} endTheGame={endTheGame} />
+                <Dog updateSpaces={this.updateSpaces} spaces={spaces} endTheGame={endTheGame} />
             </div>
     	);
     }
 }
+
+const mapStateToProps = state => (
+    {
+    }
+);
+
+export default connect(mapStateToProps)(Garden);

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as GardenActionCreators from '../actions/actions_garden';
-import * as GameActionCreators from '../actions/actions_game';
 import * as StatsActionCreators from '../actions/actions_stats';
 import * as helpers from '../actions/helpers';
 import Creature from './Creature';
@@ -18,22 +17,25 @@ class Cat extends Creature {
     }
 
     static propTypes = {
-        stats: PropTypes.object.isRequired
+        stats: PropTypes.object.isRequired,
+        endTheGame: PropTypes.func.isRequired
     }
 
     state = {
         style: helpers.writeTransform(),
-        face: 'left',
-        // energy: 10,
-        // mealsEaten: 0
+        face: 'left'
     }
     
     componentDidMount() {
+        const { dispatch } = this.props,
+            updateGarden = bindActionCreators(GardenActionCreators.updateGarden, dispatch)
+
         this.isInGame = true;
         this.moveForward(9, 7, 'left');
-        this.intervalID = setInterval(() => {
-            this.updateEnergy(-1);
-        }, 1000);
+        updateGarden({x: 9, y: 7}, 'UPDATE_CAT_POSITION');
+        // this.intervalID = setInterval(() => {
+        //     this.updateEnergy(-1);
+        // }, 2500);
 
         document.addEventListener('keydown', this.handleKeyPress);
     }
@@ -46,8 +48,7 @@ class Cat extends Creature {
 
     handleKeyPress = e => {
         const { x, y } = this.state,
-            { dispatch, updateSpaces, spaces } = this.props,
-            updateGame = bindActionCreators(GameActionCreators.updateGame, dispatch),
+            { dispatch, updateSpaces, spaces, endTheGame } = this.props,
             updateGarden = bindActionCreators(GardenActionCreators.updateGarden, dispatch),
             face = this.getFace(e.which),
             validXY = this.checkMove(x, y, face, spaces);
@@ -63,9 +64,7 @@ class Cat extends Creature {
             this.updateEnergy(1);
 
         if (validXY.occupant === 'DOG') {
-            // updateGame('You ran into the dog!', 'UPDATE_SHUTTERS_MESSAGE');
-            updateGame(false, 'UPDATE_GAME_STATUS');
-            console.log('Found the dog!');
+            endTheGame('You ran into the dog!')
             return;
         }
 
