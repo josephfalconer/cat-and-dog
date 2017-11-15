@@ -1,1 +1,1 @@
-export const UPDATE_MEALS_EATEN = 'stats/UPDATE_MEALS_EATEN';
+export const UPDATE_STATS = 'stats/UPDATE_STATS';

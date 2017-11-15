@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as GardenActionCreators from '../actions/actions_garden';
 import * as GameActionCreators from '../actions/actions_game';
-// import * as StatsActionCreators from '../actions/actions_stats';
+import * as StatsActionCreators from '../actions/actions_stats';
 import * as helpers from '../actions/helpers';
 import Creature from './Creature';
 
@@ -17,24 +17,31 @@ class Cat extends Creature {
         this.name = 'CAT';
     }
 
+    static propTypes = {
+        stats: PropTypes.object.isRequired
+    }
+
     state = {
         style: helpers.writeTransform(),
         face: 'left',
-        energy: 10,
-        mealsEaten: 0
+        // energy: 10,
+        // mealsEaten: 0
     }
     
     componentDidMount() {
-        this.moveForward(9, 7, 'left');
-        // TODO energy-decrease interval
-        document.addEventListener('keydown', this.handleKeyPress);
         this.isInGame = true;
+        this.moveForward(9, 7, 'left');
+        this.intervalID = setInterval(() => {
+            this.updateEnergy(-1);
+        }, 1000);
+
+        document.addEventListener('keydown', this.handleKeyPress);
     }
 
     componentWillUnmount() {
-        document.removeEventListener('keydown', this.handleKeyPress);
         this.isInGame = false;
-        // update end stats
+        clearInterval(this.intervalID);
+        document.removeEventListener('keydown', this.handleKeyPress);
     }
 
     handleKeyPress = e => {
@@ -53,7 +60,7 @@ class Cat extends Creature {
             return;
 
         if (validXY.occupant === 'FOOD') 
-            this.feed();
+            this.updateEnergy(1);
 
         if (validXY.occupant === 'DOG') {
             // updateGame('You ran into the dog!', 'UPDATE_SHUTTERS_MESSAGE');
@@ -86,16 +93,23 @@ class Cat extends Creature {
         }
     }
 
-    feed = () => {
-        // console.log('feed');
-        // const { dispatch } = this.props,
-        //     updateStats = bindActionCreators(StatsActionCreators.updateStats, dispatch);
+    updateEnergy = change => {
+        const { dispatch, stats, spaceWidth } = this.props,
+            { x, y } = this.state,
+            updateStats = bindActionCreators(StatsActionCreators.updateStats, dispatch);
 
-        this.setState({
-            ...this.state,
-            mealsEaten: this.state.mealsEaten + 1,
-            energy: this.state.energy + 1
-        });        
+        if (stats.energy === 0) {
+            document.removeEventListener('keydown', this.handleKeyPress);
+            this.setState({...this.state, style: helpers.writeTransform(x * spaceWidth, y * spaceWidth, 180)});
+            clearInterval(this.intervalID);
+            return;
+        }
+
+        updateStats({
+            ...stats,
+            mealsEaten: change === 1 ? stats.mealsEaten + 1 : stats.mealsEaten,
+            energy: stats.energy + change
+        }, 'UPDATE_STATS');
     }
 
     render() {
@@ -110,6 +124,11 @@ class Cat extends Creature {
     }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => (
+    {
+        stats: state.stats.stats,
+        spaceWidth: state.garden.spaceWidth
+    }
+);
 
 export default connect(mapStateToProps)(Cat);

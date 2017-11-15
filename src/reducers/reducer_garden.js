@@ -2,6 +2,7 @@ import * as GardenActionTypes from '../actiontypes/actiontypes_garden';
 
 const initialState = {
 	spaces: [],
+	spaceWidth: 72,
 	cat: {
 		x: 9,
 		y: 7

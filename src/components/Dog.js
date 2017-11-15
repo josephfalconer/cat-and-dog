@@ -103,7 +103,7 @@ class Dog extends Creature {
 
         if (occupant === 'CAT') {
             console.log('Found the cat!');
-            updateGame(false, 'UPDATE_GAME_STATUS');
+            // updateGame(false, 'UPDATE_GAME_STATUS');
 
         } else {
             const updatedSpaces = this.moveForward(x, y, face);
@@ -177,7 +177,8 @@ class Dog extends Creature {
 
 const mapStateToProps = state => (
     {
-        cat: state.garden.cat
+        cat: state.garden.cat,
+        spaceWidth: state.garden.spaceWidth
     }
 );
 

@@ -1,16 +1,19 @@
 import * as StatsActionTypes from '../actiontypes/actiontypes_stats';
 
 const initialState = {
-	mealsEaten: 0,
+	stats: {
+		mealsEaten: 0,
+		energy: 10
+	}
 }
 
 export default function Timer(state=initialState, action) {
 
 	switch (action.type) {
-		case StatsActionTypes.UPDATE_MEALS_EATEN:
+		case StatsActionTypes.UPDATE_STATS:
 			return {
 				...state,
-				mealsEaten: action.data
+				stats: action.data
 			}
 
 		default:

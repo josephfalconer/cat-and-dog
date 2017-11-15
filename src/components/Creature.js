@@ -11,8 +11,7 @@ export default class extends Component {
     }
 
     moveForward(x, y, newdirection){
-        let { spaces } = this.props,
-            squareWidth = 72;
+        let { spaces, spaceWidth } = this.props;
 
         if (spaces.length) {
             spaces = helpers.removeOccupant(spaces, this.name);
@@ -24,7 +23,7 @@ export default class extends Component {
             ...this.state,
             x: x,
             y: y,
-            style: helpers.writeTransform(x * squareWidth, y * squareWidth),
+            style: helpers.writeTransform(x * spaceWidth, y * spaceWidth),
             face: newdirection ? newdirection : this.state.face
         });
 

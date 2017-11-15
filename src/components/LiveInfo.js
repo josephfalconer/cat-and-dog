@@ -1,15 +1,10 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 
-export default class LiveInfo extends Component {
+class LiveInfo extends Component {
 
     static propTypes = {
-        updateSecsRemaining: PropTypes.func,
-        resetTimer: PropTypes.func,
-        updateImg: PropTypes.func,
-        updateMessage: PropTypes.func,
-        secsRemaining: PropTypes.number,
-        energy: PropTypes.number,
-        isEndedGame: PropTypes.bool,
+        stats: PropTypes.object.isRequired
     }
 
     state = {
@@ -29,14 +24,23 @@ export default class LiveInfo extends Component {
     }
 
     render() {
+        const { stats } = this.props;
+
         return (
             <div className="info">
-                <span id="time">{this.state.secondsRemaining+' seconds to go'}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <span id="time">{`${this.state.secondsRemaining} seconds to go`}&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <span>|</span>
-                <span id="energy">&nbsp;&nbsp;&nbsp;&nbsp;{'Energy: ' + this.props.energy}</span>
+                <span id="energy">&nbsp;&nbsp;&nbsp;&nbsp;{`Energy: ${stats.energy}`}</span>
             </div>
         );
     };
 
 };
 
+const mapStateToProps = state => (
+    {
+        stats: state.stats.stats
+    }
+)
+
+export default connect(mapStateToProps)(LiveInfo);
