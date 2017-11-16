@@ -12,10 +12,12 @@ class Dog extends Creature {
         this.actionType = 'UPDATE_DOG_POSITION';
         this.isStuck = false;
         this.name = 'DOG';
+        this.delay = props.delay;
     }
 
     static propTypes = {
-        isGameOver: PropTypes.bool.isRequired,
+        gameSwitches: PropTypes.object.isRequired,
+        delay: PropTypes.number.isRequired,
         cat: PropTypes.object.isRequired,
         spaceWidth: PropTypes.number.isRequired,
         endTheGame: PropTypes.func.isRequired
@@ -31,7 +33,7 @@ class Dog extends Creature {
         this.isInGame = true;
 
         // set movement interval
-        this.intervalID = setInterval(this.findPath, 1000);
+        this.intervalID = setInterval(this.findPath, this.delay);
     }
 
     componentWillUnmount() {
@@ -41,8 +43,7 @@ class Dog extends Creature {
     }
 
     findPath = () => {
-        if (!this.isInGame || this.props.isGameOver)
-            return;
+        if (!this.isInGame || this.props.gameSwitches.isGameOver) return;
 
         if (this.isStuck) {
             this.getRoundObstacle();
@@ -66,7 +67,7 @@ class Dog extends Creature {
             if (this.props.cat.y !== this.state.y) 
                 this.isStuck = this.attemptStep('y');
 
-        }, 500);
+        }, this.delay / 2);
     }
 
     getRoundObstacle = () => {
@@ -97,7 +98,7 @@ class Dog extends Creature {
                 } else {
                     this.isStuck = true;
                 }
-            }, 500);
+            }, this.delay / 2);
         }
     }
 
@@ -180,7 +181,8 @@ class Dog extends Creature {
 
 const mapStateToProps = state => (
     {
-        isGameOver: state.game.isGameOver,
+        gameSwitches: state.game.switches,
+        delay: state.game.difficulty,
         cat: state.garden.cat,
         spaceWidth: state.garden.spaceWidth
     }

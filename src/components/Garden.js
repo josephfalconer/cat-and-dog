@@ -8,10 +8,17 @@ import Dog from './Dog';
 
 class Garden extends Component {
 
+    constructor(props) {
+        super(props);
+        this.foodSpaces = [];
+        this.noOfFood = 5;
+    }
+
 	static propTypes = {
 		width: PropTypes.number.isRequired,
 		height: PropTypes.number.isRequired,
         endTheGame: PropTypes.func.isRequired,
+        gameSwitches: PropTypes.object.isRequired
 	}
 
     state = {
@@ -19,22 +26,22 @@ class Garden extends Component {
     }
 
 	componentDidMount() {
-        const Garden = this;
-
         this.isInGame = true;
 
+        const Garden = this;
+
+        // lay out spaces with obstructions
         let SPACES = this.layoutSpaces();
         SPACES = this.setObstructions(SPACES);
         this.freeSpaces = this.updateFreeSpaces(SPACES);
         this.updateSpaces(SPACES);
 
-        setTimeout(function() {
-            Garden.setFood();
-        }, 5000);
+        Garden.intervalID = setInterval(Garden.setFood, 10000);
 	}
 
     componentWillUnmount() {
         this.isInGame = false;
+        clearInterval(this.intervalID);
     }
 
     updateSpaces = spaces => {
@@ -105,19 +112,44 @@ class Garden extends Component {
     }
 
     setFood = () => {
-        const { spaces } = this.state,
-            noOfFood = 5;
+        if (!this.isInGame || this.props.gameSwitches.isGameOver) return;
 
-        for (var i = 0; i < noOfFood; i++) {
+        const { spaces } = this.state;
+
+        for (var i = 0; i < this.noOfFood; i++) {
 
             let ran = Math.floor(Math.random() * this.freeSpaces.length),
-                space = this.freeSpaces[ran];
+                foodSpace = this.freeSpaces[ran];
 
-            spaces[space.x][space.y].occupant = 'FOOD';
-            spaces[space.x][space.y].className = this.getFoodType();
+            this.foodSpaces.push(foodSpace);
+
+            spaces[foodSpace.x][foodSpace.y].occupant = 'FOOD';
+            spaces[foodSpace.x][foodSpace.y].className = this.getFoodType();
         }
 
         this.updateSpaces(spaces);
+
+        setTimeout(this.fadeFoods, 100);
+        setTimeout(this.removeFoods, 5000);
+    }
+
+    fadeFoods = () => {
+        const foodElements = document.getElementsByClassName('food');
+            
+        for (let foodElement of foodElements) 
+            foodElement.classList.add('fade');
+    }
+
+    removeFoods = () => {
+        if (!this.isInGame) return;
+
+        const { spaces } = this.state;
+
+        for (let foodSpace of this.foodSpaces) {
+            spaces[foodSpace.x][foodSpace.y].occupant = false;
+            spaces[foodSpace.x][foodSpace.y].className = null;
+            this.updateSpaces(spaces);
+        }
     }
 
     getFoodType = () => {
@@ -157,6 +189,7 @@ class Garden extends Component {
 
 const mapStateToProps = state => (
     {
+        gameSwitches: state.game.switches
     }
 );
 

@@ -9,7 +9,7 @@ $btn-wt-hints : 90px;
 $btn-wt-sm : 65px;
 
 .shutter__ctrl {
-	@include transition($tn-norm: background .4s);
+	transition: background .4s;
     background: $lightGreen;
     padding: 6px;
     margin-top: 10px;
@@ -19,18 +19,28 @@ $btn-wt-sm : 65px;
     position: absolute;
     z-index: 300;
 
-    @include mq(small) { font-size: .8em; padding: 3px; }
+    @include mq(small) { 
+        font-size: .8em; 
+        padding: 3px; 
+    }
 
     &.skip {
     	right: $btn-offset-hints;
 	    width: $btn-wt-hints;
-        @include mq(small) { width: $btn-wt-sm; right: $btn-offset-sm;}
+
+        @include mq(small) { 
+            width: $btn-wt-sm; 
+            right: $btn-offset-sm;
+        }
     }
 
     &.next {
     	left: $btn-offset-hints;
 	    width: $btn-wt-hints;
-        @include mq(small) { width: $btn-wt-sm; left: $btn-offset-sm;}
+        @include mq(small) { 
+            width: $btn-wt-sm; 
+            left: $btn-offset-sm;
+        }
     }
 
     &.new {

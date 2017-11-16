@@ -1,9 +1,12 @@
 import * as GameActionTypes from '../actiontypes/actiontypes_game';
 
 const initialState = {
-	isInGame: false,
-	isOpenShutters: false,
-	isGameOver: false,
+	switches: {
+		isInGame: false,
+		isOpenShutters: false,
+		isGameOver: false
+	},
+	difficulty: 600,
 	message: '',
 	shuttersMessage: 'Starting a new game...'
 }
@@ -11,22 +14,16 @@ const initialState = {
 export default function Timer(state=initialState, action) {
 
 	switch (action.type) {
-		case GameActionTypes.UPDATE_GAME_STATUS:
+		case GameActionTypes.HIT_GAME_SWITCHES:
 			return {
 				...state,
-				isInGame: action.data
+				switches: action.data
 			}
 
-		case GameActionTypes.OPEN_SHUTTERS:
+		case GameActionTypes.UPDATE_DIFFICULTY:
 			return {
 				...state,
-				isOpenShutters: action.data
-			}
-
-		case GameActionTypes.GAME_OVER:
-			return {
-				...state,
-				isGameOver: action.data
+				difficulty: action.data
 			}
 
 		case GameActionTypes.UPDATE_MESSAGE:

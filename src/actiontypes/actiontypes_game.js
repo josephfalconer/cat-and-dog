@@ -1,5 +1,4 @@
-export const UPDATE_GAME_STATUS = 'game/UPDATE_GAME_STATUS';
-export const OPEN_SHUTTERS = 'game/OPEN_SHUTTERS';
-export const GAME_OVER = 'game/GAME_OVER';
+export const HIT_GAME_SWITCHES = 'game/HIT_GAME_SWITCHES';
+export const UPDATE_DIFFICULTY = 'game/UPDATE_DIFFICULTY';
 export const UPDATE_MESSAGE = 'game/UPDATE_MESSAGE';
 export const UPDATE_SHUTTERS_MESSAGE = 'game/UPDATE_SHUTTERS_MESSAGE';

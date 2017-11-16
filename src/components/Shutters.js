@@ -6,12 +6,11 @@ class Shutters extends Component {
 
     static propTypes = {
         isOpen: PropTypes.bool.isRequired,
-        isGameOver: PropTypes.bool.isRequired,
         shuttersMessage: PropTypes.string.isRequired
     }
 
     render() {
-        const { isOpen, isGameOver, shuttersMessage } = this.props,
+        const { isOpen, shuttersMessage } = this.props,
             className = `shutters ${isOpen ? 'js-open-shutters' : ''}`;
 
         return (
@@ -44,7 +43,6 @@ class Shutters extends Component {
 
 const mapStateToProps = state => (
     {
-        isGameOver: state.game.isGameOver,
         shuttersMessage: state.game.shuttersMessage
     }
 );

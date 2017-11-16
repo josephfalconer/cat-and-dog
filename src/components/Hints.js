@@ -15,8 +15,9 @@ const hints = [
 export default class Hints extends Component {
 
     static propTypes = {
-        moveHints: PropTypes.func.isRequired,
-        isShowing: PropTypes.bool.isRequired
+        showHints: PropTypes.func.isRequired,
+        isShowing: PropTypes.bool.isRequired,
+        isFirstGame: PropTypes.bool.isRequired
     }
 
     state = {
@@ -26,13 +27,9 @@ export default class Hints extends Component {
     componentDidMount() {
         this.getHint(0);
 
-        // this.intervalID = setInterval(() => {
-        //     this.getHint(1, false);
-        // }, 5000);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.intervalID);
+        this.intervalID = setInterval(() => {
+            this.getHint(1, false);
+        }, 5000);
     }
 
     getHint = (increment, breakInterval) => {
@@ -52,15 +49,22 @@ export default class Hints extends Component {
 
     render() {
         const { currentHint } = this.state,
-            { isShowing, moveHints } = this.props,
+            { isShowing, showHints, isFirstGame } = this.props,
             className = `hints ${currentHint && currentHint.className} ${isShowing ? 'js-showing-hints' : ''}`;
+
+        if (!isShowing) 
+            clearInterval(this.intervalID);
 
         return (
             <div className={className}>
                 <div className="hints__controls">
-                    <button className="" onClick={()=>{ this.getHint(-1, true); }}>Previous</button>
-                    <button className="" onClick={()=>{ this.getHint(1, true); }}>Next</button>
-                    <button className="" onClick={()=>{ this.getHint(0, true); moveHints(false); }}>Hide</button>
+                    <button onClick={()=>{ this.getHint(-1, true); }}>Previous</button>
+                    <button onClick={()=>{ this.getHint(1, true); }}>Next</button>
+
+                    {!isFirstGame &&
+                        <button onClick={()=>{ this.getHint(0, true); showHints(false); }}>Hide</button>
+                    }
+                    
                 </div>
 
                 <div className="hints__message">{currentHint && currentHint.hint}</div>

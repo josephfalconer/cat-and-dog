@@ -3,11 +3,15 @@
 // ===================================
 
 #root {
-	@include box(100%);
+	@include square(100%);
 }
 
 .main-container {
-	@include box(100%);
+	display: flex;
+    flex-direction: column;
+	@include square(100%);
+	justify-content: center;
+    align-items: center;
 }
 
 .garden {
@@ -17,19 +21,12 @@
     vertical-align: top;
     z-index: 100;
 
-    @include e(contr) {
-    	@include transform(translate3d(-50%,-50%,0) rotate(-90deg));
+    @include e(container) {
 	    position: relative;
-	    top: 50%;
-	    left: 50%;
 	    width: 100%;
 	    background: $brown;
 	    border: $brown-dark 1px solid;
 	    min-height: 280px;
-	    
-	    @include mq(landscape) {
-	    	@include transform( translate3d(-50%,-50%,0) );
-	    }
 
 	    @include mq(iphone6) {
 	    	min-height: 325px
@@ -46,8 +43,8 @@
     }
 
     @include e(bg) {
-    	@include box(100%);
-    	@include transition($tn-norm: background-color 3s);
+    	@include square(100%);
+    	transition: background-color 3s;
     	position: fixed;
     	top: 0;
     	left: 0;
@@ -63,7 +60,6 @@
     }
 
 	@include e(space) {
-		@extend %no-user-select;
 	    text-align: center;
 	    position: relative;
 	    overflow: hidden;
@@ -71,6 +67,7 @@
 	    height: $space-sm;
 	    line-height: $space-sm;
 	    font-size: $space-sm;
+	    user-select: none;
 
 	    @include mq(iphone6) {
 	    	width: $space-ip6;

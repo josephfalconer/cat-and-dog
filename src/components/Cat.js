@@ -12,13 +12,16 @@ class Cat extends Creature {
 
     constructor(props) {
         super(props);
-        this.actionType = 'UPDATE_CAT_POSITION';
         this.name = 'CAT';
+        this.updateGarden = bindActionCreators(GardenActionCreators.updateGarden, props.dispatch);
+        this.updateStats = bindActionCreators(StatsActionCreators.updateStats, props.dispatch);
     }
 
     static propTypes = {
         stats: PropTypes.object.isRequired,
-        endTheGame: PropTypes.func.isRequired
+        endTheGame: PropTypes.func.isRequired,
+        spaceWidth: PropTypes.number.isRequired,
+        gameSwitches: PropTypes.object.isRequired
     }
 
     state = {
@@ -27,15 +30,14 @@ class Cat extends Creature {
     }
     
     componentDidMount() {
-        const { dispatch } = this.props,
-            updateGarden = bindActionCreators(GardenActionCreators.updateGarden, dispatch)
-
         this.isInGame = true;
+
         this.moveForward(9, 7, 'left');
-        updateGarden({x: 9, y: 7}, 'UPDATE_CAT_POSITION');
-        // this.intervalID = setInterval(() => {
-        //     this.updateEnergy(-1);
-        // }, 2500);
+        this.updateGarden({x: 9, y: 7}, 'UPDATE_CAT_POSITION');
+
+        this.intervalID = setInterval(() => {
+            this.updateEnergy(-1);
+        }, 2500);
 
         document.addEventListener('keydown', this.handleKeyPress);
     }
@@ -47,9 +49,10 @@ class Cat extends Creature {
     }
 
     handleKeyPress = e => {
+        if (this.props.gameSwitches.isGameOver) return;
+
         const { x, y } = this.state,
-            { dispatch, updateSpaces, spaces, endTheGame } = this.props,
-            updateGarden = bindActionCreators(GardenActionCreators.updateGarden, dispatch),
+            { updateSpaces, spaces, endTheGame } = this.props,
             face = this.getFace(e.which),
             validXY = this.checkMove(x, y, face, spaces);
 
@@ -69,7 +72,7 @@ class Cat extends Creature {
         }
 
         const updatedSpaces = this.moveForward(validXY.x, validXY.y, face);
-        updateGarden({x: validXY.x, y: validXY.y}, 'UPDATE_CAT_POSITION');
+        this.updateGarden({x: validXY.x, y: validXY.y}, 'UPDATE_CAT_POSITION');
         updateSpaces(updatedSpaces);
     }
 
@@ -93,18 +96,20 @@ class Cat extends Creature {
     }
 
     updateEnergy = change => {
-        const { dispatch, stats, spaceWidth } = this.props,
-            { x, y } = this.state,
-            updateStats = bindActionCreators(StatsActionCreators.updateStats, dispatch);
+        if (!this.isInGame || this.props.gameSwitches.isGameOver) return;
 
+        const { stats, spaceWidth, endTheGame } = this.props,
+            { x, y } = this.state;
+            
         if (stats.energy === 0) {
+            endTheGame('You ran out of energy!');
+            clearInterval(this.intervalID);
             document.removeEventListener('keydown', this.handleKeyPress);
             this.setState({...this.state, style: helpers.writeTransform(x * spaceWidth, y * spaceWidth, 180)});
-            clearInterval(this.intervalID);
             return;
         }
 
-        updateStats({
+        this.updateStats({
             ...stats,
             mealsEaten: change === 1 ? stats.mealsEaten + 1 : stats.mealsEaten,
             energy: stats.energy + change
@@ -126,7 +131,8 @@ class Cat extends Creature {
 const mapStateToProps = state => (
     {
         stats: state.stats.stats,
-        spaceWidth: state.garden.spaceWidth
+        spaceWidth: state.garden.spaceWidth,
+        gameSwitches: state.game.switches
     }
 );
 

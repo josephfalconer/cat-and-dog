@@ -43,14 +43,12 @@ $animals	: dog, cat;
 $angles		: up, down, left, right;
 
 i {
-	@include transition($tn-norm: width 50ms, $tn-norm-sd: opacity 1s);
-	@include box(100%);
+	@include square(100%);
 	@extend %total-centered;
 	display: block;
-    opacity: 1;
 
 	&.obstruction {
-		@include dimensions(90%, 90%);
+		@include sides(90%, 90%);
 		background: $brown;
 		border-radius: 50%;
 		border: 4px black solid;
@@ -77,7 +75,14 @@ i {
 
 @include animal-bgs($animals, $angles);
 
-.food.shrink {
-	width: 60%;
+.food {
+	transition: opacity 20s, 
+		transform 1s 4s;
+	transform-origin: -150% -150%;
+	opacity: 1;
+}
+
+.food.fade {
+	transform: scale(0.75);
 	opacity: 0;
 }

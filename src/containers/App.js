@@ -9,87 +9,114 @@ import Shutters from '../components/Shutters';
 import Hints from '../components/Hints';
 import LiveInfo from '../components/LiveInfo';
 import EndStats from '../components/EndStats';
-import GameTrigger from '../components/GameTrigger';
+import GameControls from '../components/GameControls';
 
 import '../css/garden.css'; 
 
 
 class App extends Component {
 
+    constructor(props) {
+        super(props);
+        this.updateGame = bindActionCreators(GameActionCreators.updateGame, props.dispatch);
+        this.updateStats = bindActionCreators(StatsActionCreators.updateStats, props.dispatch);
+        this.isFirstGame = true;
+    }
+
     static propTypes = {
-        isInGame: PropTypes.bool.isRequired,
-        isGameOver: PropTypes.bool.isRequired,
-        message: PropTypes.string.isRequired
+        gameSwitches: PropTypes.object.isRequired,
+        message: PropTypes.string.isRequired,
+        isShowingStats: PropTypes.bool.isRequired
     }
 
     state = {
-        isShowingHints: true
+        isShowingHints: true,
+        isReadyShutters: false,
+        isShowingControls: true
     }
 
     endTheGame = message => {
-        const { dispatch } = this.props,
-            updateGame = bindActionCreators(GameActionCreators.updateGame, dispatch),
-            updateStats = bindActionCreators(StatsActionCreators.updateStats, dispatch);
+        const { gameSwitches } = this.props;
 
-        // console.log(message);
+        if (this.isFirstGame)
+            this.isFirstGame = false;
 
-        // freeze immediately and bg colour
-        updateGame(message, 'UPDATE_MESSAGE');
-        updateGame(true, 'GAME_OVER');
-        updateGame('Getting game stats...', 'UPDATE_SHUTTERS_MESSAGE');
-        // 3 seconds freeze, 1 second for shutters closing
+        // freeze game, display reason, change bg colour
+        this.updateGame({ ...gameSwitches, isGameOver: true }, 'HIT_GAME_SWITCHES');
+        this.updateGame(message, 'UPDATE_MESSAGE');
+        this.updateGame('Getting game stats...', 'UPDATE_SHUTTERS_MESSAGE');
+
+        // close shutters after time to read reason
         setTimeout(() => {
-            updateGame(false, 'OPEN_SHUTTERS');
+            const { gameSwitches } = this.props;
+            this.updateGame({ ...gameSwitches, isOpenShutters: false }, 'HIT_GAME_SWITCHES');
         }, 3000);
 
+        // destroy garden and live info, show stats when shutters complete transition
         setTimeout(() => {
-            updateGame(false, 'UPDATE_GAME_STATUS');
-            updateStats(true, 'SHOW_STATS');
+            const { gameSwitches } = this.props;
+            this.updateGame({ ...gameSwitches, isInGame: false }, 'HIT_GAME_SWITCHES');
+            this.updateStats(true, 'SHOW_STATS');
         }, 4000);
 
+        // open shutters
         setTimeout(() => {
-            updateGame(true, 'OPEN_SHUTTERS');
+            const { gameSwitches } = this.props;
+            this.updateGame({ ...gameSwitches, isOpenShutters: true }, 'HIT_GAME_SWITCHES');
+
+            // stop controls coming up until shutters complete transition
+            setTimeout(() => {
+                this.showControls(true);
+            }, 1000);
         }, 5000);
     }
 
-    moveHints = status => {
+    showHints = status => {
         this.setState({ ...this.state, isShowingHints: status });
     }
 
+    showControls = status => {
+        this.setState({ ...this.state, isShowingControls: status });
+    }
+
     render() {
-        const { isInGame, isShowingStats, isOpenShutters, isGameOver, message } = this.props,
-            { isShowingHints } = this.state,
-            backgroundStyle = { backgroundColor: isGameOver ? '#ad9549' : '#fff'},
-            isShowingGameTrigger = isShowingStats || isShowingHints;
+        const { gameSwitches, isShowingStats, message } = this.props,
+            { isShowingHints, isReadyShutters, isShowingControls } = this.state,
+            backgroundStyle = { backgroundColor: gameSwitches.isGameOver ? '#ad9549' : '#fff'};
 
         return (
             <div className="main-container">
 
                 <div className="garden__bg" style={backgroundStyle}></div>
 
-                <button className="" onClick={()=>{ this.moveHints(true); }}>Show hints</button>
+                <div className="garden__container">
 
-                <div className="garden__contr">
-
-                    {isInGame && <Garden width={10} height={8} endTheGame={this.endTheGame} />}
-                    {isInGame && <LiveInfo />}
+                    {gameSwitches.isInGame && <Garden width={10} height={8} endTheGame={this.endTheGame} />}
+                    {gameSwitches.isInGame && <LiveInfo endTheGame={this.endTheGame} />}
 
                     {isShowingStats && <EndStats />}
 
-                    <div className={`garden__message ${isGameOver ? 'js-visible-message' : ''}`}>
+                    <div className={`garden__message ${gameSwitches.isGameOver ? 'js-visible-message' : ''}`}>
                         <p>{message}</p>
                     </div>
 
                 </div>
 
-                <Shutters isOpen={isOpenShutters} />
+                <Shutters isOpen={gameSwitches.isOpenShutters} />
 
                 <Hints
                     isShowing={isShowingHints}
-                    moveHints={this.moveHints}
+                    showHints={this.showHints}
+                    isFirstGame={this.isFirstGame}
                 />
 
-                {<GameTrigger isShowing={isShowingGameTrigger} moveHints={this.moveHints} />}
+                <GameControls 
+                    isShowing={isShowingControls}
+                    isShowingHints={isShowingHints} 
+                    showHints={this.showHints} 
+                    showControls={this.showControls}
+                    isFirstGame={this.isFirstGame}
+                />                
 
             </div>
         );
@@ -98,9 +125,7 @@ class App extends Component {
 
 const mapStateToProps = state => (
     {
-        isInGame: state.game.isInGame,
-        isGameOver: state.game.isGameOver,
-        isOpenShutters: state.game.isOpenShutters,
+        gameSwitches: state.game.switches,
         message: state.game.message,
         isShowingStats: state.stats.isShowing,
     }

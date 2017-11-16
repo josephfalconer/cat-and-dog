@@ -13,16 +13,15 @@ class EndStats extends Component {
 
     render() {
         const { stats } = this.props;
+
         return (
             <div className="stats">
-                <div className="stats__inner">
-                    <div className="stats__text">
-                        <h4>Finishing stats:</h4>
-                        <p>{`You finished with ${stats.energy} energy.`}</p>
-                        <p>{`You ate ${stats.mealsEaten} meals.`}</p>
-                    </div>
-                </div>
-                
+                <div className="stats__text">
+                    <h4>GAME OVER</h4>
+                    <p>{`You lasted for ${60 - stats.secondsRemaining} seconds.`}</p>
+                    <p>{`You finished with ${stats.energy} energy.`}</p>
+                    <p>{`You ate ${stats.mealsEaten} meals.`}</p>
+                </div>                
             </div>
         );
     }    

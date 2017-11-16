@@ -2,20 +2,6 @@
 // Helpers
 // ==========================================================================
 
-// COLORS
-
-%txt-clr-white {
-	color: $white;
-}
-
-%fill-active {
-	fill: $clr--active;
-}
-
-%stroke-active {
-	stroke: $clr--active;
-}
-
 
 // TEXT ALIGN
 
@@ -48,7 +34,6 @@
 
 // POSITIONING ==========================
 
-
 %clearfix {
   &:after {
     content: "";
@@ -56,93 +41,3 @@
     clear: both;
   }
 }
-
-
-// DISPLAY ==========================
-
-%disp-i {
-	display: inline;
-}
-
-%disp-b {
-	display: block;
-}
-
-%disp-i-b {
-	display: inline-block;
-}
-
-%disp-n {
-	display: none;
-}
-
-%disp-flex {
-	display: flex;
-}
-
-
-// LAYOUT ==========================
-
-%m-t {
-	margin-top: 2em;
-}
-
-%no-padding {
-	padding: 0;
-}
-
-
-
-// ELEMENTS
-
-%list-plain {
-	margin-left: 0;
-	padding-left: 0;
-	list-style: none;
-}
-
-%nav-list {
-	margin: 0;
-	list-style: none;
-}
-
-%img {
-	width: 100%;
-	border-radius: $br--default;
-}
-
-%btn-transparent {
-	outline: none;
-	border: none;
-	background: none;
-}
-
-
-// SUNDRY
-
-%csr-ptr {
-	cursor: pointer;
-}
-
-%round {
-	border-radius: 50%;
-}
-
-%no-user-select {
-	-webkit-user-select: none;  
-	-moz-user-select: none;     
-	-ms-user-select: none;      
-	user-select: none;
-}
-
-
-
-
-
-
-
-
-
-
-
-

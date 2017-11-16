@@ -6,10 +6,17 @@
 	box-sizing: border-box;
 }
 
-html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden}
+html, 
+body { 
+	margin: 0; 
+	padding: 0; 
+	width: 100%; 
+	height: 100%; 
+	overflow: hidden
+}
 
 body {
-	@include transition($tn-norm: background .1s);
+	transition: background .1s;
 	text-align: center;
 	color: white;
 	font-family: $font-family--primary;
@@ -19,7 +26,16 @@ a {
 	text-decoration: none;
 }
 
-button, select { cursor: pointer }
+button, 
+select { 
+	margin: remcalc(10);
+	border: solid $black 1px;
+	padding: remcalc(10) remcalc(20);
+	background-color: $white;
+	color: $black;
+	font-size: remcalc(18);
+	cursor: pointer;
+}
 
 button { 
 	// color: white; 

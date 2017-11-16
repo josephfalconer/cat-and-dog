@@ -5,6 +5,7 @@ const initialState = {
 	stats: {
 		mealsEaten: 0,
 		energy: 10,
+		secondsRemaining: 60
 	}
 }
 
