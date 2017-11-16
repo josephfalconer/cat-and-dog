@@ -54,6 +54,9 @@ $darkBrown  : darken($brown, 20%);
 // }
 
 .gamecontrols {
+	width: 100%;
+	display: flex;
+	justify-content: center;
     position: fixed;
     bottom: 0;
     left: 50%;

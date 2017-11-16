@@ -11,7 +11,11 @@ export default class extends Component {
     }
 
     moveForward(x, y, newdirection){
-        let { spaces, spaceWidth } = this.props;
+        let { spaces } = this.props;
+
+        const spaceWidth = document.getElementById('sample-space').clientWidth;
+
+        console.log(x * spaceWidth);
 
         if (spaces.length) {
             spaces = helpers.removeOccupant(spaces, this.name);

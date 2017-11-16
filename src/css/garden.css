@@ -27,13 +27,20 @@ a {
 
 button,
 select {
-  margin: 0.625rem;
+  margin: 0.3125rem;
+  border-radius: 0;
   border: solid #000 1px;
-  padding: 0.625rem 1.25rem;
+  padding: 0.3125rem 0.625rem;
   background-color: #fff;
   color: #000;
-  font-size: 1.125rem;
+  font-size: 0.875rem;
   cursor: pointer; }
+  @media (min-width: 1100px) {
+    button,
+    select {
+      margin: 0.625rem;
+      padding: 0.625rem 1.25rem;
+      font-size: 1.125rem; } }
 
 button {
   font-family: "Proza Libre", Helvetica, Arial, sans-serif; }
@@ -51,11 +58,23 @@ button {
   align-items: center; }
 
 .garden {
+  display: flex;
   position: relative;
+  margin: 0 auto;
   border: 3px solid #3c761e;
-  display: inline-block;
+  width: 21.875rem;
+  justify-content: center;
   vertical-align: top;
   z-index: 100; }
+  @media screen and (min-width: 41.25rem) and (min-height: 23.4375rem) {
+    .garden {
+      width: 25rem; } }
+  @media screen and (min-width: 64rem) and (min-height: 48rem) {
+    .garden {
+      width: 43.75rem; } }
+  @media (min-width: 1100px) {
+    .garden {
+      width: 46.875rem; } }
   .garden__container {
     position: relative;
     width: 100%;
@@ -70,8 +89,11 @@ button {
         min-height: 560px; } }
     @media (min-width: 1100px) {
       .garden__container {
-        width: 65%;
+        width: 75%;
         min-height: 39.03rem; } }
+    @media screen and (min-width: 100rem) {
+      .garden__container {
+        width: 65%; } }
   .garden__bg {
     width: 100%;
     height: 100%;
@@ -83,46 +105,43 @@ button {
     .garden__bg.brown {
       background: #ad9549; }
   .garden__column {
-    float: left; }
+    display: flex;
+    flex-direction: column; }
   .garden__space {
     text-align: center;
     position: relative;
     overflow: hidden;
-    width: 1.4em;
-    height: 1.4em;
-    line-height: 1.4em;
-    font-size: 1.4em;
+    width: 2.1875rem;
+    height: 2.1875rem;
+    line-height: 2.1875rem;
+    font-size: 2.1875rem;
     user-select: none; }
-    @media (min-width: 375px) and (max-width: 767px) {
+    @media screen and (min-width: 41.25rem) and (min-height: 23.4375rem) {
       .garden__space {
-        width: 1.5em;
-        height: 1.5em;
-        line-height: 1.5em;
-        font-size: 1.5em; } }
-    @media screen and (orientation: landscape) and (max-width: 677px) {
+        width: 2.5rem;
+        height: 2.5rem;
+        line-height: 2.5rem;
+        font-size: 2.5rem; } }
+    @media screen and (min-width: 64rem) and (min-height: 48rem) {
       .garden__space {
-        width: 1.6em;
-        height: 1.6em;
-        line-height: 1.6em;
-        font-size: 1.6em; } }
-    @media (min-width: 768px) {
-      .garden__space {
-        width: 4rem;
-        height: 4rem;
-        line-height: 4rem;
-        font-size: 4rem; } }
+        width: 4.375rem;
+        height: 4.375rem;
+        line-height: 4.375rem;
+        font-size: 4.375rem; } }
     @media (min-width: 1100px) {
       .garden__space {
-        width: 4.5rem;
-        height: 4.5rem;
-        line-height: 4.5rem;
-        font-size: 4.5rem; } }
+        width: 4.6875rem;
+        height: 4.6875rem;
+        line-height: 4.6875rem;
+        font-size: 4.6875rem; } }
     .garden__space.edge {
       background: #ad9549;
       border: 1px solid #776633; }
     .garden__space.grass {
       background: #3c761e;
       border: 1px solid #3c761e; }
+    .garden__space--sample {
+      position: absolute; }
   .garden__message {
     display: flex;
     flex-direction: column;
@@ -148,14 +167,22 @@ button {
   display: block;
   position: absolute;
   top: 0.0625rem;
-  left: 0.0625rem;
-  width: 3.9375rem;
-  height: 3.9375rem;
+  left: -0.125rem;
+  width: 2rem;
+  height: 2rem;
   transition: transform 0.2s; }
+  @media screen and (min-width: 41.25rem) and (min-height: 23.4375rem) {
+    .cat, .dog {
+      width: 2.3125rem;
+      height: 2.3125rem; } }
+  @media screen and (min-width: 64rem) and (min-height: 48rem) {
+    .cat, .dog {
+      width: 4.1875rem;
+      height: 4.1875rem; } }
   @media (min-width: 1100px) {
     .cat, .dog {
-      width: 4.375rem;
-      height: 4.375rem; } }
+      width: 4.5rem;
+      height: 4.5rem; } }
 
 i {
   width: 100%;
@@ -344,6 +371,9 @@ i {
         font-size: 2.1875rem; } }
 
 .gamecontrols {
+  width: 100%;
+  display: flex;
+  justify-content: center;
   position: fixed;
   bottom: 0;
   left: 50%;

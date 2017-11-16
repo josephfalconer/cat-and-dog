@@ -72,11 +72,17 @@ $brown-dark : darken($brown, 10%);
 $lightBrown : lighten($brown, 5%);
 $xLightBrown: lighten($brown, 20%);
 
-$space-sm	: 1.4em;
-$space-ip6	: 1.5em;
-$space-l-sm	: 1.6em;
+$space-sm	: remcalc(50);
+// $space-ip6	: 1.5em;
+// $space-l-sm	: 1.6em;
 $space-md	: 4rem;
 $space-lg	: 4.5rem;
+// new:
+$space-width-sm: 35;
+$space-width-ip6: 40;
+$space-width-md: 70;
+$space-width-lg: 75;
+
 
 $info-bar-ht-sm: 20px;
 $info-bar-ht-md: 30px;

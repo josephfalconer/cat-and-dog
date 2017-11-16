@@ -28,13 +28,20 @@ a {
 
 button, 
 select { 
-	margin: remcalc(10);
+	margin: remcalc(5);
+	border-radius: 0;
 	border: solid $black 1px;
-	padding: remcalc(10) remcalc(20);
+	padding: remcalc(5) remcalc(10);
 	background-color: $white;
 	color: $black;
-	font-size: remcalc(18);
+	font-size: remcalc(14);
 	cursor: pointer;
+
+	@include mq(large) {
+		margin: remcalc(10);
+		padding: remcalc(10) remcalc(20);
+		font-size: remcalc(18);
+	}
 }
 
 button { 

@@ -81,7 +81,7 @@ class App extends Component {
 
     render() {
         const { gameSwitches, isShowingStats, message } = this.props,
-            { isShowingHints, isReadyShutters, isShowingControls } = this.state,
+            { isShowingHints, isShowingControls } = this.state,
             backgroundStyle = { backgroundColor: gameSwitches.isGameOver ? '#ad9549' : '#fff'};
 
         return (
@@ -90,6 +90,8 @@ class App extends Component {
                 <div className="garden__bg" style={backgroundStyle}></div>
 
                 <div className="garden__container">
+
+                    <div id="sample-space" className="garden__space garden__space--sample"></div>
 
                     {gameSwitches.isInGame && <Garden width={10} height={8} endTheGame={this.endTheGame} />}
                     {gameSwitches.isInGame && <LiveInfo endTheGame={this.endTheGame} />}

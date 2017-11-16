@@ -2,6 +2,7 @@
 // To top link
 // ===================================
 
+
 #root {
 	@include square(100%);
 }
@@ -15,11 +16,26 @@
 }
 
 .garden {
+	display: flex;
 	position: relative;
+	margin: 0 auto;
 	border: 3px solid $green;
-    display: inline-block;
+	width: remcalc(10 * $space-width-sm);
+	justify-content: center;
     vertical-align: top;
     z-index: 100;
+
+    @media screen and (min-width: remcalc(660)) and (min-height: remcalc(375)) {
+    	width: remcalc(10 * $space-width-ip6);
+    }
+
+    @media screen and (min-width: remcalc(1024)) and (min-height: remcalc(768)) {
+    	width: remcalc(10 * $space-width-md);
+    }
+
+    @include mq(large) {
+    	width: remcalc(10 * $space-width-lg);
+    }
 
     @include e(container) {
 	    position: relative;
@@ -37,8 +53,12 @@
 	    }
 
 	    @include mq(large) {
-	    	width: 65%;
+	    	width: 75%;
 	    	min-height: 39.03rem;
+	    }
+
+	    @media screen and (min-width: remcalc(1600)) {
+	    	width: 65%;
 	    }
     }
 
@@ -55,43 +75,35 @@
     }
 
     @include e(column) {
-    	float: left;
-    	
+    	display: flex;
+    	flex-direction: column;    	
     }
 
 	@include e(space) {
 	    text-align: center;
 	    position: relative;
 	    overflow: hidden;
-    	width: $space-sm;
-	    height: $space-sm;
-	    line-height: $space-sm;
-	    font-size: $space-sm;
+    	@include square(remcalc($space-width-sm));
+	    line-height: remcalc($space-width-sm);
+	    font-size: remcalc($space-width-sm);
 	    user-select: none;
 
-	    @include mq(iphone6) {
-	    	width: $space-ip6;
-		    height: $space-ip6;
-		    line-height: $space-ip6;
-		    font-size: $space-ip6;
+	    @media screen and (min-width: remcalc(660)) and (min-height: remcalc(375)) {
+	    	@include square(remcalc($space-width-ip6));
+		    line-height: remcalc($space-width-ip6);
+		    font-size: remcalc($space-width-ip6);
 	    }
-	    @include mq(landscape-sm) {
-	    	width: $space-l-sm;
-		    height: $space-l-sm;
-		    line-height: $space-l-sm;
-		    font-size: $space-l-sm;
+
+	    @media screen and (min-width: remcalc(1024)) and (min-height: remcalc(768)) {
+	    	@include square(remcalc($space-width-md));
+		    line-height: remcalc($space-width-md);
+		    font-size: remcalc($space-width-md);
 	    }
-	    @include mq(medium) {
-	    	width: $space-md;
-		    height: $space-md;
-		    line-height: $space-md;
-		    font-size: $space-md;
-	    }
+
 	    @include mq(large) {
-	    	width: $space-lg;
-		    height: $space-lg;
-		    line-height: $space-lg;
-		    font-size: $space-lg;
+	    	@include square(remcalc($space-width-lg));
+		    line-height: remcalc($space-width-lg);
+		    font-size: remcalc($space-width-lg);
 	    }
 	    
 	    &.edge {
@@ -101,6 +113,10 @@
 	    &.grass {
 	    	background: $green;
 	    	border: 1px solid $green;
+	    }
+
+	    &--sample {
+	    	position: absolute;
 	    }
 		
 	}

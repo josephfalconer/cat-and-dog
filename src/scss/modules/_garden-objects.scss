@@ -8,13 +8,21 @@ $svg: '.svg';
 	display: block;
 	position: absolute;
 	top: remcalc(1);
-	left: remcalc(1);
-	@include square(remcalc(63));
+	left: remcalc(-2);
+	@include square(remcalc($space-width-sm - 3));
 	transition: transform 0.2s;
 
-	@include mq(large) {
-		@include square(remcalc(70));
-	}
+	@media screen and (min-width: remcalc(660)) and (min-height: remcalc(375)) {
+    	@include square(remcalc($space-width-ip6 - 3));
+    }
+
+    @media screen and (min-width: remcalc(1024)) and (min-height: remcalc(768)) {
+    	@include square(remcalc($space-width-md - 3));
+    }
+
+    @include mq(large) {
+    	@include square(remcalc($space-width-lg - 3));
+    }
 }
 
 @mixin food-bgs($foods...) {
