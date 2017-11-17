@@ -6,6 +6,7 @@ import * as GardenActionCreators from '../actions/actions_garden';
 import * as StatsActionCreators from '../actions/actions_stats';
 import * as helpers from '../actions/helpers';
 import Creature from './Creature';
+import DirectionButtons from './DirectionButtons';
 
 
 class Cat extends Creature {
@@ -49,16 +50,42 @@ class Cat extends Creature {
     }
 
     handleKeyPress = e => {
+        let direction = null;
+
+        switch (e.which) {
+            case 37: 
+                direction = 'LEFT';
+                break;
+                
+            case 38:
+                direction = 'UP';
+                break;
+                
+            case 39:
+                direction = 'RIGHT';
+                break;
+                
+            case 40:
+                direction = 'DOWN';
+                break;
+                
+            default:
+                return false;
+        }
+
+        this.handleMovement(direction);
+    }
+
+    handleMovement = direction => {
         if (this.props.gameSwitches.isGameOver) return;
 
         const { x, y } = this.state,
             { updateSpaces, spaces, endTheGame } = this.props,
-            face = this.getFace(e.which),
-            validXY = this.checkMove(x, y, face, spaces);
+            validXY = this.checkMove(x, y, direction, spaces);
 
-        if (this.isInGame && face)
+        if (this.isInGame)
             // always face attempted direction
-            this.setState({ ...this.state, face: face });
+            this.setState({ ...this.state, face: direction });
     
         if (!validXY) 
             return;
@@ -71,28 +98,9 @@ class Cat extends Creature {
             return;
         }
 
-        const updatedSpaces = this.moveForward(validXY.x, validXY.y, face);
+        const updatedSpaces = this.moveForward(validXY.x, validXY.y, direction);
         this.updateGarden({x: validXY.x, y: validXY.y}, 'UPDATE_CAT_POSITION');
         updateSpaces(updatedSpaces);
-    }
-
-    getFace = key => {
-        switch (key) {
-            case 37: 
-                return 'left';
-                
-            case 38:
-                return 'up';
-                
-            case 39:
-                return 'right';
-                
-            case 40:
-                return 'down';
-                
-            default:
-                return false;
-        }
     }
 
     updateEnergy = change => {
@@ -118,12 +126,20 @@ class Cat extends Creature {
 
     render() {
     	const { style, face } = this.state,
-            className = `cat cat-${face}`;
+            className = `cat cat-${face.toLowerCase()}`;
             
         style.backgroundSize = '75%';
 
     	return (
-	        <span className={className} style={style}></span>
+            <div>
+    	        <span className={className} style={style}></span>
+
+                {'ontouchstart' in document.documentElement &&
+                    <DirectionButtons moveCat={this.handleMovement} />
+                }
+
+                
+            </div>
 	    )
     }
 }

@@ -54,9 +54,9 @@ class LiveInfo extends Component {
 
         return (
             <div className="info">
-                <span id="time">{`${this.state.secondsRemaining} seconds to go`}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <span>{`${this.state.secondsRemaining} seconds to go`}</span>
                 <span>|</span>
-                <span id="energy">&nbsp;&nbsp;&nbsp;&nbsp;{`Energy: ${stats.energy}`}</span>
+                <span>{`Energy: ${stats.energy}`}</span>
             </div>
         );
     };

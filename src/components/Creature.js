@@ -15,8 +15,6 @@ export default class extends Component {
 
         const spaceWidth = document.getElementById('sample-space').clientWidth;
 
-        console.log(x * spaceWidth);
-
         if (spaces.length) {
             spaces = helpers.removeOccupant(spaces, this.name);
             spaces[x][y].occupant = this.name;
@@ -36,13 +34,13 @@ export default class extends Component {
 
     checkMove(x, y, direction, spaces) {
 
-        if (direction === 'right') {
+        if (direction === 'RIGHT') {
             x++;
-        } else if (direction === 'left') {
+        } else if (direction === 'LEFT') {
             x--;
-        } else if (direction === 'up') {
+        } else if (direction === 'UP') {
             y--;
-        } else if (direction === 'down') {
+        } else if (direction === 'DOWN') {
             y++;
         }
 

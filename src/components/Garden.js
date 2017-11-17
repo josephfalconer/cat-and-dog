@@ -135,19 +135,20 @@ class Garden extends Component {
 
     fadeFoods = () => {
         const foodElements = document.getElementsByClassName('food');
-            
-        for (let foodElement of foodElements) 
-            foodElement.classList.add('fade');
+
+        for (let i = 0; i < foodElements.length; i++) 
+            foodElements[i].classList.add('fade');
     }
 
     removeFoods = () => {
         if (!this.isInGame) return;
 
-        const { spaces } = this.state;
+        const { spaces } = this.state,
+            { foodSpaces } = this;
 
-        for (let foodSpace of this.foodSpaces) {
-            spaces[foodSpace.x][foodSpace.y].occupant = false;
-            spaces[foodSpace.x][foodSpace.y].className = null;
+        for (let i = 0; i < foodSpaces.length; i++) {
+            spaces[foodSpaces[i].x][foodSpaces[i].y].occupant = false;
+            spaces[foodSpaces[i].x][foodSpaces[i].y].className = null;
             this.updateSpaces(spaces);
         }
     }

@@ -25,11 +25,11 @@ class Dog extends Creature {
 
     state = {
         style: helpers.writeTransform(),
-        face: 'right'
+        face: 'RIGHT'
     }
 
     componentDidMount() {
-        this.moveForward(0, 0, 'right');
+        this.moveForward(0, 0, 'RIGHT');
         this.isInGame = true;
 
         // set movement interval
@@ -117,10 +117,10 @@ class Dog extends Creature {
 
     getLeft = face => {
         const lefts = {
-            up: 'left',
-            right: 'up',
-            down: 'right',
-            left: 'down'
+            UP: 'LEFT',
+            RIGHT: 'UP',
+            DOWN: 'RIGHT',
+            LEFT: 'DOWN'
         }
 
         return lefts[face];
@@ -128,10 +128,10 @@ class Dog extends Creature {
 
     getRight = face => {
         const rights = {
-            up: 'right',
-            right: 'down',
-            down: 'left',
-            left: 'up'
+            UP: 'RIGHT',
+            RIGHT: 'DOWN',
+            DOWN: 'LEFT',
+            LEFT: 'UP'
         }
 
         return rights[face];
@@ -160,16 +160,16 @@ class Dog extends Creature {
     }
 
     askX = x => {
-        return this.props.cat.x > x ? 'right' : 'left';
+        return this.props.cat.x > x ? 'RIGHT' : 'LEFT';
     }
 
     askY = y => {
-        return this.props.cat.y > y ? 'down' : 'up';
+        return this.props.cat.y > y ? 'DOWN' : 'UP';
     }
 
     render() {
     	const { style, face } = this.state,
-            className = `dog dog-${face}`;
+            className = `dog dog-${face.toLowerCase()}`;
 
     	style.backgroundSize = '95%';
 

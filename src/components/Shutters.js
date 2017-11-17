@@ -21,7 +21,7 @@ class Shutters extends Component {
                     <span className="shutter__lining vert right"></span>
 
                     <div className={`shutter__inner--left ${'null'}`}>
-                        <span className="message">{shuttersMessage}</span>
+                        <p className="shutter__message">{shuttersMessage}</p>
                     </div>
 
                 </div>
@@ -32,7 +32,7 @@ class Shutters extends Component {
                     <span className="shutter__lining vert left"></span>
 
                     <div className={`shutter__inner--right ${'null'}`}>
-                    <span className="message">{shuttersMessage}</span>
+                        <p className="shutter__message">{shuttersMessage}</p>
                     </div>
 
                 </div>
