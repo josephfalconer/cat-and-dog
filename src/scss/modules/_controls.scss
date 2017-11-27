@@ -2,20 +2,35 @@
 // Controls
 // ========
 
+$directions-width: 175;
 $direction-offset-sm: 5;
 $direction-offset: 20;
 $direction-size-sm: 20;
 $direction-size-lg: 30;
 
-.direction {
+.directions {
 	display: block;
 	position: fixed;
+	right: remcalc($mobile-offset);
+	bottom: remcalc($mobile-offset);
 	z-index: $hints-z-index - 2;
+	width: remcalc($directions-width);
+	height: remcalc($directions-width);
+
+	&__inner {
+		position: relative;
+		width: 100%;
+		height: 100%;
+	}
+}
+
+.direction {
+	position: absolute;
 	margin: 0;
-	border-radius: 0 0 remcalc(5) remcalc(5);
 	border: none;
 	outline: none;
-	@include sides(remcalc(60), remcalc(40));
+	@include square(remcalc($directions-width / 3));
+	padding: 0;
 	background: rgba(0,0,0,0.5) url('../img/arrow.svg') no-repeat center;
 	background-size: 90%;
 	color: $white;
@@ -25,9 +40,9 @@ $direction-size-lg: 30;
 	}
 
 	&--left {
-		top: 50%;
-		left: remcalc(-10);
-		transform: translateY(-50%) rotate(-90deg);	
+		top: remcalc($directions-width / 3);
+		left: 0;
+		transform: rotate(-90deg);	
 
 		@include mq(medium) {
 			left: remcalc(-15);
@@ -35,25 +50,20 @@ $direction-size-lg: 30;
 	}
 
 	&--right {
-		top: 50%;
-		right: remcalc(-10);	
-		transform: translateY(-50%) rotate(90deg);	
-
-		@include mq(medium) {
-			right: remcalc(-15);
-		}
+		top: remcalc($directions-width / 3);
+		right: 0;	
+		transform: rotate(90deg);	
 	}
 
 	&--up {
-		left: 50%;
+		left: remcalc($directions-width / 3);
 		top: 0;
-		transform: translateX(-50%);
 	}
 
 	&--down {
-		left: 50%;
+		left: remcalc($directions-width / 3);
 		bottom: 0;
-		transform: translateX(-50%) rotate(180deg);
+		transform: rotate(180deg);
 	}
 }
 

@@ -18,7 +18,7 @@
 .garden {
 	display: flex;
 	position: relative;
-	margin: 0 auto;
+	margin-left: remcalc($mobile-offset);
 	border: 3px solid $green;
 	width: remcalc(10 * $space-width-sm);
 	justify-content: center;
@@ -34,6 +34,7 @@
     }
 
     @include mq(large) {
+    	margin: 0 auto;
     	width: remcalc(10 * $space-width-lg);
     }
 

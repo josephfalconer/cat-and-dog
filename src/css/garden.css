@@ -60,7 +60,7 @@ button {
 .garden {
   display: flex;
   position: relative;
-  margin: 0 auto;
+  margin-left: 0.9375rem;
   border: 3px solid #3c761e;
   width: 21.875rem;
   justify-content: center;
@@ -74,6 +74,7 @@ button {
       width: 43.75rem; } }
   @media (min-width: 1100px) {
     .garden {
+      margin: 0 auto;
       width: 46.875rem; } }
   .garden__container {
     position: relative;
@@ -361,16 +362,27 @@ i {
       .hints__message {
         font-size: 2.1875rem; } }
 
-.direction {
+.directions {
   display: block;
   position: fixed;
+  right: 0.9375rem;
+  bottom: 0.9375rem;
   z-index: 498;
+  width: 10.9375rem;
+  height: 10.9375rem; }
+  .directions__inner {
+    position: relative;
+    width: 100%;
+    height: 100%; }
+
+.direction {
+  position: absolute;
   margin: 0;
-  border-radius: 0 0 0.3125rem 0.3125rem;
   border: none;
   outline: none;
-  width: 3.75rem;
-  height: 2.5rem;
+  width: 3.6458333333rem;
+  height: 3.6458333333rem;
+  padding: 0;
   background: rgba(0, 0, 0, 0.5) url("../img/arrow.svg") no-repeat center;
   background-size: 90%;
   color: #fff; }
@@ -379,27 +391,23 @@ i {
       width: 6.25rem;
       height: 4.375rem; } }
   .direction--left {
-    top: 50%;
-    left: -0.625rem;
-    transform: translateY(-50%) rotate(-90deg); }
+    top: 3.6458333333rem;
+    left: 0;
+    transform: rotate(-90deg); }
     @media (min-width: 768px) {
       .direction--left {
         left: -0.9375rem; } }
   .direction--right {
-    top: 50%;
-    right: -0.625rem;
-    transform: translateY(-50%) rotate(90deg); }
-    @media (min-width: 768px) {
-      .direction--right {
-        right: -0.9375rem; } }
+    top: 3.6458333333rem;
+    right: 0;
+    transform: rotate(90deg); }
   .direction--up {
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%); }
+    left: 3.6458333333rem;
+    top: 0; }
   .direction--down {
-    left: 50%;
+    left: 3.6458333333rem;
     bottom: 0;
-    transform: translateX(-50%) rotate(180deg); }
+    transform: rotate(180deg); }
 
 .gamecontrols {
   width: 100%;
@@ -414,7 +422,7 @@ i {
 
 .info {
   position: relative;
-  margin: 0 auto;
+  margin-left: 0.9375rem;
   border: solid 2px #776633;
   width: 21.875rem;
   height: 20px;
@@ -430,6 +438,7 @@ i {
       height: 30px; } }
   @media (min-width: 1100px) {
     .info {
+      margin: 0 auto;
       width: 46.875rem;
       height: 40px;
       line-height: 40px; } }

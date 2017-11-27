@@ -4,7 +4,7 @@
 
 .info {
 	position: relative;
-	margin: 0 auto;
+	margin-left: remcalc($mobile-offset);
     border: solid 2px $lightBrown;
     @include sides(remcalc($space-width-sm * 10), $info-bar-ht-sm);
     background: $xLightBrown;
@@ -22,6 +22,7 @@
     }
 
     @include mq(large) {
+    	margin: 0 auto;
         width: remcalc($space-width-lg * 10);
         height: $info-bar-ht-lg;
         line-height: $info-bar-ht-lg;
