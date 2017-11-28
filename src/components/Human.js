@@ -27,13 +27,13 @@ class Human extends Player {
 
     state = {
         style: helpers.writeTransform(),
-        face: 'left'
+        face: 'LEFT'
     }
     
     componentDidMount() {
         this.isInGame = true;
 
-        this.moveForward(9, 7, 'left');
+        this.moveForward(9, 7, 'LEFT');
         this.updateGarden({x: 9, y: 7}, 'UPDATE_HUMAN_POSITION');
 
         this.intervalID = setInterval(() => {
