@@ -4,7 +4,7 @@ import React, { PropTypes } from 'react';
 const DirectionButtons = props => {
 
 	const buttons = ['up', 'down', 'left', 'right'],
-		{ moveCat } = props;
+		{ moveHuman } = props;
 
 	return (
 		<div className='directions'>
@@ -14,7 +14,7 @@ const DirectionButtons = props => {
 						<button 
 							key={index} 
 							className={`direction direction--${name}`} 
-							onClick={() => { moveCat(name.toUpperCase()); }}
+							onClick={() => { moveHuman(name.toUpperCase()); }}
 						>
 						</button>
 					)
@@ -25,7 +25,7 @@ const DirectionButtons = props => {
 }
 
 DirectionButtons.propTypes = {
-	moveCat: PropTypes.func.isRequired
+	moveHuman: PropTypes.func.isRequired
 }
 
 export default DirectionButtons;

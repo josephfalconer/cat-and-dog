@@ -5,15 +5,15 @@ import { bindActionCreators } from 'redux';
 import * as GardenActionCreators from '../actions/actions_garden';
 import * as StatsActionCreators from '../actions/actions_stats';
 import * as helpers from '../actions/helpers';
-import Creature from './Creature';
+import Player from './Player';
 import DirectionButtons from './DirectionButtons';
 
 
-class Cat extends Creature {
+class Human extends Player {
 
     constructor(props) {
         super(props);
-        this.name = 'CAT';
+        this.name = 'HUMAN';
         this.updateGarden = bindActionCreators(GardenActionCreators.updateGarden, props.dispatch);
         this.updateStats = bindActionCreators(StatsActionCreators.updateStats, props.dispatch);
     }
@@ -34,7 +34,7 @@ class Cat extends Creature {
         this.isInGame = true;
 
         this.moveForward(9, 7, 'left');
-        this.updateGarden({x: 9, y: 7}, 'UPDATE_CAT_POSITION');
+        this.updateGarden({x: 9, y: 7}, 'UPDATE_HUMAN_POSITION');
 
         this.intervalID = setInterval(() => {
             this.updateEnergy(-1);
@@ -93,13 +93,13 @@ class Cat extends Creature {
         if (validXY.occupant === 'FOOD') 
             this.updateEnergy(1);
 
-        if (validXY.occupant === 'DOG') {
+        if (validXY.occupant === 'ROBOT') {
             endTheGame('You ran into the dog!')
             return;
         }
 
         const updatedSpaces = this.moveForward(validXY.x, validXY.y, direction);
-        this.updateGarden({x: validXY.x, y: validXY.y}, 'UPDATE_CAT_POSITION');
+        this.updateGarden({x: validXY.x, y: validXY.y}, 'UPDATE_HUMAN_POSITION');
         updateSpaces(updatedSpaces);
     }
 
@@ -135,7 +135,7 @@ class Cat extends Creature {
     	        <span className={className} style={style}></span>
 
                 {'ontouchstart' in document.documentElement &&
-                    <DirectionButtons moveCat={this.handleMovement} />
+                    <DirectionButtons moveHuman={this.handleMovement} />
                 }
 
                 
@@ -152,4 +152,4 @@ const mapStateToProps = state => (
     }
 );
 
-export default connect(mapStateToProps)(Cat);
+export default connect(mapStateToProps)(Human);

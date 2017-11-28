@@ -4,7 +4,7 @@ const DirectionButton = props => {
     return (
         <button 
         	className="garden__control" 
-        	onClick={()=>{props.advanceCat(props.direction)}}
+        	onClick={()=>{props.advanceHuman(props.direction)}}
         >
         </button>
     );
@@ -14,7 +14,7 @@ const DirectionButton = props => {
 //
 
 DirectionButton.propTypes = {
-	advanceCat: PropTypes.func.isRequired,
+	advanceHuman: PropTypes.func.isRequired,
 	direction: PropTypes.string.isRequired
 }
 

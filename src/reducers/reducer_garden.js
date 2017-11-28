@@ -3,7 +3,7 @@ import * as GardenActionTypes from '../actiontypes/actiontypes_garden';
 const initialState = {
 	spaces: [],
 	spaceWidth: 72,
-	cat: {
+	human: {
 		x: 9,
 		y: 7
 	}
@@ -18,16 +18,16 @@ export default function Timer(state=initialState, action) {
 				spaces: action.data
 			}
 
-		case GardenActionTypes.UPDATE_CAT_POSITION:
+		case GardenActionTypes.UPDATE_HUMAN_POSITION:
 			return {
 				...state,
-				cat: action.data
+				human: action.data
 			}
 
-		case GardenActionTypes.UPDATE_DOG_POSITION:
+		case GardenActionTypes.UPDATE_ROBOT_POSITION:
 			return {
 				...state,
-				dog: action.data
+				robot: action.data
 			}
 
 		default:

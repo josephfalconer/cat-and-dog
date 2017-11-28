@@ -2,23 +2,22 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import * as helpers from '../actions/helpers';
-import Creature from './Creature';
+import Player from './Player';
 
 
-class Dog extends Creature {
+class Robot extends Player {
 
     constructor(props) {
         super(props);
-        this.actionType = 'UPDATE_DOG_POSITION';
         this.isStuck = false;
-        this.name = 'DOG';
+        this.name = 'ROBOT';
         this.delay = props.delay;
     }
 
     static propTypes = {
         gameSwitches: PropTypes.object.isRequired,
         delay: PropTypes.number.isRequired,
-        cat: PropTypes.object.isRequired,
+        human: PropTypes.object.isRequired,
         spaceWidth: PropTypes.number.isRequired,
         endTheGame: PropTypes.func.isRequired
     }
@@ -49,14 +48,14 @@ class Dog extends Creature {
             this.getRoundObstacle();
                 
         } else {
-            this.pursueCat();
+            this.pursueHuman();
         }
     }
 
-    pursueCat = () => {
+    pursueHuman = () => {
 
         // move on x axis
-        if (this.props.cat.x !== this.state.x) 
+        if (this.props.human.x !== this.state.x) 
             this.isStuck = this.attemptStep('x');
 
         setTimeout(() => {
@@ -64,7 +63,7 @@ class Dog extends Creature {
                 return;
 
             // then y axis - with fresh data
-            if (this.props.cat.y !== this.state.y) 
+            if (this.props.human.y !== this.state.y) 
                 this.isStuck = this.attemptStep('y');
 
         }, this.delay / 2);
@@ -79,7 +78,7 @@ class Dog extends Creature {
         this.turn(newLeft);
 
         if (validXY) {
-            this.moveDogForward(validXY, newLeft);
+            this.moveRobotForward(validXY, newLeft);
             this.isStuck = false;
 
             setTimeout(() => {
@@ -94,7 +93,7 @@ class Dog extends Creature {
                 this.turn(newRight);
 
                 if (validXY) {
-                    this.moveDogForward(validXY, newRight);
+                    this.moveRobotForward(validXY, newRight);
                 } else {
                     this.isStuck = true;
                 }
@@ -102,11 +101,11 @@ class Dog extends Creature {
         }
     }
 
-    moveDogForward = (nextSpace, face) => {
+    moveRobotForward = (nextSpace, face) => {
         const { x, y, occupant } = nextSpace,
             { updateSpaces, endTheGame } = this.props;
 
-        if (occupant === 'CAT') {
+        if (occupant === 'HUMAN') {
             endTheGame('The dog caught you!');
             
         } else {
@@ -152,7 +151,7 @@ class Dog extends Creature {
             this.setState({ ...this.state, face: newDirection });
 
         if (validXY) {
-            this.moveDogForward(validXY, newDirection);
+            this.moveRobotForward(validXY, newDirection);
             return false;
         }
 
@@ -160,11 +159,11 @@ class Dog extends Creature {
     }
 
     askX = x => {
-        return this.props.cat.x > x ? 'RIGHT' : 'LEFT';
+        return this.props.human.x > x ? 'RIGHT' : 'LEFT';
     }
 
     askY = y => {
-        return this.props.cat.y > y ? 'DOWN' : 'UP';
+        return this.props.human.y > y ? 'DOWN' : 'UP';
     }
 
     render() {
@@ -183,9 +182,9 @@ const mapStateToProps = state => (
     {
         gameSwitches: state.game.switches,
         delay: state.game.difficulty,
-        cat: state.garden.cat,
+        human: state.garden.human,
         spaceWidth: state.garden.spaceWidth
     }
 );
 
-export default connect(mapStateToProps)(Dog);
+export default connect(mapStateToProps)(Robot);

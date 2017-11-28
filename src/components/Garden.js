@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import Space from './Space';
-import Cat from './Cat';
-import Dog from './Dog';
+import Human from './Human';
+import Robot from './Robot';
 
 
 class Garden extends Component {
@@ -75,8 +75,8 @@ class Garden extends Component {
             }
         }
 
-        SPACES[width - 1][height - 1].occupant = 'CAT';
-        SPACES[0][0].occupant = 'DOG';
+        SPACES[width - 1][height - 1].occupant = 'HUMAN';
+        SPACES[0][0].occupant = 'ROBOT';
 
         return SPACES;
 	}
@@ -181,8 +181,8 @@ class Garden extends Component {
                     );
                 })}
 
-                <Cat updateSpaces={this.updateSpaces} spaces={spaces} endTheGame={endTheGame} />
-                <Dog updateSpaces={this.updateSpaces} spaces={spaces} endTheGame={endTheGame} />
+                <Human updateSpaces={this.updateSpaces} spaces={spaces} endTheGame={endTheGame} />
+                <Robot updateSpaces={this.updateSpaces} spaces={spaces} endTheGame={endTheGame} />
             </div>
     	);
     }
