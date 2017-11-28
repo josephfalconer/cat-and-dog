@@ -1,26 +1,25 @@
 import React, { PropTypes } from 'react';
 
 
+const occupants = {
+    FOOD: (className) => {
+        return <i className={className}></i>
+    },
+    OBSTRUCTION: (className) => {
+        return <i className="obstruction"></i>
+    }
+}
+
 const Space = props => {
 
     const { data } = props,
-        className = data.isEdge ? 'edge' : 'grass';
-
-    const occupants = {
-        FOOD: () => {
-            return <i className={data.className}></i>
-        },
-        OBSTRUCTION: () => {
-            return <i className="obstruction"></i>
-        },
-    }
+        mainClassName = data.isEdge ? 'edge' : 'grass';
 
     const Occupant = occupants[data.occupant];
 
     return (
-        <div className={`garden__space ${className}`} style={{fontSize: '14px'}} >
-            {Occupant && Occupant.call()}
-
+        <div className={`garden__space ${mainClassName}`} style={{fontSize: '14px'}} >
+            {Occupant && Occupant(data.className)}
         </div>
     );
 } 
@@ -28,5 +27,5 @@ const Space = props => {
 Space.propTypes = {
     data: PropTypes.object.isRequired
 }
-//{`x: ${data.x}, y: ${data.y}`}
+
 export default Space;
