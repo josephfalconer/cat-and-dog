@@ -17,7 +17,7 @@ class EndStats extends Component {
         return (
             <div className="stats">
                 <div className="stats__text">
-                    <h4>GAME OVER</h4>
+                    <h4>{`${stats.secondsRemaining === 0 ? 'YOU WIN!' : 'GAME OVER'}`}</h4>
                     <p>{`You lasted for ${60 - stats.secondsRemaining} seconds.`}</p>
                     <p>{`You finished with ${stats.energy} energy.`}</p>
                     <p>{`You ate ${stats.mealsEaten} meals.`}</p>
