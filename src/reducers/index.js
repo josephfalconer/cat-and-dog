@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
-import GardenReducer from './reducer_garden';
+import BoardReducer from './reducer_board';
 import StatsReducer from './reducer_stats';
 import GameReducer from './reducer_game';
 
 const rootReducer = combineReducers({
-	garden: GardenReducer,
+	board: BoardReducer,
 	stats: StatsReducer,
 	game: GameReducer
 });

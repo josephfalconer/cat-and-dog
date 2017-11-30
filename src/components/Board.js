@@ -6,7 +6,7 @@ import Human from './Human';
 import Robot from './Robot';
 
 
-class Garden extends Component {
+class Board extends Component {
 
     constructor(props) {
         super(props);
@@ -181,8 +181,8 @@ class Garden extends Component {
                     );
                 })}
 
-                <Human updateSpaces={this.updateSpaces} spaces={spaces} endTheGame={endTheGame} />
-                <Robot updateSpaces={this.updateSpaces} spaces={spaces} endTheGame={endTheGame} />
+                <Human spaces={spaces} updateSpaces={this.updateSpaces} endTheGame={endTheGame} />
+                <Robot spaces={spaces} updateSpaces={this.updateSpaces} endTheGame={endTheGame} />
             </div>
     	);
     }
@@ -190,8 +190,9 @@ class Garden extends Component {
 
 const mapStateToProps = state => (
     {
-        gameSwitches: state.game.switches
+        gameSwitches: state.game.switches,
+        human: state.board.human
     }
 );
 
-export default connect(mapStateToProps)(Garden);
+export default connect(mapStateToProps)(Board);

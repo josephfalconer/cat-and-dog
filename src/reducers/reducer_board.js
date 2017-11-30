@@ -1,8 +1,7 @@
-import * as GardenActionTypes from '../actiontypes/actiontypes_garden';
+import * as BoardActionTypes from '../actiontypes/actiontypes_board';
 
 const initialState = {
 	spaces: [],
-	spaceWidth: 72,
 	human: {
 		x: 9,
 		y: 7
@@ -12,19 +11,19 @@ const initialState = {
 export default function Timer(state=initialState, action) {
 
 	switch (action.type) {
-		case GardenActionTypes.UPDATE_SPACES:
+		case BoardActionTypes.UPDATE_SPACES:
 			return {
 				...state,
 				spaces: action.data
 			}
 
-		case GardenActionTypes.UPDATE_HUMAN_POSITION:
+		case BoardActionTypes.UPDATE_HUMAN_POSITION:
 			return {
 				...state,
 				human: action.data
 			}
 
-		case GardenActionTypes.UPDATE_ROBOT_POSITION:
+		case BoardActionTypes.UPDATE_ROBOT_POSITION:
 			return {
 				...state,
 				robot: action.data

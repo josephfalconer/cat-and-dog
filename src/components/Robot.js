@@ -12,18 +12,21 @@ class Robot extends Player {
         this.isStuck = false;
         this.name = 'ROBOT';
         this.delay = props.delay;
+        this.endTheGame = props.endTheGame;
+        this.updateSpaces = props.updateSpaces;
     }
 
     static propTypes = {
         gameSwitches: PropTypes.object.isRequired,
         delay: PropTypes.number.isRequired,
         human: PropTypes.object.isRequired,
-        spaceWidth: PropTypes.number.isRequired,
-        endTheGame: PropTypes.func.isRequired
+        endTheGame: PropTypes.func.isRequired,
+        spaces: PropTypes.array.isRequired,
+        updateSpaces: PropTypes.func.isRequired
     }
 
     state = {
-        style: helpers.writeTransform(),
+        style: helpers.writeTransform(9, 7),
         face: 'RIGHT'
     }
 
@@ -52,6 +55,24 @@ class Robot extends Player {
         }
     }
 
+    getRoundObstacle = () => {
+        const { x, y, face } = this.state,
+            newLeft = this.getLeft(face),
+            validXY = this.checkMove(x, y, newLeft);
+
+        this.turn(newLeft);
+
+        if (validXY) {
+            this.moveRobotForward(validXY, newLeft);
+            this.isStuck = false;
+
+            // attempt second movement to the right
+            setTimeout(() => {
+                if (this.isInGame) this.moveRobotRight(newLeft);
+            }, this.delay / 2);
+        }
+    }
+
     pursueHuman = () => {
         // move on x axis
         if (this.props.human.x !== this.state.x) 
@@ -67,40 +88,51 @@ class Robot extends Player {
         }, this.delay / 2);
     }
 
-    getRoundObstacle = () => {
-        const { x, y, face } = this.state,
-            newLeft = this.getLeft(face),
-            validXY = this.checkMove(x, y, newLeft, this.props.spaces);
+    attemptStep = axis => {
+        const { x, y } = this.state,
+            newDirection = axis === 'x' ? this.getFaceX(x) : this.getFaceY(y),
+            validXY = this.checkMove(x, y, newDirection);
 
-        this.turn(newLeft);
+        if (this.isInGame)
+            this.turn(newDirection);
 
         if (validXY) {
-            this.moveRobotForward(validXY, newLeft);
-            this.isStuck = false;
-
-            // attempt second movement to the right
-            setTimeout(() => {
-                if (this.isInGame) this.moveRobotRight(newLeft);
-            }, this.delay / 2);
+            this.moveRobotForward(validXY, newDirection);
+            return false;
         }
+
+        return true;
+    }
+
+    getFaceX = x => {
+        return this.props.human.x > x ? 'RIGHT' : 'LEFT';
+    }
+
+    getFaceY = y => {
+        return this.props.human.y > y ? 'DOWN' : 'UP';
+    }
+
+    turn = direction => {
+        if (this.isInGame)
+            this.setState({ ...this.state, face: direction });
     }
 
     moveRobotForward = (nextSpace, face) => {
-        const { x, y, occupant } = nextSpace,
-            { updateSpaces, endTheGame } = this.props;
+        const { x, y, occupant } = nextSpace;
+        let updatedSpaces;
 
         if (occupant === 'HUMAN') {
-            endTheGame('The dog caught you!');
+            this.endTheGame('The dog caught you!');
             
         } else {
-            const updatedSpaces = this.moveForward(x, y, face);
-            updateSpaces(updatedSpaces);
+            updatedSpaces = this.moveForward(x, y, face);
+            this.updateSpaces(updatedSpaces);
         }
     }
 
     moveRobotRight = currentFace => {
         const newRight = this.getRight(currentFace),
-            validXY = this.checkMove(this.state.x, this.state.y, newRight, this.props.spaces);
+            validXY = this.checkMove(this.state.x, this.state.y, newRight);
 
         this.turn(newRight);
 
@@ -131,36 +163,7 @@ class Robot extends Player {
         }
 
         return rights[face];
-    }
-
-    turn = direction => {
-        if (this.isInGame)
-            this.setState({ ...this.state, face: direction });
-    }
-
-    attemptStep = axis => {
-        const { x, y } = this.state,
-            newDirection = axis === 'x' ? this.lookX(x) : this.lookY(y),
-            validXY = this.checkMove(x, y, newDirection, this.props.spaces);
-
-        if (this.isInGame)
-            this.turn(newDirection);
-
-        if (validXY) {
-            this.moveRobotForward(validXY, newDirection);
-            return false;
-        }
-
-        return true;
-    }
-
-    lookX = x => {
-        return this.props.human.x > x ? 'RIGHT' : 'LEFT';
-    }
-
-    lookY = y => {
-        return this.props.human.y > y ? 'DOWN' : 'UP';
-    }
+    }    
 
     render() {
     	const { style, face } = this.state,
@@ -178,8 +181,7 @@ const mapStateToProps = state => (
     {
         gameSwitches: state.game.switches,
         delay: state.game.difficulty,
-        human: state.garden.human,
-        spaceWidth: state.garden.spaceWidth
+        human: state.board.human,
     }
 );
 

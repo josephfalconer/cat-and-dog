@@ -1,19 +1,13 @@
-import { Component, PropTypes } from 'react';
+import { Component } from 'react';
 
 import * as helpers from '../actions/helpers';
 
 
 export default class extends Component {
 
-    static propTypes = {
-        spaces: PropTypes.array.isRequired,
-        updateSpaces: PropTypes.func.isRequired
-    }
-
     moveForward(x, y, newdirection){
-        let { spaces } = this.props;
-
         const spaceWidth = document.getElementById('sample-space').clientWidth;
+        let { spaces } = this.props;
 
         if (spaces.length) {
             spaces = helpers.removeOccupant(spaces, this.name);
@@ -32,30 +26,32 @@ export default class extends Component {
         return spaces;
     }
 
-    checkMove(x, y, direction, spaces) {
+    checkMove(x, y, direction) {
+        const { spaces } = this.props;
+        let forwardX = x, forwardY = y, nextSpace;
 
         if (direction === 'RIGHT') {
-            x++;
+            forwardX++;
         } else if (direction === 'LEFT') {
-            x--;
+            forwardX--;
         } else if (direction === 'UP') {
-            y--;
+            forwardY--;
         } else if (direction === 'DOWN') {
-            y++;
+            forwardY++;
         }
 
         // limited to garden dimensions
-        if (x < 0 || y < 0 || x > spaces.length - 1 || y > spaces[0].length - 1)
+        if (forwardX < 0 || forwardY < 0 || forwardX > spaces.length - 1 || forwardY > spaces[0].length - 1)
             return false;
 
-        const nextSpace = spaces[x][y];
+        nextSpace = spaces[forwardX][forwardY];
 
         if (nextSpace.occupant === 'OBSTRUCTION') 
             return false;
         
         return { 
-            x: x, 
-            y: y,
+            x: forwardX, 
+            y: forwardY,
             occupant: nextSpace.occupant 
         };
     }

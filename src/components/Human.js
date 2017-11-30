@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import * as GardenActionCreators from '../actions/actions_garden';
+import * as BoardActionCreators from '../actions/actions_board';
 import * as StatsActionCreators from '../actions/actions_stats';
 import * as helpers from '../actions/helpers';
 import Player from './Player';
@@ -14,15 +14,19 @@ class Human extends Player {
     constructor(props) {
         super(props);
         this.name = 'HUMAN';
-        this.updateGarden = bindActionCreators(GardenActionCreators.updateGarden, props.dispatch);
+        this.updateBoard = bindActionCreators(BoardActionCreators.updateBoard, props.dispatch);
         this.updateStats = bindActionCreators(StatsActionCreators.updateStats, props.dispatch);
+        this.endTheGame = props.endTheGame;
+        this.updateSpaces = props.updateSpaces;
     }
 
     static propTypes = {
         stats: PropTypes.object.isRequired,
         endTheGame: PropTypes.func.isRequired,
-        spaceWidth: PropTypes.number.isRequired,
-        gameSwitches: PropTypes.object.isRequired
+        gameSwitches: PropTypes.object.isRequired,
+        spaces: PropTypes.array.isRequired,
+        human: PropTypes.object.isRequired,
+        updateSpaces: PropTypes.func.isRequired
     }
 
     state = {
@@ -32,9 +36,9 @@ class Human extends Player {
     
     componentDidMount() {
         this.isInGame = true;
-
+        console.log(this.props.human);
         this.moveForward(9, 7, 'LEFT');
-        this.updateGarden({x: 9, y: 7}, 'UPDATE_HUMAN_POSITION');
+        this.updateBoard({x: 9, y: 7}, 'UPDATE_HUMAN_POSITION');
 
         this.intervalID = setInterval(() => {
             this.updateEnergy(-1);
@@ -45,11 +49,17 @@ class Human extends Player {
 
     componentWillUnmount() {
         this.isInGame = false;
+        this.doCleanUp();
+    }
+
+    doCleanUp = () => {
         clearInterval(this.intervalID);
         document.removeEventListener('keydown', this.handleKeyPress);
     }
 
     handleKeyPress = e => {
+        if (this.props.gameSwitches.isGameOver) return;
+
         let direction = null;
 
         switch (e.which) {
@@ -73,15 +83,12 @@ class Human extends Player {
                 return false;
         }
 
-        this.handleMovement(direction);
+        this.moveHumanForward(direction);
     }
 
-    handleMovement = direction => {
-        if (this.props.gameSwitches.isGameOver) return;
-
-        const { x, y } = this.state,
-            { updateSpaces, spaces, endTheGame } = this.props,
-            validXY = this.checkMove(x, y, direction, spaces);
+    moveHumanForward = direction => {
+        const validXY = this.checkMove(this.state.x, this.state.y, direction);
+        let updatedSpaces;
 
         if (this.isInGame)
             // always face attempted direction
@@ -94,26 +101,22 @@ class Human extends Player {
             this.updateEnergy(1);
 
         if (validXY.occupant === 'ROBOT') {
-            endTheGame('You ran into the dog!')
+            this.endTheGame('You ran into the dog!')
             return;
         }
 
-        const updatedSpaces = this.moveForward(validXY.x, validXY.y, direction);
-        this.updateGarden({x: validXY.x, y: validXY.y}, 'UPDATE_HUMAN_POSITION');
-        updateSpaces(updatedSpaces);
+        updatedSpaces = this.moveForward(validXY.x, validXY.y, direction);
+        this.updateBoard({x: validXY.x, y: validXY.y}, 'UPDATE_HUMAN_POSITION');
+        this.updateSpaces(updatedSpaces);
     }
 
     updateEnergy = change => {
         if (!this.isInGame || this.props.gameSwitches.isGameOver) return;
 
-        const { stats, spaceWidth, endTheGame } = this.props,
-            { x, y } = this.state;
+        const { stats } = this.props;
             
         if (stats.energy === 0) {
-            endTheGame('You ran out of energy!');
-            clearInterval(this.intervalID);
-            document.removeEventListener('keydown', this.handleKeyPress);
-            this.setState({...this.state, style: helpers.writeTransform(x * spaceWidth, y * spaceWidth, 180)});
+            this.endTheGame('You ran out of energy!');
             return;
         }
 
@@ -146,8 +149,8 @@ class Human extends Player {
 
 const mapStateToProps = state => (
     {
+        human: state.board.human,
         stats: state.stats.stats,
-        spaceWidth: state.garden.spaceWidth,
         gameSwitches: state.game.switches
     }
 );
