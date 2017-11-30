@@ -34,15 +34,14 @@ class LiveInfo extends Component {
     countDown = () => {
         if (!this.isInGame || this.props.gameSwitches.isGameOver) return
 
-        const { secondsRemaining } = this.state,
-            { stats } = this.props;
+        const { secondsRemaining } = this.state;
 
         if (secondsRemaining === 0) {
             this.props.endTheGame('You finished 60 seconds, well done!');
 
         } else {
             this.updateStats({
-                ...stats,
+                ...this.props.stats,
                 secondsRemaining: secondsRemaining - 1
             }, 'UPDATE_STATS');
             this.setState({ ...this.state, secondsRemaining: secondsRemaining - 1 });
@@ -50,13 +49,11 @@ class LiveInfo extends Component {
     }
 
     render() {
-        const { stats } = this.props;
-
         return (
             <div className="info">
                 <span>{`${this.state.secondsRemaining} seconds to go`}</span>
                 <span>|</span>
-                <span>{`Energy: ${stats.energy}`}</span>
+                <span>{`Energy: ${this.props.stats.energy}`}</span>
             </div>
         );
     };

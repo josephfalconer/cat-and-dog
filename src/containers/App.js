@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import * as GameActionCreators from '../actions/actions_game';
 import * as StatsActionCreators from '../actions/actions_stats';
-import Garden from '../components/Garden';
+import Board from '../components/Board';
 import Shutters from '../components/Shutters';
 import Hints from '../components/Hints';
 import LiveInfo from '../components/LiveInfo';
@@ -93,7 +93,7 @@ class App extends Component {
 
                     <div id="sample-space" className="garden__space garden__space--sample"></div>
 
-                    {gameSwitches.isInGame && <Garden width={10} height={8} endTheGame={this.endTheGame} />}
+                    {gameSwitches.isInGame && <Board width={10} height={8} endTheGame={this.endTheGame} />}
                     {gameSwitches.isInGame && <LiveInfo endTheGame={this.endTheGame} />}
 
                     {isShowingStats && <EndStats />}

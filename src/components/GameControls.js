@@ -27,6 +27,7 @@ class GameControls extends Component {
         const { showHints, showControls, isFirstGame } = this.props;
         
         showControls(false);
+
         setTimeout(() => {
             showHints(false);
         }, 100);
@@ -43,10 +44,8 @@ class GameControls extends Component {
 
     playFirstGame = () => {
         setTimeout(() => {
-            const { gameSwitches } = this.props;
-
             this.updateGame({ 
-                ...gameSwitches, 
+                ...this.props.gameSwitches, 
                 isInGame: true, 
                 isOpenShutters: true 
             }, 'HIT_GAME_SWITCHES');
@@ -55,8 +54,7 @@ class GameControls extends Component {
     }
 
     playNewGame = () => {
-        const { gameSwitches } = this.props;
-        this.updateGame({ ...gameSwitches, isOpenShutters: false }, 'HIT_GAME_SWITCHES');
+        this.updateGame({ ...this.props.gameSwitches, isOpenShutters: false }, 'HIT_GAME_SWITCHES');
 
         setTimeout(() => {
             this.updateStats(false, 'SHOW_STATS');
