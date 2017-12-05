@@ -19,7 +19,6 @@ class GameControls extends Component {
         showHints: PropTypes.func.isRequired,
         showControls: PropTypes.func.isRequired,
         isShowing: PropTypes.bool.isRequired,
-        isShowingHints: PropTypes.bool.isRequired,
         isFirstGame: PropTypes.bool.isRequired
     }
 
@@ -82,21 +81,17 @@ class GameControls extends Component {
     }
 
     render() {
-        const { isShowing, showHints, isFirstGame, isShowingHints } = this.props,
-            className = `gamecontrols ${isShowing ? 'js-showing-controls' : ''}`;
+        const { isShowing, showHints } = this.props;
 
         return (
-            <div className={className}>
+            <div className={`gamecontrols ${isShowing ? 'js-showing-controls' : ''}`}>
                 <select className="" onChange={this.setDifficulty} >
                     <option value="800">Easy</option>
                     <option value="600">Medium</option>
                     <option value="400">Hard</option>
                 </select>
-
                 <button onClick={this.startGame}>Start Game</button>
-
                 <button onClick={()=>{ showHints(true); }}>Show hints</button>
-                
             </div>
         )
     }

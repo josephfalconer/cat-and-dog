@@ -36,7 +36,7 @@ class Human extends Player {
     
     componentDidMount() {
         this.isInGame = true;
-        console.log(this.props.human);
+
         this.moveForward(9, 7, 'LEFT');
         this.updateBoard({x: 9, y: 7}, 'UPDATE_HUMAN_POSITION');
 
