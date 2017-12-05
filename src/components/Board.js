@@ -28,15 +28,15 @@ class Board extends Component {
 	componentDidMount() {
         this.isInGame = true;
 
-        const Garden = this;
-
         // lay out spaces with obstructions
         let SPACES = this.layoutSpaces();
         SPACES = this.setObstructions(SPACES);
         this.freeSpaces = this.updateFreeSpaces(SPACES);
         this.updateSpaces(SPACES);
 
-        Garden.intervalID = setInterval(Garden.setFood, 10000);
+        // set food after spaces ready
+        setTimeout(this.setFood, 100);
+        this.intervalID = setInterval(this.setFood, 10000);
 	}
 
     componentWillUnmount() {
