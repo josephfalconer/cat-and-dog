@@ -54,11 +54,17 @@ class GameControls extends Component {
     }
 
     playNewGame = () => {
-        this.updateGame({ ...this.props.gameSwitches, isOpenShutters: false }, 'HIT_GAME_SWITCHES');
+        this.updateGame({ 
+            ...this.props.gameSwitches, 
+            isOpenShutters: false 
+        }, 'HIT_GAME_SWITCHES');
 
         setTimeout(() => {
             this.updateStats(false, 'SHOW_STATS');
-            this.updateStats({ mealsEaten: 0, energy: 10, secondsRemaining: 60 }, 'UPDATE_STATS');
+            this.updateStats({ 
+                mealsEaten: 0, 
+                energy: 10, 
+                secondsRemaining: 60 }, 'UPDATE_STATS');
         }, 1000);
 
         setTimeout(() => {
@@ -77,8 +83,7 @@ class GameControls extends Component {
 
     render() {
         const { isShowing, showHints, isFirstGame, isShowingHints } = this.props,
-            className = `gamecontrols ${isShowing ? 'js-showing-controls' : ''}`,
-            isShowingShowHints = !isFirstGame && !isShowingHints;
+            className = `gamecontrols ${isShowing ? 'js-showing-controls' : ''}`;
 
         return (
             <div className={className}>
@@ -90,7 +95,7 @@ class GameControls extends Component {
 
                 <button onClick={this.startGame}>Start Game</button>
 
-                {isShowingShowHints && <button onClick={()=>{ showHints(true); }}>Show hints</button>}
+                <button onClick={()=>{ showHints(true); }}>Show hints</button>
                 
             </div>
         )

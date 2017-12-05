@@ -30,7 +30,7 @@ class App extends Component {
     }
 
     state = {
-        isShowingHints: true,
+        isShowingHints: false,
         isReadyShutters: false,
         isShowingControls: true
     }
@@ -52,7 +52,7 @@ class App extends Component {
             this.updateGame({ ...gameSwitches, isOpenShutters: false }, 'HIT_GAME_SWITCHES');
         }, 3000);
 
-        // destroy garden and live info, show stats when shutters complete transition
+        // destroy board and live info, show stats when shutters complete transition
         setTimeout(() => {
             const { gameSwitches } = this.props;
             this.updateGame({ ...gameSwitches, isInGame: false }, 'HIT_GAME_SWITCHES');

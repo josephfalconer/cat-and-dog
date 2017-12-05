@@ -26,18 +26,11 @@ export default class Hints extends Component {
 
     componentDidMount() {
         this.getHint(0);
-
-        this.intervalID = setInterval(() => {
-            this.getHint(1, false);
-        }, 5000);
     }
 
-    getHint = (increment, breakInterval) => {
+    getHint = increment => {
         const newIndex = this.state.hintIndex + increment,
             nextHint = hints[newIndex];
-
-        if (newIndex === hints.length || breakInterval)
-            clearInterval(this.intervalID);
 
         if (nextHint)
             this.setState({
@@ -49,22 +42,15 @@ export default class Hints extends Component {
 
     render() {
         const { currentHint } = this.state,
-            { isShowing, showHints, isFirstGame } = this.props,
+            { isShowing, showHints } = this.props,
             className = `hints ${currentHint && currentHint.className} ${isShowing ? 'js-showing-hints' : ''}`;
-
-        if (!isShowing) 
-            clearInterval(this.intervalID);
 
         return (
             <div className={className}>
                 <div className="hints__controls">
-                    <button onClick={()=>{ this.getHint(-1, true); }}>Previous</button>
-                    <button onClick={()=>{ this.getHint(1, true); }}>Next</button>
-
-                    {!isFirstGame &&
-                        <button onClick={()=>{ this.getHint(0, true); showHints(false); }}>Hide</button>
-                    }
-                    
+                    <button onClick={()=>{ this.getHint(-1); }}>Previous</button>
+                    <button onClick={()=>{ this.getHint(1); }}>Next</button>
+                    <button onClick={()=>{ this.getHint(0); showHints(false); }}>Hide</button>
                 </div>
 
                 <div className="hints__message">{currentHint && currentHint.hint}</div>
