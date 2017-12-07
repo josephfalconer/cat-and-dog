@@ -18,7 +18,7 @@ const Space = props => {
     const Occupant = occupants[data.occupant];
 
     return (
-        <div className={`garden__space ${mainClassName}`} style={{fontSize: '14px'}} >
+        <div className={`garden__space ${mainClassName}`}>
             {Occupant && Occupant(data.className)}
         </div>
     );
