@@ -134,6 +134,8 @@ class Board extends Component {
     }
 
     fadeFoods = () => {
+        if (!this.isInGame) return;
+        
         const foodElements = document.getElementsByClassName('food');
 
         for (let i = 0; i < foodElements.length; i++) 
