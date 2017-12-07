@@ -49,10 +49,6 @@ class Human extends Player {
 
     componentWillUnmount() {
         this.isInGame = false;
-        this.doCleanUp();
-    }
-
-    doCleanUp = () => {
         clearInterval(this.intervalID);
         document.removeEventListener('keydown', this.handleKeyPress);
     }
@@ -138,7 +134,7 @@ class Human extends Player {
     	        <span className={className} style={style}></span>
 
                 {'ontouchstart' in document.documentElement &&
-                    <DirectionButtons moveHuman={this.handleMovement} />
+                    <DirectionButtons moveHuman={this.moveHumanForward} />
                 }
 
                 
