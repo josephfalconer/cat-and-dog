@@ -28,7 +28,7 @@ $shutter-edge-br: rgba(0,0,0,.275) solid 1px;
 	overflow: hidden;
 	background: darken($brown, 10%);
 
-	@include m(left) {
+	&--left {
 		left: 0;
 
 		.shutter__message {
@@ -38,7 +38,7 @@ $shutter-edge-br: rgba(0,0,0,.275) solid 1px;
 		}
 	}
 
-	@include m(right) {
+	&--right {
 		right: 0;
 
 		.shutter__message {
@@ -48,7 +48,7 @@ $shutter-edge-br: rgba(0,0,0,.275) solid 1px;
 		}
 	}
 
-	@include e(lining) {
+	&__lining {
 		position: absolute;
 		background: rgba(0,0,0,0.25);
 		z-index: 200;
@@ -82,6 +82,18 @@ $shutter-edge-br: rgba(0,0,0,.275) solid 1px;
 		}
 	}
 
+	&__inner {
+		&--left {
+			@extend %shutter-inner;
+			right: 0;
+		}
+
+		&--right {
+			@extend %shutter-inner;
+			left: 0;
+		}
+	}
+
 	&__message {
 		position: absolute;
 		top: 50%;
@@ -96,19 +108,6 @@ $shutter-edge-br: rgba(0,0,0,.275) solid 1px;
 		}
 	}
 }
-
-.shutter__inner {
-    			
-	@include m(left) {
-		@extend %shutter-inner;
-		right: 0;
-	}
-	@include m(right) {
-		@extend %shutter-inner;
-		left: 0;
-	}
-}
-
 
 .hints {
 	display: flex;
