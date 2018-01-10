@@ -9,7 +9,7 @@ class Robot extends Player {
 
     constructor(props) {
         super(props);
-        this.isStuck = false;
+        this.isBlocked = false;
         this.name = 'ROBOT';
         this.delay = props.delay;
         this.endTheGame = props.endTheGame;
@@ -47,15 +47,15 @@ class Robot extends Player {
     findPath = () => {
         if (!this.isInGame || this.props.gameSwitches.isGameOver) return;
 
-        if (this.isStuck) {
-            this.getRoundObstacle();
+        if (this.isBlocked) {
+            this.doBlockedMovement();
                 
         } else {
-            this.pursueHuman();
+            this.doNormalMovement();
         }
     }
 
-    getRoundObstacle = () => {
+    doBlockedMovement = () => {
         const { x, y, face } = this.state,
             newLeft = this.getLeft(face),
             validXY = this.checkMove(x, y, newLeft);
@@ -64,35 +64,51 @@ class Robot extends Player {
 
         if (validXY) {
             this.moveRobotForward(validXY, newLeft);
-            this.isStuck = false;
+            this.isBlocked = false;
 
             // attempt second movement to the right
             setTimeout(() => {
-                if (this.isInGame) this.moveRobotRight(newLeft);
+                if (this.isInGame) this.doBlockedRight(newLeft);
             }, this.delay / 2);
         }
     }
 
-    pursueHuman = () => {
-        // move on x axis
+    doBlockedRight = currentFace => {
+        const newRight = this.getRight(currentFace),
+            validXY = this.checkMove(this.state.x, this.state.y, newRight);
+
+        this.turn(newRight);
+
+        if (validXY) {
+            this.moveRobotForward(validXY, newRight);
+        } else {
+            this.isBlocked = true;
+        }
+    }
+
+    doNormalMovement = () => {
+        // if human's x position is different to robot's x position
         if (this.props.human.x !== this.state.x) 
-            this.isStuck = this.attemptStep('x');
+            // pursue on x axis
+            this.isBlocked = this.pursueHuman('x');
 
         setTimeout(() => {
             if (!this.isInGame) return;
 
-            // then y axis - with fresh data
+            // if human's y position is different to robot's y position
             if (this.props.human.y !== this.state.y) 
-                this.isStuck = this.attemptStep('y');
+                // pursue on y axis
+                this.isBlocked = this.pursueHuman('y');
 
         }, this.delay / 2);
     }
 
-    attemptStep = axis => {
+    pursueHuman = axis => {
         const { x, y } = this.state,
-            newDirection = axis === 'x' ? this.getFaceX(x) : this.getFaceY(y),
+            newDirection = axis === 'x' ? this.checkHumanPositionX(x) : this.checkHumanPositionY(y),
             validXY = this.checkMove(x, y, newDirection);
 
+        // turn robot whether can move or not
         if (this.isInGame)
             this.turn(newDirection);
 
@@ -104,11 +120,11 @@ class Robot extends Player {
         return true;
     }
 
-    getFaceX = x => {
+    checkHumanPositionX = x => {
         return this.props.human.x > x ? 'RIGHT' : 'LEFT';
     }
 
-    getFaceY = y => {
+    checkHumanPositionY = y => {
         return this.props.human.y > y ? 'DOWN' : 'UP';
     }
 
@@ -127,19 +143,6 @@ class Robot extends Player {
         } else {
             updatedSpaces = this.moveForward(x, y, face);
             this.updateSpaces(updatedSpaces);
-        }
-    }
-
-    moveRobotRight = currentFace => {
-        const newRight = this.getRight(currentFace),
-            validXY = this.checkMove(this.state.x, this.state.y, newRight);
-
-        this.turn(newRight);
-
-        if (validXY) {
-            this.moveRobotForward(validXY, newRight);
-        } else {
-            this.isStuck = true;
         }
     }
 
