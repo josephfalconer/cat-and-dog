@@ -64,14 +64,9 @@ class Board extends Component {
                     x: x,
                     y: y,
                     occupant: false,
-                    isEdge: false,
+                    isEdge: x === 0 || y === 0 || x === (width - 1) || y === (height - 1),
                     className: null
                 };
-
-                // garden edges
-                if (x === 0 || y === 0 || x === (width - 1) || y === (height - 1) ) {
-                    SPACES[x][y].isEdge = true;
-                } 
             }
         }
 
