@@ -14,6 +14,7 @@ class Robot extends Player {
         this.delay = props.delay;
         this.endTheGame = props.endTheGame;
         this.updateSpaces = props.updateSpaces;
+        this.isDoneTwoBlockedMoves = false;
     }
 
     static propTypes = {
@@ -48,52 +49,48 @@ class Robot extends Player {
         if (!this.isInGame || this.props.gameSwitches.isGameOver) return;
 
         if (this.isBlocked) {
-            this.doBlockedMovement();
+            this.isDoneTwoBlockedMoves = false;
+            this.doBlockedMove('LEFT');
                 
         } else {
-            this.doNormalMovement();
+            this.doNormalMove();
         }
     }
 
-    doBlockedMovement = () => {
+    doBlockedMove = direction => {
         const { x, y, face } = this.state,
-            newLeft = this.getLeft(face),
-            validXY = this.checkMove(x, y, newLeft);
+            newFace = direction == 'LEFT' ? this.getLeft(face) : this.getRight(face),
+            validXY = this.checkMove(x, y, newFace);
 
-        this.turn(newLeft);
+        this.turn(newFace);
 
-        if (validXY) {
-            this.moveRobotForward(validXY, newLeft);
-            this.isBlocked = false;
-
-            // attempt second movement to the right
-            setTimeout(() => {
-                if (this.isInGame) this.doBlockedRight(newLeft);
-            }, this.delay / 2);
-        }
-    }
-
-    doBlockedRight = currentFace => {
-        const newRight = this.getRight(currentFace),
-            validXY = this.checkMove(this.state.x, this.state.y, newRight);
-
-        this.turn(newRight);
-
-        if (validXY) {
-            this.moveRobotForward(validXY, newRight);
-        } else {
+        if (!validXY) {
             this.isBlocked = true;
+            return;
         }
+
+        this.isBlocked = false;
+        this.moveRobotForward(validXY, newFace);  
+
+        // prevent infinite setTimeout
+        if (this.isDoneTwoBlockedMoves) 
+            return;
+
+        setTimeout(() => {
+            this.isDoneTwoBlockedMoves = true;
+            this.doBlockedMove('RIGHT');
+        }, this.delay / 2); 
     }
 
-    doNormalMovement = () => {
+    doNormalMove = () => {
         // if human's x position is different to robot's x position
         if (this.props.human.x !== this.state.x) 
             // pursue on x axis
             this.isBlocked = this.pursueHuman('x');
 
         setTimeout(() => {
-            if (!this.isInGame) return;
+            if (!this.isInGame) 
+                return;
 
             // if human's y position is different to robot's y position
             if (this.props.human.y !== this.state.y) 
