@@ -1,10 +1,20 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-import Space from './Space';
+import { updateBoard } from '../actions/actions_board';
 import Human from './Human';
 import Robot from './Robot';
+import Space from './Space';
 
+
+const ROBOTS = [
+    {
+        startDelay: 1000,
+        start: [0, 0],
+        name: 'Rover'
+    }
+]
 
 class Board extends Component {
 
@@ -12,6 +22,7 @@ class Board extends Component {
         super(props);
         this.foodSpaces = [];
         this.noOfFood = 5;
+        this.updateBoard = bindActionCreators(updateBoard, props.dispatch);
     }
 
 	static propTypes = {
@@ -42,6 +53,7 @@ class Board extends Component {
     componentWillUnmount() {
         this.isInGame = false;
         clearInterval(this.intervalID);
+        this.updateBoard(null, 'RESET_START_POSITIONS');
     }
 
     updateSpaces = spaces => {
@@ -177,9 +189,18 @@ class Board extends Component {
                         </div>
                     );
                 })}
-
-                <Human spaces={spaces} updateSpaces={this.updateSpaces} endTheGame={endTheGame} />
-                <Robot spaces={spaces} updateSpaces={this.updateSpaces} endTheGame={endTheGame} />
+                <Human spaces={spaces} endTheGame={endTheGame} />
+                {ROBOTS.map((robot, index) => 
+                    <Robot 
+                        key={robot.name}
+                        index={index}
+                        spaces={spaces} 
+                        endTheGame={this.props.endTheGame} 
+                        start={robot.start}
+                        uniqueName={robot.name}
+                        startDelay={robot.startDelay}
+                    />
+                )}
             </div>
     	);
     }

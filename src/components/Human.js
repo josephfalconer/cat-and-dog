@@ -2,11 +2,10 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import * as BoardActionCreators from '../actions/actions_board';
 import * as StatsActionCreators from '../actions/actions_stats';
 import * as helpers from '../actions/helpers';
-import Player from './Player';
 import DirectionButtons from './DirectionButtons';
+import Player from './Player';
 
 
 class Human extends Player {
@@ -14,10 +13,8 @@ class Human extends Player {
     constructor(props) {
         super(props);
         this.name = 'HUMAN';
-        this.updateBoard = bindActionCreators(BoardActionCreators.updateBoard, props.dispatch);
         this.updateStats = bindActionCreators(StatsActionCreators.updateStats, props.dispatch);
         this.endTheGame = props.endTheGame;
-        this.updateSpaces = props.updateSpaces;
     }
 
     static propTypes = {
@@ -25,8 +22,7 @@ class Human extends Player {
         endTheGame: PropTypes.func.isRequired,
         gameSwitches: PropTypes.object.isRequired,
         spaces: PropTypes.array.isRequired,
-        human: PropTypes.object.isRequired,
-        updateSpaces: PropTypes.func.isRequired
+        robots: PropTypes.array.isRequired,
     }
 
     state = {
@@ -84,7 +80,8 @@ class Human extends Player {
 
     moveHumanForward = direction => {
         const validXY = this.checkMove(this.state.x, this.state.y, direction);
-        let updatedSpaces;
+        const { robots } = this.props;
+        let isDogNextSpace = true;
 
         if (this.isInGame)
             // always face attempted direction
@@ -96,14 +93,17 @@ class Human extends Player {
         if (validXY.occupant === 'FOOD') 
             this.updateEnergy(1);
 
-        if (validXY.occupant === 'ROBOT') {
-            this.endTheGame('You ran into the dog!')
-            return;
-        }
+        robots.forEach((robot) => {
+            if (robot.x === validXY.x && robot.y === validXY.y) {
+                this.endTheGame('You ran into the dog!')
+                isDogNextSpace = false;
+            }
+        });
 
-        updatedSpaces = this.moveForward(validXY.x, validXY.y, direction);
-        this.updateBoard({x: validXY.x, y: validXY.y}, 'UPDATE_HUMAN_POSITION');
-        this.updateSpaces(updatedSpaces);
+        if (isDogNextSpace) {
+            this.moveForward(validXY.x, validXY.y, direction);
+            this.updateBoard({x: validXY.x, y: validXY.y}, 'UPDATE_HUMAN_POSITION');
+        }        
     }
 
     updateEnergy = change => {
@@ -145,7 +145,7 @@ class Human extends Player {
 
 const mapStateToProps = state => (
     {
-        human: state.board.human,
+        robots: state.board.robots,
         stats: state.stats.stats,
         gameSwitches: state.game.switches
     }

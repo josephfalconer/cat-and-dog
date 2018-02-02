@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as GameActionCreators from '../actions/actions_game';
-import * as StatsActionCreators from '../actions/actions_stats';
+import { updateStats } from '../actions/actions_stats';
 import Board from '../components/Board';
 import Shutters from '../components/Shutters';
 import Hints from '../components/Hints';
@@ -19,7 +19,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.updateGame = bindActionCreators(GameActionCreators.updateGame, props.dispatch);
-        this.updateStats = bindActionCreators(StatsActionCreators.updateStats, props.dispatch);
+        this.updateStats = bindActionCreators(updateStats, props.dispatch);
         this.isFirstGame = true;
     }
 
@@ -65,9 +65,7 @@ class App extends Component {
             this.updateGame({ ...gameSwitches, isOpenShutters: true }, 'HIT_GAME_SWITCHES');
 
             // stop controls coming up until shutters complete transition
-            setTimeout(() => {
-                this.showControls(true);
-            }, 1000);
+            setTimeout(() => this.showControls(true), 1000);
         }, 5000);
     }
 

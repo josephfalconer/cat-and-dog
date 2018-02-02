@@ -1,19 +1,19 @@
 import { Component } from 'react';
+import { bindActionCreators } from 'redux';
 
 import * as helpers from '../actions/helpers';
+import { updateBoard } from '../actions/actions_board';
 
 
 export default class extends Component {
 
+    constructor(props) {
+        super(props);
+        this.updateBoard = bindActionCreators(updateBoard, props.dispatch);
+    }
+
     moveForward(x, y, newdirection){
         const spaceWidth = document.getElementById('sample-space').clientWidth;
-        let { spaces } = this.props;
-
-        if (spaces.length) {
-            spaces = helpers.removeOccupant(spaces, this.name);
-            spaces[x][y].occupant = this.name;
-            spaces[x][y].className = null;
-        }
 
         this.setState({
             ...this.state,
@@ -22,8 +22,6 @@ export default class extends Component {
             style: helpers.writeTransform(x * spaceWidth, y * spaceWidth),
             face: newdirection ? newdirection : this.state.face
         });
-
-        return spaces;
     }
 
     checkMove(x, y, direction) {

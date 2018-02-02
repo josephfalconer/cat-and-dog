@@ -11,19 +11,19 @@ class Robot extends Player {
         super(props);
         this.isBlocked = false;
         this.name = 'ROBOT';
-        this.delay = props.delay;
         this.endTheGame = props.endTheGame;
-        this.updateSpaces = props.updateSpaces;
         this.isDoneTwoBlockedMoves = false;
+        this.index = props.index;
     }
 
     static propTypes = {
+        index: PropTypes.number.isRequired,
         gameSwitches: PropTypes.object.isRequired,
         delay: PropTypes.number.isRequired,
         human: PropTypes.object.isRequired,
         endTheGame: PropTypes.func.isRequired,
         spaces: PropTypes.array.isRequired,
-        updateSpaces: PropTypes.func.isRequired
+        start: PropTypes.array.isRequired
     }
 
     state = {
@@ -32,11 +32,13 @@ class Robot extends Player {
     }
 
     componentDidMount() {
-        this.moveForward(0, 0, 'RIGHT');
+        const { start, delay } = this.props;
+
+        this.moveForward(start[0], start[1], 'RIGHT');
         this.isInGame = true;
 
         // set movement interval
-        this.intervalID = setInterval(this.findPath, this.delay);
+        this.intervalID = setInterval(this.findPath, delay);
     }
 
     componentWillUnmount() {
@@ -46,7 +48,9 @@ class Robot extends Player {
     }
 
     findPath = () => {
-        if (!this.isInGame || this.props.gameSwitches.isGameOver) return;
+        if (!this.isInGame || this.props.gameSwitches.isGameOver) {
+            return;
+        }
 
         if (this.isBlocked) {
             this.isDoneTwoBlockedMoves = false;
@@ -59,7 +63,7 @@ class Robot extends Player {
 
     doBlockedMove = direction => {
         const { x, y, face } = this.state,
-            newFace = direction == 'LEFT' ? this.getLeft(face) : this.getRight(face),
+            newFace = direction === 'LEFT' ? this.getLeft(face) : this.getRight(face),
             validXY = this.checkMove(x, y, newFace);
 
         this.turn(newFace);
@@ -79,7 +83,7 @@ class Robot extends Player {
         setTimeout(() => {
             this.isDoneTwoBlockedMoves = true;
             this.doBlockedMove('RIGHT');
-        }, this.delay / 2); 
+        }, this.props.delay / 2); 
     }
 
     doNormalMove = () => {
@@ -97,7 +101,7 @@ class Robot extends Player {
                 // pursue on y axis
                 this.isBlocked = this.pursueHuman('y');
 
-        }, this.delay / 2);
+        }, this.props.delay / 2);
     }
 
     pursueHuman = axis => {
@@ -126,21 +130,22 @@ class Robot extends Player {
     }
 
     turn = direction => {
+        console.log(direction);
         if (this.isInGame)
             this.setState({ ...this.state, face: direction });
     }
 
     moveRobotForward = (nextSpace, face) => {
-        const { x, y, occupant } = nextSpace;
-        let updatedSpaces;
+        const { x, y } = nextSpace,
+            { human } = this.props;
 
-        if (occupant === 'HUMAN') {
-            this.endTheGame('The dog caught you!');
-            
-        } else {
-            updatedSpaces = this.moveForward(x, y, face);
-            this.updateSpaces(updatedSpaces);
+        if (x === human.x && y === human.y) {
+            this.endTheGame('A dog caught you!');
+            return;
         }
+
+        this.updateBoard([x, y, this.index], 'UPDATE_ROBOT_POSITION');
+        this.moveForward(x, y, face);
     }
 
     getLeft = face => {

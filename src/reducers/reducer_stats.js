@@ -9,7 +9,7 @@ const initialState = {
 	}
 }
 
-export default function Timer(state=initialState, action) {
+export default function Stats(state=initialState, action) {
 
 	switch (action.type) {
 		case StatsActionTypes.UPDATE_STATS:
