@@ -130,7 +130,6 @@ class Robot extends Player {
     }
 
     turn = direction => {
-        console.log(direction);
         if (this.isInGame)
             this.setState({ ...this.state, face: direction });
     }
