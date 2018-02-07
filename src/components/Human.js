@@ -7,9 +7,7 @@ import * as helpers from '../actions/helpers';
 import DirectionButtons from './DirectionButtons';
 import Player from './Player';
 
-
 class Human extends Player {
-
     constructor(props) {
         super(props);
         this.name = 'HUMAN';
@@ -50,7 +48,9 @@ class Human extends Player {
     }
 
     handleKeyPress = e => {
-        if (this.props.gameSwitches.isGameOver) return;
+        if (this.props.gameSwitches.isGameOver) {
+            return;
+        }
 
         let direction = null;
 
@@ -107,7 +107,9 @@ class Human extends Player {
     }
 
     updateEnergy = change => {
-        if (!this.isInGame || this.props.gameSwitches.isGameOver) return;
+        if (!this.isInGame || this.props.gameSwitches.isGameOver) {
+            return;
+        }
 
         const { stats } = this.props;
             
@@ -124,11 +126,9 @@ class Human extends Player {
     }
 
     render() {
-    	const { style, face } = this.state,
-            className = `cat cat-${face.toLowerCase()}`;
-            
+    	const { style, face } = this.state;
+        const className = `cat cat-${face.toLowerCase()}`;
         style.backgroundSize = '75%';
-
     	return (
             <div>
     	        <span className={className} style={style}></span>

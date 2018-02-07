@@ -4,9 +4,7 @@ import { bindActionCreators } from 'redux';
 import * as helpers from '../actions/helpers';
 import { updateBoard } from '../actions/actions_board';
 
-
 export default class extends Component {
-
     constructor(props) {
         super(props);
         this.updateBoard = bindActionCreators(updateBoard, props.dispatch);

@@ -1,11 +1,8 @@
 import React, { PropTypes } from 'react';
 
-
 const DirectionButtons = props => {
-
-	const buttonNames = ['up', 'down', 'left', 'right'],
-		{ moveHuman } = props;
-
+	const buttonNames = ['up', 'down', 'left', 'right'];
+	const { moveHuman } = props;
 	return (
 		<div className='directions'>
 			<div className='directions__inner'>

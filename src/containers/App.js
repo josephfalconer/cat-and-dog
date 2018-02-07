@@ -13,9 +13,7 @@ import GameControls from '../components/GameControls';
 
 import '../css/garden.css'; 
 
-
 class App extends Component {
-
     constructor(props) {
         super(props);
         this.updateGame = bindActionCreators(GameActionCreators.updateGame, props.dispatch);
@@ -38,8 +36,9 @@ class App extends Component {
     endTheGame = message => {
         const { gameSwitches } = this.props;
 
-        if (this.isFirstGame)
+        if (this.isFirstGame) {
             this.isFirstGame = false;
+        }
 
         // freeze game, display reason, change bg colour
         this.updateGame({ ...gameSwitches, isGameOver: true }, 'HIT_GAME_SWITCHES');
@@ -78,38 +77,28 @@ class App extends Component {
     }
 
     render() {
-        const { gameSwitches, isShowingStats, message } = this.props,
-            { isShowingHints, isShowingControls } = this.state,
-            backgroundStyle = { backgroundColor: gameSwitches.isGameOver ? '#ad9549' : '#fff'};
+        const { gameSwitches, isShowingStats, message } = this.props;
+        const { isShowingHints, isShowingControls } = this.state;
+        const backgroundStyle = { backgroundColor: gameSwitches.isGameOver ? '#ad9549' : '#fff'};
 
         return (
             <div className="main-container">
-
                 <div className="garden__bg" style={backgroundStyle}></div>
-
                 <div className="garden__container">
-
                     <div id="sample-space" className="garden__space garden__space--sample"></div>
-
                     {gameSwitches.isInGame && <Board width={10} height={8} endTheGame={this.endTheGame} />}
                     {gameSwitches.isInGame && <LiveInfo endTheGame={this.endTheGame} />}
-
                     {isShowingStats && <EndStats />}
-
                     <div className={`garden__message ${gameSwitches.isGameOver ? 'js-visible-message' : ''}`}>
                         <p>{message}</p>
                     </div>
-
                 </div>
-
                 <Shutters isOpen={gameSwitches.isOpenShutters} />
-
                 <Hints
                     isShowing={isShowingHints}
                     showHints={this.showHints}
                     isFirstGame={this.isFirstGame}
                 />
-
                 <GameControls 
                     isShowing={isShowingControls}
                     isShowingHints={isShowingHints} 
@@ -117,7 +106,6 @@ class App extends Component {
                     showControls={this.showControls}
                     isFirstGame={this.isFirstGame}
                 />                
-
             </div>
         );
     }    

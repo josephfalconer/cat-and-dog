@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 
-
 const hints = [
     { hint: "Get the yummy food.", className: "get-food" },
     { hint: "If you get too tired it's game over.", className: "too-tired" },
@@ -11,9 +10,7 @@ const hints = [
     { hint: "Ready?", className: 'get-ready' }
 ];
 
-
 export default class Hints extends Component {
-
     static propTypes = {
         showHints: PropTypes.func.isRequired,
         isShowing: PropTypes.bool.isRequired,
@@ -29,8 +26,8 @@ export default class Hints extends Component {
     }
 
     getHint = increment => {
-        const newIndex = this.state.hintIndex + increment,
-            nextHint = hints[newIndex];
+        const newIndex = this.state.hintIndex + increment;
+        const nextHint = hints[newIndex];
 
         if (nextHint)
             this.setState({
@@ -41,10 +38,9 @@ export default class Hints extends Component {
     }
 
     render() {
-        const { currentHint } = this.state,
-            { isShowing, showHints } = this.props,
-            className = `hints ${currentHint && currentHint.className} ${isShowing ? 'js-showing-hints' : ''}`;
-
+        const { currentHint } = this.state;
+        const { isShowing, showHints } = this.props;
+        const className = `hints ${currentHint && currentHint.className} ${isShowing ? 'js-showing-hints' : ''}`;
         return (
             <div className={className}>
                 <div className="hints__controls">

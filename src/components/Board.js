@@ -7,7 +7,6 @@ import Human from './Human';
 import Robot from './Robot';
 import Space from './Space';
 
-
 const ROBOTS = [
     {
         startDelay: 1000,
@@ -17,7 +16,6 @@ const ROBOTS = [
 ]
 
 class Board extends Component {
-
     constructor(props) {
         super(props);
         this.foodSpaces = [];
@@ -57,8 +55,9 @@ class Board extends Component {
     }
 
     updateSpaces = spaces => {
-        if (this.isInGame) 
+        if (this.isInGame) {
             this.setState({ ...this.state, spaces: spaces });
+        }
     }
 
 	layoutSpaces = () => {
@@ -67,11 +66,8 @@ class Board extends Component {
         
         // create 2d array of x/y spaces
         for (let x = 0; x < width; x++) {
-
             SPACES[x] = [];
-
             for (let y = 0; y < height; y++) {
-
                 SPACES[x][y] = {
                     x: x,
                     y: y,
@@ -84,7 +80,6 @@ class Board extends Component {
 
         SPACES[width - 1][height - 1].occupant = 'HUMAN';
         SPACES[0][0].occupant = 'ROBOT';
-
         return SPACES;
 	}
 
@@ -92,15 +87,13 @@ class Board extends Component {
         const noOfObstructions = 10;
 
         for (let i = 0; i < noOfObstructions; i++) {
-
-            let ranX = Math.floor(Math.random() * this.props.width), 
-                ranY = Math.floor(Math.random() * this.props.height);
+            let ranX = Math.floor(Math.random() * this.props.width);
+            let ranY = Math.floor(Math.random() * this.props.height);
 
             if (!spaces[ranX][ranY].isEdge) {
                 spaces[ranX][ranY].occupant = 'OBSTRUCTION';
             }   
         }
-
         return spaces;
     }
 
@@ -114,46 +107,48 @@ class Board extends Component {
                 } 
             }
         }
-
         return freeSpaces
     }
 
     setFood = () => {
-        if (!this.isInGame || this.props.gameSwitches.isGameOver) return;
+        if (!this.isInGame || this.props.gameSwitches.isGameOver) {
+            return;
+        }
 
         const { spaces } = this.state;
 
         for (var i = 0; i < this.noOfFood; i++) {
-
-            let ran = Math.floor(Math.random() * this.freeSpaces.length),
-                foodSpace = this.freeSpaces[ran];
-
+            let ran = Math.floor(Math.random() * this.freeSpaces.length);
+            let foodSpace = this.freeSpaces[ran];
             this.foodSpaces.push(foodSpace);
-
             spaces[foodSpace.x][foodSpace.y].occupant = 'FOOD';
             spaces[foodSpace.x][foodSpace.y].className = this.getFoodType();
         }
 
         this.updateSpaces(spaces);
-
         setTimeout(this.fadeFoods, 100);
         setTimeout(this.removeFoods, 5000);
     }
 
     fadeFoods = () => {
-        if (!this.isInGame) return;
+        if (!this.isInGame) {
+            return;
+        }
         
         const foodElements = document.getElementsByClassName('food');
 
-        for (let i = 0; i < foodElements.length; i++) 
+        for (let i = 0; i < foodElements.length; i++) {
             foodElements[i].classList.add('fade');
+        }
     }
 
     removeFoods = () => {
-        if (!this.isInGame) return;
+        if (!this.isInGame) {
+            return;
+        }
 
-        const { spaces } = this.state,
-            { foodSpaces } = this;
+        const { spaces } = this.state;
+        const { foodSpaces } = this;
 
         for (let i = 0; i < foodSpaces.length; i++) {
             spaces[foodSpaces[i].x][foodSpaces[i].y].occupant = false;
@@ -163,16 +158,14 @@ class Board extends Component {
     }
 
     getFoodType = () => {
-        const foods = [ 'fish', 'meat', 'steak', 'slice', 'drumstick', 'salami', 'sausage' ],
-            ran = Math.floor(Math.random() * foods.length);
-
+        const foods = [ 'fish', 'meat', 'steak', 'slice', 'drumstick', 'salami', 'sausage' ];
+        const ran = Math.floor(Math.random() * foods.length);
         return `food ${foods[ran]}`;
     }
 
     render() {
-        const { spaces } = this.state,
-            { endTheGame } = this.props;
-
+        const { spaces } = this.state;
+        const { endTheGame } = this.props;
     	return (
     		<div className="garden">
                 {spaces && spaces.map((column, index) => {

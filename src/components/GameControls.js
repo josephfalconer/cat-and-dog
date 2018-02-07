@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import * as GameActionCreators from '../actions/actions_game';
 import * as StatsActionCreators from '../actions/actions_stats';
 
-
 class GameControls extends Component {
     constructor(props) {
         super(props);
@@ -26,11 +25,9 @@ class GameControls extends Component {
         const { showHints, showControls, isFirstGame } = this.props;
         
         showControls(false);
-
         setTimeout(() => {
             showHints(false);
         }, 100);
-        
         this.updateGame('Starting a new game...', 'UPDATE_SHUTTERS_MESSAGE');
 
         if (isFirstGame) {

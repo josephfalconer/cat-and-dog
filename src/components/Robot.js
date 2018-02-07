@@ -4,9 +4,7 @@ import { connect } from 'react-redux';
 import * as helpers from '../actions/helpers';
 import Player from './Player';
 
-
 class Robot extends Player {
-
     constructor(props) {
         super(props);
         this.isBlocked = false;
@@ -62,9 +60,9 @@ class Robot extends Player {
     }
 
     doBlockedMove = direction => {
-        const { x, y, face } = this.state,
-            newFace = direction === 'LEFT' ? this.getLeft(face) : this.getRight(face),
-            validXY = this.checkMove(x, y, newFace);
+        const { x, y, face } = this.state;
+        const newFace = direction === 'LEFT' ? this.getLeft(face) : this.getRight(face);
+        const validXY = this.checkMove(x, y, newFace);
 
         this.turn(newFace);
 
@@ -77,37 +75,36 @@ class Robot extends Player {
         this.moveRobotForward(validXY, newFace);  
 
         // prevent infinite setTimeout
-        if (this.isDoneTwoBlockedMoves) 
-            return;
-
-        setTimeout(() => {
-            this.isDoneTwoBlockedMoves = true;
-            this.doBlockedMove('RIGHT');
-        }, this.props.delay / 2); 
+        if (!this.isDoneTwoBlockedMoves) {
+            setTimeout(() => {
+                this.isDoneTwoBlockedMoves = true;
+                this.doBlockedMove('RIGHT');
+            }, this.props.delay / 2); 
+        }
     }
 
     doNormalMove = () => {
         // if human's x position is different to robot's x position
-        if (this.props.human.x !== this.state.x) 
+        if (this.props.human.x !== this.state.x) {
             // pursue on x axis
             this.isBlocked = this.pursueHuman('x');
-
+        }
+            
         setTimeout(() => {
-            if (!this.isInGame) 
+            if (!this.isInGame) {
                 return;
-
+            }
             // if human's y position is different to robot's y position
             if (this.props.human.y !== this.state.y) 
                 // pursue on y axis
                 this.isBlocked = this.pursueHuman('y');
-
         }, this.props.delay / 2);
     }
 
     pursueHuman = axis => {
-        const { x, y } = this.state,
-            newDirection = axis === 'x' ? this.checkHumanPositionX(x) : this.checkHumanPositionY(y),
-            validXY = this.checkMove(x, y, newDirection);
+        const { x, y } = this.state;
+        const newDirection = axis === 'x' ? this.checkHumanPositionX(x) : this.checkHumanPositionY(y);
+        const validXY = this.checkMove(x, y, newDirection);
 
         // turn robot whether can move or not
         if (this.isInGame)
@@ -117,7 +114,6 @@ class Robot extends Player {
             this.moveRobotForward(validXY, newDirection);
             return false;
         }
-
         return true;
     }
 
@@ -130,13 +126,14 @@ class Robot extends Player {
     }
 
     turn = direction => {
-        if (this.isInGame)
+        if (this.isInGame) {
             this.setState({ ...this.state, face: direction });
+        }
     }
 
     moveRobotForward = (nextSpace, face) => {
-        const { x, y } = nextSpace,
-            { human } = this.props;
+        const { x, y } = nextSpace;
+        const { human } = this.props;
 
         if (x === human.x && y === human.y) {
             this.endTheGame('A dog caught you!');
@@ -154,7 +151,6 @@ class Robot extends Player {
             DOWN: 'RIGHT',
             LEFT: 'DOWN'
         }
-
         return lefts[face];
     }
 
@@ -165,16 +161,13 @@ class Robot extends Player {
             DOWN: 'LEFT',
             LEFT: 'UP'
         }
-
         return rights[face];
     }    
 
     render() {
-    	const { style, face } = this.state,
-            className = `dog dog-${face.toLowerCase()}`;
-
+    	const { style, face } = this.state;
+        const className = `dog dog-${face.toLowerCase()}`;
     	style.backgroundSize = '95%';
-
     	return (
 	        <span className={className} style={style}></span>
 	    )

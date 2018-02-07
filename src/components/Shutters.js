@@ -1,18 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-
 class Shutters extends Component {
-
     static propTypes = {
         isOpen: PropTypes.bool.isRequired,
         shuttersMessage: PropTypes.string.isRequired
     }
 
     render() {
-        const { isOpen, shuttersMessage } = this.props,
-            className = `shutters ${isOpen ? 'js-open-shutters' : ''}`;
-
+        const { isOpen, shuttersMessage } = this.props;
+        const className = `shutters ${isOpen ? 'js-open-shutters' : ''}`;
         return (
             <div className={className}>
                 <div className="shutter shutter--left" >
@@ -48,4 +45,3 @@ const mapStateToProps = state => (
 );
 
 export default connect(mapStateToProps)(Shutters);
-

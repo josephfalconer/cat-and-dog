@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 class EndStats extends Component {
-
     static PropTypes = {
         stats: PropTypes.object.isRequired
     }
@@ -13,7 +12,6 @@ class EndStats extends Component {
 
     render() {
         const { stats } = this.props;
-
         return (
             <div className="stats">
                 <div className="stats__text">

@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import * as StatsActionCreators from '../actions/actions_stats';
 
 class LiveInfo extends Component {
-
     constructor(props) {
         super(props);
         this.updateStats = bindActionCreators(StatsActionCreators.updateStats, props.dispatch);
@@ -33,9 +32,7 @@ class LiveInfo extends Component {
 
     countDown = () => {
         if (!this.isInGame || this.props.gameSwitches.isGameOver) return
-
         const { secondsRemaining } = this.state;
-
         if (secondsRemaining === 0) {
             this.props.endTheGame('You finished 60 seconds, well done!');
 
