@@ -27,7 +27,7 @@ class Human extends Player {
         style: helpers.writeTransform(),
         face: 'LEFT'
     }
-    
+
     componentDidMount() {
         this.isInGame = true;
 
@@ -55,22 +55,22 @@ class Human extends Player {
         let direction = null;
 
         switch (e.which) {
-            case 37: 
+            case 37:
                 direction = 'LEFT';
                 break;
-                
+
             case 38:
                 direction = 'UP';
                 break;
-                
+
             case 39:
                 direction = 'RIGHT';
                 break;
-                
+
             case 40:
                 direction = 'DOWN';
                 break;
-                
+
             default:
                 return false;
         }
@@ -86,11 +86,11 @@ class Human extends Player {
         if (this.isInGame)
             // always face attempted direction
             this.setState({ ...this.state, face: direction });
-    
-        if (!validXY) 
+
+        if (!validXY)
             return;
 
-        if (validXY.occupant === 'FOOD') 
+        if (validXY.occupant === 'FOOD')
             this.updateEnergy(1);
 
         robots.forEach((robot) => {
@@ -103,7 +103,7 @@ class Human extends Player {
         if (isDogNextSpace) {
             this.moveForward(validXY.x, validXY.y, direction);
             this.updateBoard({x: validXY.x, y: validXY.y}, 'UPDATE_HUMAN_POSITION');
-        }        
+        }
     }
 
     updateEnergy = change => {
@@ -112,7 +112,7 @@ class Human extends Player {
         }
 
         const { stats } = this.props;
-            
+
         if (stats.energy === 0) {
             this.endTheGame('You ran out of energy!');
             return;
@@ -137,7 +137,7 @@ class Human extends Player {
                     <DirectionButtons moveHuman={this.moveHumanForward} />
                 }
 
-                
+
             </div>
 	    )
     }
@@ -145,6 +145,7 @@ class Human extends Player {
 
 const mapStateToProps = state => (
     {
+        spaces: state.board.spaces,
         robots: state.board.robots,
         stats: state.stats.stats,
         gameSwitches: state.game.switches

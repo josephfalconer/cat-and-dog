@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import { updateBoard } from '../actions/actions_board';
 import Human from './Human';
@@ -20,7 +19,6 @@ class Board extends Component {
         super(props);
         this.foodSpaces = [];
         this.noOfFood = 5;
-        this.updateBoard = bindActionCreators(updateBoard, props.dispatch);
     }
 
 	static propTypes = {
@@ -41,7 +39,7 @@ class Board extends Component {
         let SPACES = this.layoutSpaces();
         SPACES = this.setObstructions(SPACES);
         this.freeSpaces = this.updateFreeSpaces(SPACES);
-        this.updateSpaces(SPACES);
+        this.props.updateBoard(SPACES, 'UPDATE_SPACES');
 
         // set food after spaces ready
         setTimeout(this.setFood, 100);
@@ -51,19 +49,13 @@ class Board extends Component {
     componentWillUnmount() {
         this.isInGame = false;
         clearInterval(this.intervalID);
-        this.updateBoard(null, 'RESET_START_POSITIONS');
-    }
-
-    updateSpaces = spaces => {
-        if (this.isInGame) {
-            this.setState({ ...this.state, spaces: spaces });
-        }
+        this.props.updateBoard(null, 'RESET_START_POSITIONS');
     }
 
 	layoutSpaces = () => {
 		const { width, height } = this.props;
         let SPACES = [];
-        
+
         // create 2d array of x/y spaces
         for (let x = 0; x < width; x++) {
             SPACES[x] = [];
@@ -92,7 +84,7 @@ class Board extends Component {
 
             if (!spaces[ranX][ranY].isEdge) {
                 spaces[ranX][ranY].occupant = 'OBSTRUCTION';
-            }   
+            }
         }
         return spaces;
     }
@@ -104,18 +96,18 @@ class Board extends Component {
             for (let y = 0; y < spaces[x].length; y++) {
                 if (!spaces[x][y].occupant) {
                     freeSpaces.push({ x: x, y: y });
-                } 
+                }
             }
         }
         return freeSpaces
     }
 
     setFood = () => {
-        if (!this.isInGame || this.props.gameSwitches.isGameOver) {
+        const { spaces } = this.props;
+
+        if (!this.isInGame || this.props.gameSwitches.isGameOver || !spaces.length) {
             return;
         }
-
-        const { spaces } = this.state;
 
         for (var i = 0; i < this.noOfFood; i++) {
             let ran = Math.floor(Math.random() * this.freeSpaces.length);
@@ -125,7 +117,7 @@ class Board extends Component {
             spaces[foodSpace.x][foodSpace.y].className = this.getFoodType();
         }
 
-        this.updateSpaces(spaces);
+        this.props.updateBoard(spaces, 'UPDATE_SPACES');
         setTimeout(this.fadeFoods, 100);
         setTimeout(this.removeFoods, 5000);
     }
@@ -134,7 +126,7 @@ class Board extends Component {
         if (!this.isInGame) {
             return;
         }
-        
+
         const foodElements = document.getElementsByClassName('food');
 
         for (let i = 0; i < foodElements.length; i++) {
@@ -147,13 +139,13 @@ class Board extends Component {
             return;
         }
 
-        const { spaces } = this.state;
+        const { spaces } = this.props;
         const { foodSpaces } = this;
 
         for (let i = 0; i < foodSpaces.length; i++) {
             spaces[foodSpaces[i].x][foodSpaces[i].y].occupant = false;
             spaces[foodSpaces[i].x][foodSpaces[i].y].className = null;
-            this.updateSpaces(spaces);
+            this.props.updateBoard(spaces, 'UPDATE_SPACES');
         }
     }
 
@@ -164,11 +156,14 @@ class Board extends Component {
     }
 
     render() {
-        const { spaces } = this.state;
-        const { endTheGame } = this.props;
+        const { spaces, endTheGame } = this.props;
+        // console.log(spaces);
+        // if (! spaces.length) {
+        //     return null;
+        // }
     	return (
     		<div className="garden">
-                {spaces && spaces.map((column, index) => {
+                {spaces.length && spaces.map((column, index) => {
                     return (
                         <div className="garden__column" key={index}>
                             {column.map((space, index) => {
@@ -182,13 +177,12 @@ class Board extends Component {
                         </div>
                     );
                 })}
-                <Human spaces={spaces} endTheGame={endTheGame} />
-                {ROBOTS.map((robot, index) => 
-                    <Robot 
+                <Human endTheGame={endTheGame} />
+                {ROBOTS.map((robot, index) =>
+                    <Robot
                         key={robot.name}
                         index={index}
-                        spaces={spaces} 
-                        endTheGame={this.props.endTheGame} 
+                        endTheGame={this.props.endTheGame}
                         start={robot.start}
                         uniqueName={robot.name}
                         startDelay={robot.startDelay}
@@ -201,9 +195,15 @@ class Board extends Component {
 
 const mapStateToProps = state => (
     {
+        spaces: state.board.spaces,
         gameSwitches: state.game.switches,
         human: state.board.human
     }
 );
 
-export default connect(mapStateToProps)(Board);
+const mapDispatchToProps = dispatch => ({
+    updateBoard: dispatch(updateBoard)
+    }
+)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Board);

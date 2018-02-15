@@ -53,7 +53,7 @@ class Robot extends Player {
         if (this.isBlocked) {
             this.isDoneTwoBlockedMoves = false;
             this.doBlockedMove('LEFT');
-                
+
         } else {
             this.doNormalMove();
         }
@@ -72,14 +72,14 @@ class Robot extends Player {
         }
 
         this.isBlocked = false;
-        this.moveRobotForward(validXY, newFace);  
+        this.moveRobotForward(validXY, newFace);
 
         // prevent infinite setTimeout
         if (!this.isDoneTwoBlockedMoves) {
             setTimeout(() => {
                 this.isDoneTwoBlockedMoves = true;
                 this.doBlockedMove('RIGHT');
-            }, this.props.delay / 2); 
+            }, this.props.delay / 2);
         }
     }
 
@@ -89,13 +89,13 @@ class Robot extends Player {
             // pursue on x axis
             this.isBlocked = this.pursueHuman('x');
         }
-            
+
         setTimeout(() => {
             if (!this.isInGame) {
                 return;
             }
             // if human's y position is different to robot's y position
-            if (this.props.human.y !== this.state.y) 
+            if (this.props.human.y !== this.state.y)
                 // pursue on y axis
                 this.isBlocked = this.pursueHuman('y');
         }, this.props.delay / 2);
@@ -162,7 +162,7 @@ class Robot extends Player {
             LEFT: 'UP'
         }
         return rights[face];
-    }    
+    }
 
     render() {
     	const { style, face } = this.state;
@@ -176,6 +176,7 @@ class Robot extends Player {
 
 const mapStateToProps = state => (
     {
+        spaces: state.board.spaces,
         gameSwitches: state.game.switches,
         delay: state.game.difficulty,
         human: state.board.human,
