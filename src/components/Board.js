@@ -157,10 +157,6 @@ class Board extends Component {
 
     render() {
         const { spaces, endTheGame } = this.props;
-        // console.log(spaces);
-        // if (! spaces.length) {
-        //     return null;
-        // }
     	return (
     		<div className="garden">
                 {spaces.length && spaces.map((column, index) => {
@@ -201,9 +197,6 @@ const mapStateToProps = state => (
     }
 );
 
-const mapDispatchToProps = dispatch => ({
-    updateBoard: dispatch(updateBoard)
-    }
-)
-
-export default connect(mapStateToProps, mapDispatchToProps)(Board);
+export default connect(mapStateToProps, {
+    updateBoard
+})(Board);

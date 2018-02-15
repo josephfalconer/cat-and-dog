@@ -14,7 +14,6 @@ export default function Board(state=initialState, action) {
 
 	switch (action.type) {
 		case BoardActionTypes.UPDATE_SPACES:
-			console.log('reducer', action.data);
 			return {
 				...state,
 				spaces: action.data
