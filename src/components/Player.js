@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import { bindActionCreators } from 'redux';
 
 import * as helpers from '../actions/helpers';
 
@@ -9,6 +8,7 @@ export default class extends Component {
         const { spaces } = this.props;
 
         if (spaces.length && spaces[x][y].occupant === 'FOOD') {
+            console.log(x, y);
             spaces[x][y].occupant = false;
             this.props.updateBoard(spaces, 'UPDATE_SPACES');
         }

@@ -28,10 +28,6 @@ class Board extends Component {
         gameSwitches: PropTypes.object.isRequired
 	}
 
-    state = {
-        spaces: []
-    }
-
 	componentDidMount() {
         this.isInGame = true;
 
@@ -157,6 +153,7 @@ class Board extends Component {
 
     render() {
         const { spaces, endTheGame } = this.props;
+
     	return (
     		<div className="garden">
                 {spaces.length && spaces.map((column, index) => {

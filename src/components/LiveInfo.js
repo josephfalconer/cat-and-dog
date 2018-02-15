@@ -1,15 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import * as StatsActionCreators from '../actions/actions_stats';
+import { updateStats } from '../actions/actions_stats';
 
 class LiveInfo extends Component {
-    constructor(props) {
-        super(props);
-        this.updateStats = bindActionCreators(StatsActionCreators.updateStats, props.dispatch);
-    }
-
     static propTypes = {
         stats: PropTypes.object.isRequired,
         endTheGame: PropTypes.func.isRequired,
@@ -33,11 +27,11 @@ class LiveInfo extends Component {
     countDown = () => {
         if (!this.isInGame || this.props.gameSwitches.isGameOver) return
         const { secondsRemaining } = this.state;
+
         if (secondsRemaining === 0) {
             this.props.endTheGame('You finished 60 seconds, well done!');
-
         } else {
-            this.updateStats({
+            this.props.updateStats({
                 ...this.props.stats,
                 secondsRemaining: secondsRemaining - 1
             }, 'UPDATE_STATS');
@@ -64,4 +58,6 @@ const mapStateToProps = state => (
     }
 )
 
-export default connect(mapStateToProps)(LiveInfo);
+export default connect(mapStateToProps, {
+    updateStats
+})(LiveInfo);
