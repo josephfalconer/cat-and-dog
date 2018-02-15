@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
+import { updateBoard } from '../actions/actions_board';
 import * as helpers from '../actions/helpers';
 import Player from './Player';
 
@@ -140,7 +141,7 @@ class Robot extends Player {
             return;
         }
 
-        this.updateBoard([x, y, this.index], 'UPDATE_ROBOT_POSITION');
+        this.props.updateBoard([x, y, this.index], 'UPDATE_ROBOT_POSITION');
         this.moveForward(x, y, face);
     }
 
@@ -183,4 +184,6 @@ const mapStateToProps = state => (
     }
 );
 
-export default connect(mapStateToProps)(Robot);
+export default connect(mapStateToProps, {
+    updateBoard
+})(Robot);

@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import * as StatsActionCreators from '../actions/actions_stats';
+import { updateStats } from '../actions/actions_stats';
+import { updateBoard } from '../actions/actions_board';
 import * as helpers from '../actions/helpers';
 import DirectionButtons from './DirectionButtons';
 import Player from './Player';
@@ -11,7 +11,6 @@ class Human extends Player {
     constructor(props) {
         super(props);
         this.name = 'HUMAN';
-        this.updateStats = bindActionCreators(StatsActionCreators.updateStats, props.dispatch);
         this.endTheGame = props.endTheGame;
     }
 
@@ -32,7 +31,7 @@ class Human extends Player {
         this.isInGame = true;
 
         this.moveForward(9, 7, 'LEFT');
-        this.updateBoard({x: 9, y: 7}, 'UPDATE_HUMAN_POSITION');
+        this.props.updateBoard({x: 9, y: 7}, 'UPDATE_HUMAN_POSITION');
 
         this.intervalID = setInterval(() => {
             this.updateEnergy(-1);
@@ -51,7 +50,6 @@ class Human extends Player {
         if (this.props.gameSwitches.isGameOver) {
             return;
         }
-
         let direction = null;
 
         switch (e.which) {
@@ -83,15 +81,18 @@ class Human extends Player {
         const { robots } = this.props;
         let isDogNextSpace = true;
 
-        if (this.isInGame)
+        if (this.isInGame) {
             // always face attempted direction
-            this.setState({ ...this.state, face: direction });
+            this.setState({ ...this.state, face: direction });            
+        }
 
-        if (!validXY)
+        if (!validXY) {
             return;
+        }
 
-        if (validXY.occupant === 'FOOD')
+        if (validXY.occupant === 'FOOD') {
             this.updateEnergy(1);
+        }
 
         robots.forEach((robot) => {
             if (robot.x === validXY.x && robot.y === validXY.y) {
@@ -102,7 +103,7 @@ class Human extends Player {
 
         if (isDogNextSpace) {
             this.moveForward(validXY.x, validXY.y, direction);
-            this.updateBoard({x: validXY.x, y: validXY.y}, 'UPDATE_HUMAN_POSITION');
+            this.props.updateBoard({x: validXY.x, y: validXY.y}, 'UPDATE_HUMAN_POSITION');
         }
     }
 
@@ -110,7 +111,6 @@ class Human extends Player {
         if (!this.isInGame || this.props.gameSwitches.isGameOver) {
             return;
         }
-
         const { stats } = this.props;
 
         if (stats.energy === 0) {
@@ -118,7 +118,7 @@ class Human extends Player {
             return;
         }
 
-        this.updateStats({
+        this.props.updateStats({
             ...stats,
             mealsEaten: change === 1 ? stats.mealsEaten + 1 : stats.mealsEaten,
             energy: stats.energy + change
@@ -132,12 +132,9 @@ class Human extends Player {
     	return (
             <div>
     	        <span className={className} style={style}></span>
-
                 {'ontouchstart' in document.documentElement &&
                     <DirectionButtons moveHuman={this.moveHumanForward} />
                 }
-
-
             </div>
 	    )
     }
@@ -145,11 +142,14 @@ class Human extends Player {
 
 const mapStateToProps = state => (
     {
-        spaces: state.board.spaces,
+        gameSwitches: state.game.switches,
         robots: state.board.robots,
-        stats: state.stats.stats,
-        gameSwitches: state.game.switches
+        spaces: state.board.spaces,
+        stats: state.stats.stats
     }
 );
 
-export default connect(mapStateToProps)(Human);
+export default connect(mapStateToProps, {
+    updateBoard,
+    updateStats
+})(Human);

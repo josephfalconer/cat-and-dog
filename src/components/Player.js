@@ -2,16 +2,16 @@ import { Component } from 'react';
 import { bindActionCreators } from 'redux';
 
 import * as helpers from '../actions/helpers';
-import { updateBoard } from '../actions/actions_board';
 
 export default class extends Component {
-    constructor(props) {
-        super(props);
-        this.updateBoard = bindActionCreators(updateBoard, props.dispatch);
-    }
-
     moveForward(x, y, newdirection){
         const spaceWidth = document.getElementById('sample-space').clientWidth;
+        const { spaces } = this.props;
+
+        if (spaces.length && spaces[x][y].occupant === 'FOOD') {
+            spaces[x][y].occupant = false;
+            this.props.updateBoard(spaces, 'UPDATE_SPACES');
+        }
 
         this.setState({
             ...this.state,
