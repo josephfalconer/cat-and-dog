@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { updateBoard } from '../actions/actions_board';
+import { updateBoard, updateBoardState } from '../actions/actions_board';
+import FoodLayer from './FoodLayer';
 import Human from './Human';
 import Robot from './Robot';
 import Space from './Space';
@@ -31,32 +32,30 @@ class Board extends Component {
 	componentDidMount() {
         this.isInGame = true;
 
-        // lay out spaces with obstructions
-        let SPACES = this.layoutSpaces();
-        SPACES = this.setObstructions(SPACES);
-        this.freeSpaces = this.updateFreeSpaces(SPACES);
-        this.props.updateBoard(SPACES, 'UPDATE_SPACES');
-
-        // set food after spaces ready
-        setTimeout(this.setFood, 100);
-        this.intervalID = setInterval(this.setFood, 10000);
+        const spaces = this.getSpaces();
+        const freeSpaces = this.getFreeSpaces(spaces);
+        // console.log(spaces);
+        this.props.updateBoardState({
+            spaces,
+            freeSpaces
+        });
 	}
 
     componentWillUnmount() {
         this.isInGame = false;
-        clearInterval(this.intervalID);
+        // clearInterval(this.intervalID);
         this.props.updateBoard(null, 'RESET_START_POSITIONS');
     }
 
-	layoutSpaces = () => {
+	getSpaces = () => {
 		const { width, height } = this.props;
-        let SPACES = [];
+        let spaces = [];
 
         // create 2d array of x/y spaces
         for (let x = 0; x < width; x++) {
-            SPACES[x] = [];
+            spaces[x] = [];
             for (let y = 0; y < height; y++) {
-                SPACES[x][y] = {
+                spaces[x][y] = {
                     x: x,
                     y: y,
                     occupant: false,
@@ -66,9 +65,11 @@ class Board extends Component {
             }
         }
 
-        SPACES[width - 1][height - 1].occupant = 'HUMAN';
-        SPACES[0][0].occupant = 'ROBOT';
-        return SPACES;
+        spaces[width - 1][height - 1].occupant = 'HUMAN';
+        spaces[0][0].occupant = 'ROBOT';
+        // add obstructions
+        spaces = this.setObstructions(spaces);
+        return spaces;
 	}
 
     setObstructions = spaces => {
@@ -85,74 +86,75 @@ class Board extends Component {
         return spaces;
     }
 
-    updateFreeSpaces = spaces => {
+    getFreeSpaces = spaces => {
         let freeSpaces = [];
 
         for (let x = 0; x < spaces.length; x++) {
             for (let y = 0; y < spaces[x].length; y++) {
                 if (!spaces[x][y].occupant) {
-                    freeSpaces.push({ x: x, y: y });
+                    freeSpaces.push([x, y]);
                 }
             }
         }
         return freeSpaces
     }
 
-    setFood = () => {
-        const { spaces } = this.props;
+    // setFood = () => {
+    //     const { spaces } = this.props;
 
-        if (!this.isInGame || this.props.gameSwitches.isGameOver || !spaces.length) {
-            return;
-        }
+    //     if (!this.isInGame || this.props.gameSwitches.isGameOver || !spaces.length) {
+    //         return;
+    //     }
 
-        for (var i = 0; i < this.noOfFood; i++) {
-            let ran = Math.floor(Math.random() * this.freeSpaces.length);
-            let foodSpace = this.freeSpaces[ran];
-            this.foodSpaces.push(foodSpace);
-            spaces[foodSpace.x][foodSpace.y].occupant = 'FOOD';
-            spaces[foodSpace.x][foodSpace.y].className = this.getFoodType();
-        }
+    //     for (var i = 0; i < this.noOfFood; i++) {
+    //         let ran = Math.floor(Math.random() * this.freeSpaces.length);
+    //         let foodSpace = this.freeSpaces[ran];
+    //         this.foodSpaces.push(foodSpace);
+    //         spaces[foodSpace.x][foodSpace.y].occupant = 'FOOD';
+    //         spaces[foodSpace.x][foodSpace.y].className = this.getFoodType();
+    //     }
 
-        this.props.updateBoard(spaces, 'UPDATE_SPACES');
-        setTimeout(this.fadeFoods, 100);
-        setTimeout(this.removeFoods, 5000);
-    }
+    //     this.props.updateBoardState({spaces: spaces});
+    //     setTimeout(this.fadeFoods, 100);
+    //     setTimeout(this.removeFoods, 5000);
+    // }
 
-    fadeFoods = () => {
-        if (!this.isInGame) {
-            return;
-        }
+    // fadeFoods = () => {
+    //     if (!this.isInGame) {
+    //         return;
+    //     }
 
-        const foodElements = document.getElementsByClassName('food');
+    //     const foodElements = document.getElementsByClassName('food');
 
-        for (let i = 0; i < foodElements.length; i++) {
-            foodElements[i].classList.add('fade');
-        }
-    }
+    //     for (let i = 0; i < foodElements.length; i++) {
+    //         foodElements[i].classList.add('fade');
+    //     }
+    // }
 
-    removeFoods = () => {
-        if (!this.isInGame) {
-            return;
-        }
+    // removeFoods = () => {
+    //     if (!this.isInGame) {
+    //         return;
+    //     }
 
-        const { spaces } = this.props;
-        const { foodSpaces } = this;
+    //     const { spaces } = this.props;
+    //     const { foodSpaces } = this;
 
-        for (let i = 0; i < foodSpaces.length; i++) {
-            spaces[foodSpaces[i].x][foodSpaces[i].y].occupant = false;
-            spaces[foodSpaces[i].x][foodSpaces[i].y].className = null;
-            this.props.updateBoard(spaces, 'UPDATE_SPACES');
-        }
-    }
+    //     for (let i = 0; i < foodSpaces.length; i++) {
+    //         spaces[foodSpaces[i].x][foodSpaces[i].y].occupant = false;
+    //         spaces[foodSpaces[i].x][foodSpaces[i].y].className = null;
+    //         this.props.updateBoardState({spaces: spaces});
+    //     }
+    // }
 
-    getFoodType = () => {
-        const foods = [ 'fish', 'meat', 'steak', 'slice', 'drumstick', 'salami', 'sausage' ];
-        const ran = Math.floor(Math.random() * foods.length);
-        return `food ${foods[ran]}`;
-    }
+    // getFoodType = () => {
+    //     const foods = [ 'fish', 'meat', 'steak', 'slice', 'drumstick', 'salami', 'sausage' ];
+    //     const ran = Math.floor(Math.random() * foods.length);
+    //     return `food ${foods[ran]}`;
+    // }
 
     render() {
         const { spaces, endTheGame } = this.props;
+        console.log(spaces);
 
     	return (
     		<div className="garden">
@@ -181,6 +183,7 @@ class Board extends Component {
                         startDelay={robot.startDelay}
                     />
                 )}
+                <FoodLayer />
             </div>
     	);
     }
@@ -195,5 +198,6 @@ const mapStateToProps = state => (
 );
 
 export default connect(mapStateToProps, {
-    updateBoard
+    updateBoard,
+    updateBoardState
 })(Board);

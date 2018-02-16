@@ -11,7 +11,7 @@ const initialState = {
 	shuttersMessage: 'Starting a new game...'
 }
 
-export default function Timer(state=initialState, action) {
+export default function Game(state=initialState, action) {
 
 	switch (action.type) {
 		case GameActionTypes.HIT_GAME_SWITCHES:

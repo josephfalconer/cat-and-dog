@@ -12,14 +12,3 @@ export function writeTransform(x = 0, y = 0) {
         transform: transform,
     }
 }
-
-export function removeOccupant(spaces, occupant) {
-    for (let x = 0; x < spaces.length; x++) {
-        for (let y = 0; y < spaces[y].length; y++) {
-            if (spaces[x][y].occupant === occupant)
-                // also removes food when human/robot leaves a space
-                spaces[x][y].occupant = false;
-        }
-    }
-    return spaces;
-}

@@ -8,7 +8,6 @@ export default class extends Component {
         const { spaces } = this.props;
 
         if (spaces.length && spaces[x][y].occupant === 'FOOD') {
-            console.log(x, y);
             spaces[x][y].occupant = false;
             this.props.updateBoard(spaces, 'UPDATE_SPACES');
         }
@@ -26,6 +25,8 @@ export default class extends Component {
         const { spaces } = this.props;
         let forwardX = x, forwardY = y, nextSpace;
 
+        console.log(spaces);
+
         if (direction === 'RIGHT') {
             forwardX++;
         } else if (direction === 'LEFT') {
@@ -42,13 +43,13 @@ export default class extends Component {
 
         nextSpace = spaces[forwardX][forwardY];
 
-        if (nextSpace.occupant === 'OBSTRUCTION') 
+        if (nextSpace.occupant === 'OBSTRUCTION')
             return false;
-        
-        return { 
-            x: forwardX, 
+
+        return {
+            x: forwardX,
             y: forwardY,
-            occupant: nextSpace.occupant 
+            occupant: nextSpace.occupant
         };
     }
 }

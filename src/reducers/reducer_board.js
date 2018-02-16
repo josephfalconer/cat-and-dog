@@ -5,14 +5,28 @@ export const robotsStart = [{x: 0, y: 0}]
 const humanStart = { x: 5, y: 4 }
 
 const initialState = {
-	spaces: [],
+	freeSpaces: [],
+	currentFoods: [],
 	human: humanStart,
-	robots: robotsStart
+	robots: robotsStart,
+	spaces: [],
 }
 
 export default function Board(state=initialState, action) {
 
 	switch (action.type) {
+		case BoardActionTypes.UPDATE_BOARD_STATE:
+			const { payload } = action;
+			let newBoardState = state;
+
+			for (let key in payload) {
+				if (payload.hasOwnProperty(key)) {
+					newBoardState[key] = payload[key];
+				}
+			}
+			return newBoardState;
+
+
 		case BoardActionTypes.UPDATE_SPACES:
 			return {
 				...state,
@@ -26,9 +40,9 @@ export default function Board(state=initialState, action) {
 			}
 
 		case BoardActionTypes.UPDATE_ROBOT_POSITION:
-			let newState = state;
-			newState.robots[action.data[2]] = {x: action.data[0], y: action.data[1]};
-			return newState;
+			let newRobotState = state;
+			newRobotState.robots[action.data[2]] = {x: action.data[0], y: action.data[1]};
+			return newRobotState;
 
 		case BoardActionTypes.RESET_START_POSITIONS:
 			return {
@@ -36,6 +50,7 @@ export default function Board(state=initialState, action) {
 				robots: robotsStart,
 				human: humanStart
 			};
+
 
 		default:
 			return state;

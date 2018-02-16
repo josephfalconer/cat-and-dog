@@ -33,9 +33,9 @@ class Human extends Player {
         this.moveForward(9, 7, 'LEFT');
         this.props.updateBoard({x: 9, y: 7}, 'UPDATE_HUMAN_POSITION');
 
-        this.intervalID = setInterval(() => {
-            this.updateEnergy(-1);
-        }, 2500);
+        // this.intervalID = setInterval(() => {
+        //     this.updateEnergy(-1);
+        // }, 2500);
 
         document.addEventListener('keydown', this.handleKeyPress);
     }
@@ -83,8 +83,10 @@ class Human extends Player {
 
         if (this.isInGame) {
             // always face attempted direction
-            this.setState({ ...this.state, face: direction });            
+            this.setState({ ...this.state, face: direction });
         }
+
+        console.log(validXY);
 
         if (!validXY) {
             return;
