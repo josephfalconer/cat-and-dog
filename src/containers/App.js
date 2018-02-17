@@ -10,7 +10,7 @@ import LiveInfo from '../components/LiveInfo';
 import EndStats from '../components/EndStats';
 import GameControls from '../components/GameControls';
 
-import '../css/garden.css'; 
+import '../scss/garden.css'; 
 
 class App extends Component {
     constructor() {

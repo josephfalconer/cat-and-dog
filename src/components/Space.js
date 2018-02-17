@@ -1,21 +1,11 @@
 import React, { PropTypes } from 'react';
 
-const occupants = {
-    FOOD: (className) => {
-        return <i className={className}></i>
-    },
-    OBSTRUCTION: (className) => {
-        return <i className="obstruction"></i>
-    }
-}
-
 const Space = props => {
     const { data } = props;
     const mainClassName = data.isEdge ? 'edge' : 'grass';
-    const Occupant = occupants[data.occupant];
     return (
         <div className={`garden__space ${mainClassName}`}>
-            {Occupant && Occupant(data.className)}
+            {data.occupant === 'OBSTRUCTION' && <i className="obstruction"></i>}
         </div>
     );
 } 

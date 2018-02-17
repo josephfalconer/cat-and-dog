@@ -16,3 +16,6 @@ npm-debug.log
 
 # sass cache
 src/.sass-cache/*
+
+# css
+src/**/*.css
