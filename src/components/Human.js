@@ -15,10 +15,10 @@ class Human extends Player {
     }
 
     static propTypes = {
+        currentFoods: PropTypes.array.isRequired,
         stats: PropTypes.object.isRequired,
         endTheGame: PropTypes.func.isRequired,
         gameSwitches: PropTypes.object.isRequired,
-        // spaces: PropTypes.array.isRequired,
         robots: PropTypes.array.isRequired,
     }
 
@@ -34,7 +34,7 @@ class Human extends Player {
         this.props.updateBoard({x: 9, y: 7}, 'UPDATE_HUMAN_POSITION');
 
         this.intervalID = setInterval(() => {
-            this.updateEnergy(-1);
+            // this.updateEnergy(-1);
         }, 2500);
 
         document.addEventListener('keydown', this.handleKeyPress);
@@ -78,8 +78,9 @@ class Human extends Player {
 
     moveHumanForward = direction => {
         const validXY = this.checkMove(this.state.x, this.state.y, direction);
-        const { robots } = this.props;
-        let isDogNextSpace = true;
+        const { robots, updateBoard } = this.props;
+        let { currentFoods } = this.props;
+        let isDogNextSpace = false;
 
         if (this.isInGame) {
             // always face attempted direction
@@ -90,18 +91,28 @@ class Human extends Player {
             return;
         }
 
-        if (validXY.occupant === 'FOOD') {
-            this.updateEnergy(1);
-        }
+        console.log(currentFoods);
+        currentFoods.forEach(food => {
+            // console.log(food);
+            if (food.x === validXY.x && food.y === validXY.y) {
+                console.log(food, currentFoods.indexOf(food));
+                currentFoods.splice(currentFoods.indexOf(food), 1);
+                setTimeout(() => {
+                updateBoard(currentFoods, 'UPDATE_CURRENT_FOODS');
+                    
+                }, 100)
+                this.updateEnergy(1);
+            }
+        });
 
         robots.forEach((robot) => {
             if (robot.x === validXY.x && robot.y === validXY.y) {
                 this.endTheGame('You ran into the dog!')
-                isDogNextSpace = false;
+                isDogNextSpace = true;
             }
         });
 
-        if (isDogNextSpace) {
+        if (!isDogNextSpace) {
             this.moveForward(validXY.x, validXY.y, direction);
             this.props.updateBoard({x: validXY.x, y: validXY.y}, 'UPDATE_HUMAN_POSITION');
         }
@@ -142,6 +153,7 @@ class Human extends Player {
 
 const mapStateToProps = state => {
     return {
+        currentFoods: state.board.currentFoods,
         gameSwitches: state.game.switches,
         robots: state.board.robots,
         spaces: state.board.spaces,
@@ -150,6 +162,7 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, {
+    // updateBoardState,
     updateBoard,
     updateStats
 })(Human);

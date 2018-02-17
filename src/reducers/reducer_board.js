@@ -15,8 +15,22 @@ const initialState = {
 export default function Board(state=initialState, action) {
 
 	switch (action.type) {
-		case BoardActionTypes.UPDATE_BOARD_STATE:
-			return Object.assign({}, state, action.payload);
+		case BoardActionTypes.UPDATE_CURRENT_FOODS:
+			return {
+				...state,
+				currentFoods: action.data
+			}
+
+		case BoardActionTypes.UPDATE_FREE_SPACES:
+			return {
+				...state,
+				freeSpaces: action.data
+			}
+
+		// case BoardActionTypes.UPDATE_BOARD_STATE:
+		// 	// console.log(action.payload);
+		// 	const existingState = state;
+		// 	return Object.assign({}, existingState, action.payload);
 
 
 		case BoardActionTypes.UPDATE_SPACES:

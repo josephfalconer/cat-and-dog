@@ -16,6 +16,7 @@ class Robot extends Player {
     }
 
     static propTypes = {
+        currentFoods: PropTypes.array.isRequired,
         index: PropTypes.number.isRequired,
         gameSwitches: PropTypes.object.isRequired,
         delay: PropTypes.number.isRequired,
@@ -37,7 +38,7 @@ class Robot extends Player {
         this.isInGame = true;
 
         // set movement interval
-        this.intervalID = setInterval(this.findPath, delay);
+        // this.intervalID = setInterval(this.findPath, delay);
     }
 
     componentWillUnmount() {
@@ -177,6 +178,7 @@ class Robot extends Player {
 
 const mapStateToProps = state => (
     {
+        currentFoods: state.board.currentFoods,
         spaces: state.board.spaces,
         gameSwitches: state.game.switches,
         delay: state.game.difficulty,
@@ -185,5 +187,6 @@ const mapStateToProps = state => (
 );
 
 export default connect(mapStateToProps, {
-    updateBoard
+    updateBoard,
+    // updateBoardState
 })(Robot);

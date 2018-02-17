@@ -5,13 +5,6 @@ import * as helpers from '../actions/helpers';
 export default class extends Component {
     moveForward(x, y, newdirection){
         const spaceWidth = document.getElementById('sample-space').clientWidth;
-        // const { spaces } = this.props;
-
-        // if (spaces.length && spaces[x][y].occupant === 'FOOD') {
-        //     spaces[x][y].occupant = false;
-        //     this.props.updateBoard(spaces, 'UPDATE_SPACES');
-        // }
-
         this.setState({
             ...this.state,
             x: x,

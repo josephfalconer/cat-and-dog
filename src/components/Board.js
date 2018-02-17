@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { updateBoard, updateBoardState } from '../actions/actions_board';
+import { updateBoard } from '../actions/actions_board';
 import FoodLayer from './FoodLayer';
 import Human from './Human';
 import Robot from './Robot';
@@ -16,17 +16,11 @@ const ROBOTS = [
 ]
 
 class Board extends Component {
-    // constructor(props) {
-    //     super(props);
-    //     this.foodSpaces = [];
-    //     this.noOfFood = 5;
-    // }
-
 	static propTypes = {
 		width: PropTypes.number.isRequired,
 		height: PropTypes.number.isRequired,
         endTheGame: PropTypes.func.isRequired,
-        gameSwitches: PropTypes.object.isRequired
+        spaces: PropTypes.array.isRequired,
 	}
 
 	componentDidMount() {
@@ -34,16 +28,12 @@ class Board extends Component {
         const spaces = this.getSpaces();
         const freeSpaces = this.getFreeSpaces(spaces);
 
-        this.props.updateBoardState({
-            spaces,
-            freeSpaces
-        });
-        // this.props.updateBoardState('spaces', spaces);
+        this.props.updateBoard(spaces, 'UPDATE_SPACES');
+        this.props.updateBoard(freeSpaces, 'UPDATE_FREE_SPACES');
 	}
 
     componentWillUnmount() {
         this.isInGame = false;
-        // clearInterval(this.intervalID);
         this.props.updateBoard(null, 'RESET_START_POSITIONS');
     }
 
@@ -99,61 +89,8 @@ class Board extends Component {
         return freeSpaces
     }
 
-    // setFood = () => {
-    //     const { spaces } = this.props;
-
-    //     if (!this.isInGame || this.props.gameSwitches.isGameOver || !spaces.length) {
-    //         return;
-    //     }
-
-    //     for (var i = 0; i < this.noOfFood; i++) {
-    //         let ran = Math.floor(Math.random() * this.freeSpaces.length);
-    //         let foodSpace = this.freeSpaces[ran];
-    //         this.foodSpaces.push(foodSpace);
-    //         spaces[foodSpace.x][foodSpace.y].occupant = 'FOOD';
-    //         spaces[foodSpace.x][foodSpace.y].className = this.getFoodType();
-    //     }
-
-    //     this.props.updateBoardState({spaces: spaces});
-    //     setTimeout(this.fadeFoods, 100);
-    //     setTimeout(this.removeFoods, 5000);
-    // }
-
-    // fadeFoods = () => {
-    //     if (!this.isInGame) {
-    //         return;
-    //     }
-
-    //     const foodElements = document.getElementsByClassName('food');
-
-    //     for (let i = 0; i < foodElements.length; i++) {
-    //         foodElements[i].classList.add('fade');
-    //     }
-    // }
-
-    // removeFoods = () => {
-    //     if (!this.isInGame) {
-    //         return;
-    //     }
-
-    //     const { spaces } = this.props;
-    //     const { foodSpaces } = this;
-
-    //     for (let i = 0; i < foodSpaces.length; i++) {
-    //         spaces[foodSpaces[i].x][foodSpaces[i].y].occupant = false;
-    //         spaces[foodSpaces[i].x][foodSpaces[i].y].className = null;
-    //         this.props.updateBoardState({spaces: spaces});
-    //     }
-    // }
-
-    // getFoodType = () => {
-    //     const foods = [ 'fish', 'meat', 'steak', 'slice', 'drumstick', 'salami', 'sausage' ];
-    //     const ran = Math.floor(Math.random() * foods.length);
-    //     return `food ${foods[ran]}`;
-    // }
-
     render() {
-        const { spaces, endTheGame } = this.props;
+        const { spaces, endTheGame, currentFoods } = this.props;
 
     	return (
     		<div className="garden">
@@ -182,7 +119,7 @@ class Board extends Component {
                         startDelay={robot.startDelay}
                     />
                 )}
-                <FoodLayer />
+                <FoodLayer currentFoods={currentFoods} />
             </div>
     	);
     }
@@ -191,12 +128,11 @@ class Board extends Component {
 const mapStateToProps = state => {
     return {
         spaces: state.board.spaces,
-        gameSwitches: state.game.switches,
-        human: state.board.human
+        currentFoods: state.board.currentFoods,
     }
 };
 
 export default connect(mapStateToProps, {
     updateBoard,
-    updateBoardState
+    // updateBoardState
 })(Board);
