@@ -31,15 +31,14 @@ class Board extends Component {
 
 	componentDidMount() {
         this.isInGame = true;
-
         const spaces = this.getSpaces();
         const freeSpaces = this.getFreeSpaces(spaces);
-        // console.log(spaces);
-        // this.props.updateBoardState({
-        //     spaces,
-        //     freeSpaces
-        // });
-        this.props.updateBoardState('spaces', spaces);
+
+        this.props.updateBoardState({
+            spaces,
+            freeSpaces
+        });
+        // this.props.updateBoardState('spaces', spaces);
 	}
 
     componentWillUnmount() {

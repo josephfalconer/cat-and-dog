@@ -16,23 +16,7 @@ export default function Board(state=initialState, action) {
 
 	switch (action.type) {
 		case BoardActionTypes.UPDATE_BOARD_STATE:
-			// const { payload } = action;
-			// let newBoardState = state;
-
-			// for (let key in payload) {
-			// 	if (payload.hasOwnProperty(key)) {
-			// 		newBoardState[key] = payload[key];
-			// 	}
-			// }
-			// return newBoardState;
-
-			// const { key, payload } = action;
-			// let newBoardState = state;
-			// newBoardState[key] = payload;
-			return {
-				...state,
-				spaces: action.payload
-			}
+			return Object.assign({}, state, action.payload);
 
 
 		case BoardActionTypes.UPDATE_SPACES:

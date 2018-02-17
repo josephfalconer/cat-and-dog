@@ -33,9 +33,9 @@ class Human extends Player {
         this.moveForward(9, 7, 'LEFT');
         this.props.updateBoard({x: 9, y: 7}, 'UPDATE_HUMAN_POSITION');
 
-        // this.intervalID = setInterval(() => {
-        //     this.updateEnergy(-1);
-        // }, 2500);
+        this.intervalID = setInterval(() => {
+            this.updateEnergy(-1);
+        }, 2500);
 
         document.addEventListener('keydown', this.handleKeyPress);
     }
@@ -51,8 +51,6 @@ class Human extends Player {
             return;
         }
         let direction = null;
-
-        // console.log(this.props.spaces);
 
         switch (e.which) {
             case 37:
@@ -76,11 +74,6 @@ class Human extends Player {
         }
 
         this.moveHumanForward(direction);
-    }
-
-    componentWillUpdate(nextProps) {
-        // console.log(nextProps);
-        // console.log(this.props);
     }
 
     moveHumanForward = direction => {
@@ -136,7 +129,6 @@ class Human extends Player {
     	const { style, face } = this.state;
         const className = `cat cat-${face.toLowerCase()}`;
         style.backgroundSize = '75%';
-        // console.log(this.props.board.spaces);
     	return (
             <div>
     	        <span className={className} style={style}></span>
@@ -149,7 +141,6 @@ class Human extends Player {
 }
 
 const mapStateToProps = state => {
-    console.log(state.board);
     return {
         gameSwitches: state.game.switches,
         robots: state.board.robots,
