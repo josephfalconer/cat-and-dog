@@ -18,7 +18,7 @@ class Human extends Player {
         stats: PropTypes.object.isRequired,
         endTheGame: PropTypes.func.isRequired,
         gameSwitches: PropTypes.object.isRequired,
-        spaces: PropTypes.array.isRequired,
+        // spaces: PropTypes.array.isRequired,
         robots: PropTypes.array.isRequired,
     }
 
@@ -52,6 +52,8 @@ class Human extends Player {
         }
         let direction = null;
 
+        // console.log(this.props.spaces);
+
         switch (e.which) {
             case 37:
                 direction = 'LEFT';
@@ -76,6 +78,11 @@ class Human extends Player {
         this.moveHumanForward(direction);
     }
 
+    componentWillUpdate(nextProps) {
+        // console.log(nextProps);
+        // console.log(this.props);
+    }
+
     moveHumanForward = direction => {
         const validXY = this.checkMove(this.state.x, this.state.y, direction);
         const { robots } = this.props;
@@ -85,8 +92,6 @@ class Human extends Player {
             // always face attempted direction
             this.setState({ ...this.state, face: direction });
         }
-
-        console.log(validXY);
 
         if (!validXY) {
             return;
@@ -131,6 +136,7 @@ class Human extends Player {
     	const { style, face } = this.state;
         const className = `cat cat-${face.toLowerCase()}`;
         style.backgroundSize = '75%';
+        // console.log(this.props.board.spaces);
     	return (
             <div>
     	        <span className={className} style={style}></span>
@@ -142,14 +148,15 @@ class Human extends Player {
     }
 }
 
-const mapStateToProps = state => (
-    {
+const mapStateToProps = state => {
+    console.log(state.board);
+    return {
         gameSwitches: state.game.switches,
         robots: state.board.robots,
         spaces: state.board.spaces,
         stats: state.stats.stats
     }
-);
+}
 
 export default connect(mapStateToProps, {
     updateBoard,

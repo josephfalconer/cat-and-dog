@@ -7,9 +7,10 @@ export const updateBoard = (data, type) => {
 	}
 }
 
-export const updateBoardState = payload => {
+export const updateBoardState = (key, payload) => {
 	return {
 		type: BoardActionTypes.UPDATE_BOARD_STATE,
+		key,
 		payload
 	}
 }

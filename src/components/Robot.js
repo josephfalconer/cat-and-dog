@@ -37,7 +37,7 @@ class Robot extends Player {
         this.isInGame = true;
 
         // set movement interval
-        // this.intervalID = setInterval(this.findPath, delay);
+        this.intervalID = setInterval(this.findPath, delay);
     }
 
     componentWillUnmount() {

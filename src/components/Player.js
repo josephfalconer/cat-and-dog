@@ -5,12 +5,12 @@ import * as helpers from '../actions/helpers';
 export default class extends Component {
     moveForward(x, y, newdirection){
         const spaceWidth = document.getElementById('sample-space').clientWidth;
-        const { spaces } = this.props;
+        // const { spaces } = this.props;
 
-        if (spaces.length && spaces[x][y].occupant === 'FOOD') {
-            spaces[x][y].occupant = false;
-            this.props.updateBoard(spaces, 'UPDATE_SPACES');
-        }
+        // if (spaces.length && spaces[x][y].occupant === 'FOOD') {
+        //     spaces[x][y].occupant = false;
+        //     this.props.updateBoard(spaces, 'UPDATE_SPACES');
+        // }
 
         this.setState({
             ...this.state,
@@ -24,8 +24,6 @@ export default class extends Component {
     checkMove(x, y, direction) {
         const { spaces } = this.props;
         let forwardX = x, forwardY = y, nextSpace;
-
-        console.log(spaces);
 
         if (direction === 'RIGHT') {
             forwardX++;

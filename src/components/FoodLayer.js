@@ -26,7 +26,7 @@ class FoodLayer extends PureComponent {
 		// console.log(freeSpaces);
 
 		// get a random array from the available spaces
-		const newFoods = ['veg', 'fruit', 'pulses'];
+		// const newFoods = ['veg', 'fruit', 'pulses'];
 		// this.props.updateBoardState({currentFoods: newFoods});
 
 		// in CSS: food spaces have pop up animation and fade/shrink
@@ -42,7 +42,7 @@ class FoodLayer extends PureComponent {
 	render() {
 		const { currentFoods } = this.props;
 
-		return null;
+		// return null;
 
 		return (
 			<div className="foodlayer">

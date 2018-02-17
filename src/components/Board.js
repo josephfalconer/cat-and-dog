@@ -16,11 +16,11 @@ const ROBOTS = [
 ]
 
 class Board extends Component {
-    constructor(props) {
-        super(props);
-        this.foodSpaces = [];
-        this.noOfFood = 5;
-    }
+    // constructor(props) {
+    //     super(props);
+    //     this.foodSpaces = [];
+    //     this.noOfFood = 5;
+    // }
 
 	static propTypes = {
 		width: PropTypes.number.isRequired,
@@ -35,10 +35,11 @@ class Board extends Component {
         const spaces = this.getSpaces();
         const freeSpaces = this.getFreeSpaces(spaces);
         // console.log(spaces);
-        this.props.updateBoardState({
-            spaces,
-            freeSpaces
-        });
+        // this.props.updateBoardState({
+        //     spaces,
+        //     freeSpaces
+        // });
+        this.props.updateBoardState('spaces', spaces);
 	}
 
     componentWillUnmount() {
@@ -154,7 +155,6 @@ class Board extends Component {
 
     render() {
         const { spaces, endTheGame } = this.props;
-        console.log(spaces);
 
     	return (
     		<div className="garden">
@@ -189,13 +189,13 @@ class Board extends Component {
     }
 }
 
-const mapStateToProps = state => (
-    {
+const mapStateToProps = state => {
+    return {
         spaces: state.board.spaces,
         gameSwitches: state.game.switches,
         human: state.board.human
     }
-);
+};
 
 export default connect(mapStateToProps, {
     updateBoard,
