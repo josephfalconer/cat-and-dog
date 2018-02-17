@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { updateBoard } from '../actions/actions_board';
+import { updateBoardState } from '../actions/actions_board';
+import { humanStart, robotsStart } from '../constants';
 import FoodLayer from './FoodLayer';
 import Human from './Human';
 import Robot from './Robot';
@@ -28,13 +29,18 @@ class Board extends Component {
         const spaces = this.getSpaces();
         const freeSpaces = this.getFreeSpaces(spaces);
 
-        this.props.updateBoard(spaces, 'UPDATE_SPACES');
-        this.props.updateBoard(freeSpaces, 'UPDATE_FREE_SPACES');
+        this.props.updateBoardState({
+            spaces,
+            freeSpaces
+        });
 	}
 
     componentWillUnmount() {
         this.isInGame = false;
-        this.props.updateBoard(null, 'RESET_START_POSITIONS');
+        this.props.updateBoardState({
+            human: humanStart,
+            robots: robotsStart
+        });
     }
 
 	getSpaces = () => {
@@ -90,7 +96,7 @@ class Board extends Component {
     }
 
     render() {
-        const { spaces, endTheGame, currentFoods } = this.props;
+        const { spaces, endTheGame } = this.props;
 
     	return (
     		<div className="garden">
@@ -119,7 +125,7 @@ class Board extends Component {
                         startDelay={robot.startDelay}
                     />
                 )}
-                <FoodLayer currentFoods={currentFoods} />
+                <FoodLayer />
             </div>
     	);
     }
@@ -128,11 +134,9 @@ class Board extends Component {
 const mapStateToProps = state => {
     return {
         spaces: state.board.spaces,
-        currentFoods: state.board.currentFoods,
     }
 };
 
 export default connect(mapStateToProps, {
-    updateBoard,
-    // updateBoardState
+    updateBoardState
 })(Board);

@@ -5,6 +5,24 @@ import * as helpers from '../actions/helpers';
 export default class extends Component {
     moveForward(x, y, newdirection){
         const spaceWidth = document.getElementById('sample-space').clientWidth;
+        const { currentFoods, updateBoardState } = this.props;
+        let hasEaten = false;
+        let eatenIndex = 0;
+
+        currentFoods.forEach((food, index) => {
+            if (food.x === x && food.y === y) {
+                hasEaten = true;
+                eatenIndex = index;
+            }
+        });
+
+        if (hasEaten) {
+            const newFoods = currentFoods.filter((food, index) => 
+                index !== eatenIndex
+            );
+            updateBoardState({currentFoods: newFoods});
+        }
+
         this.setState({
             ...this.state,
             x: x,

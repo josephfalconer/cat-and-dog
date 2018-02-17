@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { updateStats } from '../actions/actions_stats';
-import { updateBoard } from '../actions/actions_board';
+import { updateBoardState } from '../actions/actions_board';
 import * as helpers from '../actions/helpers';
 import DirectionButtons from './DirectionButtons';
 import Player from './Player';
@@ -29,14 +29,11 @@ class Human extends Player {
 
     componentDidMount() {
         this.isInGame = true;
-
         this.moveForward(9, 7, 'LEFT');
-        this.props.updateBoard({x: 9, y: 7}, 'UPDATE_HUMAN_POSITION');
-
+        this.props.updateBoardState({human: {x: 9, y: 7}});
         this.intervalID = setInterval(() => {
-            // this.updateEnergy(-1);
+            this.updateEnergy(-1);
         }, 2500);
-
         document.addEventListener('keydown', this.handleKeyPress);
     }
 
@@ -77,44 +74,36 @@ class Human extends Player {
     }
 
     moveHumanForward = direction => {
+        const { robots, currentFoods } = this.props;
         const validXY = this.checkMove(this.state.x, this.state.y, direction);
-        const { robots, updateBoard } = this.props;
-        let { currentFoods } = this.props;
         let isDogNextSpace = false;
 
-        if (this.isInGame) {
-            // always face attempted direction
-            this.setState({ ...this.state, face: direction });
-        }
-
-        if (!validXY) {
+        if (!this.isInGame) {
             return;
         }
+        // always face new direction
+        this.setState({ ...this.state, face: direction });
 
-        console.log(currentFoods);
-        currentFoods.forEach(food => {
-            // console.log(food);
-            if (food.x === validXY.x && food.y === validXY.y) {
-                console.log(food, currentFoods.indexOf(food));
-                currentFoods.splice(currentFoods.indexOf(food), 1);
-                setTimeout(() => {
-                updateBoard(currentFoods, 'UPDATE_CURRENT_FOODS');
-                    
-                }, 100)
-                this.updateEnergy(1);
+        if (validXY) {
+            currentFoods.forEach(food => {
+                if (food.x === validXY.x && food.y === validXY.y) {
+                    this.updateEnergy(1);
+                }
+            });
+
+            robots.forEach((robot) => {
+                if (robot.x === validXY.x && robot.y === validXY.y) {
+                    this.endTheGame('You ran into the dog!')
+                    isDogNextSpace = true;
+                }
+            });
+
+            if (!isDogNextSpace) {
+                this.moveForward(validXY.x, validXY.y, direction);
+                this.props.updateBoardState({
+                    human: {x: validXY.x, y: validXY.y}
+                });
             }
-        });
-
-        robots.forEach((robot) => {
-            if (robot.x === validXY.x && robot.y === validXY.y) {
-                this.endTheGame('You ran into the dog!')
-                isDogNextSpace = true;
-            }
-        });
-
-        if (!isDogNextSpace) {
-            this.moveForward(validXY.x, validXY.y, direction);
-            this.props.updateBoard({x: validXY.x, y: validXY.y}, 'UPDATE_HUMAN_POSITION');
         }
     }
 
@@ -162,7 +151,6 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, {
-    // updateBoardState,
-    updateBoard,
+    updateBoardState,
     updateStats
 })(Human);

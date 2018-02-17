@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { updateBoard } from '../actions/actions_board';
+import { updateBoardState, updateRobotPosition } from '../actions/actions_board';
 import * as helpers from '../actions/helpers';
 import Player from './Player';
 
@@ -38,7 +38,7 @@ class Robot extends Player {
         this.isInGame = true;
 
         // set movement interval
-        // this.intervalID = setInterval(this.findPath, delay);
+        this.intervalID = setInterval(this.findPath, delay);
     }
 
     componentWillUnmount() {
@@ -142,7 +142,7 @@ class Robot extends Player {
             return;
         }
 
-        this.props.updateBoard([x, y, this.index], 'UPDATE_ROBOT_POSITION');
+        this.props.updateRobotPosition([x, y, this.index]);
         this.moveForward(x, y, face);
     }
 
@@ -187,6 +187,6 @@ const mapStateToProps = state => (
 );
 
 export default connect(mapStateToProps, {
-    updateBoard,
-    // updateBoardState
+    updateBoardState,
+    updateRobotPosition
 })(Robot);

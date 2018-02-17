@@ -1,8 +1,5 @@
 import * as BoardActionTypes from '../actiontypes/actiontypes_board';
-
-export const robotsStart = [{x: 0, y: 0}]
-
-const humanStart = { x: 5, y: 4 }
+import { humanStart, robotsStart } from '../constants';
 
 const initialState = {
 	freeSpaces: [],
@@ -15,48 +12,15 @@ const initialState = {
 export default function Board(state=initialState, action) {
 
 	switch (action.type) {
-		case BoardActionTypes.UPDATE_CURRENT_FOODS:
-			return {
-				...state,
-				currentFoods: action.data
-			}
-
-		case BoardActionTypes.UPDATE_FREE_SPACES:
-			return {
-				...state,
-				freeSpaces: action.data
-			}
-
-		// case BoardActionTypes.UPDATE_BOARD_STATE:
-		// 	// console.log(action.payload);
-		// 	const existingState = state;
-		// 	return Object.assign({}, existingState, action.payload);
-
-
-		case BoardActionTypes.UPDATE_SPACES:
-			return {
-				...state,
-				spaces: action.data
-			}
-
-		case BoardActionTypes.UPDATE_HUMAN_POSITION:
-			return {
-				...state,
-				human: action.data
-			}
+		case BoardActionTypes.UPDATE_BOARD_STATE:
+			const existingState = state;
+			return Object.assign({}, existingState, action.payload);
 
 		case BoardActionTypes.UPDATE_ROBOT_POSITION:
+			const { payload } = action;
 			let newRobotState = state;
-			newRobotState.robots[action.data[2]] = {x: action.data[0], y: action.data[1]};
+			newRobotState.robots[payload[2]] = {x: payload[0], y: payload[1]};
 			return newRobotState;
-
-		case BoardActionTypes.RESET_START_POSITIONS:
-			return {
-				...state,
-				robots: robotsStart,
-				human: humanStart
-			};
-
 
 		default:
 			return state;
