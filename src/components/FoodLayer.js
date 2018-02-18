@@ -10,7 +10,7 @@ class FoodLayer extends PureComponent {
 	}
 
 	state = {
-		isAvailableFoods: false
+		isFullSizeFoods: false
 	}
 
 	componentDidMount() {
@@ -29,17 +29,16 @@ class FoodLayer extends PureComponent {
 		for (let i = 0; i < 3; i++) {
 			// cut a random space out of freeSpaces
 			let random = Math.floor(Math.random() * freeSpaces.length);
-			let splicedCoords = freeSpaces.splice(random, 1);
+			let space = freeSpaces.splice(random, 1)[0];
 			newFoods.push({
-				x: splicedCoords[0][0],
-				y: splicedCoords[0][1],
+				x: space.x,
+				y: space.y,
 				className: this.getFoodType() 
 			});
 		}
-
-		// in CSS: food spaces have pop up animation and fade/shrink
 		this.props.updateBoardState({currentFoods: newFoods});
-		// remove after 5 seconds
+		this.setState({isFullSizeFoods: true})
+		setTimeout(() => this.setState({isFullSizeFoods: false}), 4000);
 		setTimeout(this.removeFoods, 5000);
 	}
 
@@ -50,29 +49,31 @@ class FoodLayer extends PureComponent {
 	getFoodType = () => {
         const foods = [ 'fish', 'meat', 'steak', 'slice', 'drumstick', 'salami', 'sausage' ];
         const ran = Math.floor(Math.random() * foods.length);
-        return `food ${foods[ran]}`;
+        return `foodlayer__food ${foods[ran]}`;
     }
 
 	render() {
 		const { currentFoods } = this.props;
 		let spaceWidth = document.getElementById('sample-space').clientWidth;
+		console.log(this.state.isFullSizeFoods)
 
 		return currentFoods.length ? (
-			<div className="foodlayer" style={{position: 'absolute', top: '0', left: '0', width: '100%', height: '100%'}}>
+			<div className="foodlayer">
 				{currentFoods.map((food, index) => {
 					const foodStyles = {
 						left: `${(food.x * spaceWidth) / 16}rem`,
 						top: `${(food.y * spaceWidth) / 16}rem`,
 						width: `${spaceWidth / 16}rem`,
 						height: `${spaceWidth / 16}rem`,
-						transform: 'none',
 					}
+					let className = food.className;
+					className += this.state.isFullSizeFoods ? ' grow' : '';
 					return (
-						<i 
+						<span 
 							style={foodStyles}
 							key={`${food.className}-${index}`} 
-							className={food.className}
-						></i>
+							className={className}
+						></span>
 					)
 				})}
 			</div>

@@ -19,7 +19,6 @@
 	display: flex;
 	position: relative;
 	margin-left: remcalc($mobile-offset);
-	border: 3px solid $green;
 	width: remcalc(10 * $space-width-sm);
 	justify-content: center;
     vertical-align: top;
@@ -70,6 +69,7 @@
     	top: 0;
     	left: 0;
     	z-index: -1;
+
     	&.brown {
     		background: rgb(173, 149, 73);
     	}
@@ -81,8 +81,10 @@
     }
 
 	@include e(space) {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	    text-align: center;
-	    position: relative;
 	    overflow: hidden;
     	@include square(remcalc($space-width-sm));
 	    line-height: remcalc($space-width-sm);

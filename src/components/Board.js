@@ -61,9 +61,6 @@ class Board extends Component {
             }
         }
 
-        spaces[width - 1][height - 1].occupant = 'HUMAN';
-        spaces[0][0].occupant = 'ROBOT';
-        // add obstructions
         spaces = this.setObstructions(spaces);
         return spaces;
 	}
@@ -83,16 +80,13 @@ class Board extends Component {
     }
 
     getFreeSpaces = spaces => {
-        let freeSpaces = [];
-
-        for (let x = 0; x < spaces.length; x++) {
-            for (let y = 0; y < spaces[x].length; y++) {
-                if (!spaces[x][y].occupant) {
-                    freeSpaces.push([x, y]);
-                }
-            }
-        }
-        return freeSpaces
+        let allSpaces = [];
+        spaces.forEach(column => {
+            column.forEach(space => {
+                allSpaces.push(space);
+            });
+        });
+        return allSpaces.filter(space => !space.occupant);
     }
 
     render() {
