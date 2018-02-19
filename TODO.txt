@@ -15,3 +15,5 @@
 - Consider using React.SimpleComponent to increase performance
 
 - Just use one basic store update function in actions/index.js
+
+- Consider replacing for (var of array) loops with forEach - then Symbol polyfill isn't needed?
