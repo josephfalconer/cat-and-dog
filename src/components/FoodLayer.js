@@ -33,7 +33,7 @@ class FoodLayer extends PureComponent {
 			newFoods.push({
 				x: space.x,
 				y: space.y,
-				className: this.getFoodType() 
+				className: this.getFoodType()
 			});
 		}
 		this.props.updateBoardState({currentFoods: newFoods});
@@ -55,7 +55,6 @@ class FoodLayer extends PureComponent {
 	render() {
 		const { currentFoods } = this.props;
 		let spaceWidth = document.getElementById('sample-space').clientWidth;
-		console.log(this.state.isFullSizeFoods)
 
 		return currentFoods.length ? (
 			<div className="foodlayer">
@@ -69,9 +68,9 @@ class FoodLayer extends PureComponent {
 					let className = food.className;
 					className += this.state.isFullSizeFoods ? ' grow' : '';
 					return (
-						<span 
+						<span
 							style={foodStyles}
-							key={`${food.className}-${index}`} 
+							key={`${food.className}-${index}`}
 							className={className}
 						></span>
 					)
