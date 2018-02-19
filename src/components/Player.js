@@ -6,19 +6,17 @@ export default class extends Component {
     moveForward(x, y, newdirection){
         const spaceWidth = document.getElementById('sample-space').clientWidth;
         const { currentFoods, updateBoardState } = this.props;
-        let hasEaten = false;
         let eatenIndex = 0;
 
         currentFoods.forEach((food, index) => {
             if (food.x === x && food.y === y) {
-                hasEaten = true;
-                eatenIndex = index;
+                eatenIndex = index + 1;
             }
         });
 
-        if (hasEaten) {
-            const newFoods = currentFoods.filter((food, index) => 
-                index !== eatenIndex
+        if (eatenIndex) {
+            const newFoods = currentFoods.filter((food, index) =>
+                index !== eatenIndex - 1
             );
             updateBoardState({currentFoods: newFoods});
         }
