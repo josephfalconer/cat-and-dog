@@ -14,6 +14,10 @@ const initialState = {
 export default function Game(state=initialState, action) {
 
 	switch (action.type) {
+		case GameActionTypes.UPDATE_GAME_STATE:
+			const existingState = state;
+			return Object.assign({}, existingState, action.payload);
+
 		case GameActionTypes.HIT_GAME_SWITCHES:
 			return {
 				...state,

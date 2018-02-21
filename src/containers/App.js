@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { updateGame } from '../actions/actions_game';
+import { updateGameState, updateSingleProp } from '../actions/actions_game';
 import { updateStats } from '../actions/actions_stats';
 import Board from '../components/Board';
 import Shutters from '../components/Shutters';
@@ -10,7 +10,7 @@ import LiveInfo from '../components/LiveInfo';
 import EndStats from '../components/EndStats';
 import GameControls from '../components/GameControls';
 
-import '../scss/garden.css'; 
+import '../scss/garden.css';
 
 class App extends Component {
     constructor() {
@@ -38,27 +38,29 @@ class App extends Component {
         }
 
         // freeze game, display reason, change bg colour
-        this.props.updateGame({ ...gameSwitches, isGameOver: true }, 'HIT_GAME_SWITCHES');
-        this.props.updateGame(message, 'UPDATE_MESSAGE');
-        this.props.updateGame('Getting game stats...', 'UPDATE_SHUTTERS_MESSAGE');
+        this.props.updateGameState({
+            switches: { ...gameSwitches, isGameOver: true },
+            message,
+            shuttersMessage: 'Getting game stats...'
+        });
 
         // close shutters after time to read reason
         setTimeout(() => {
             const { gameSwitches } = this.props;
-            this.props.updateGame({ ...gameSwitches, isOpenShutters: false }, 'HIT_GAME_SWITCHES');
+            this.props.updateSingleProp({ ...gameSwitches, isOpenShutters: false }, 'HIT_GAME_SWITCHES');
         }, 3000);
 
         // destroy board and live info, show stats when shutters complete transition
         setTimeout(() => {
             const { gameSwitches } = this.props;
-            this.props.updateGame({ ...gameSwitches, isInGame: false }, 'HIT_GAME_SWITCHES');
+            this.props.updateSingleProp({ ...gameSwitches, isInGame: false }, 'HIT_GAME_SWITCHES');
             this.props.updateStats(true, 'SHOW_STATS');
         }, 4000);
 
         // open shutters
         setTimeout(() => {
             const { gameSwitches } = this.props;
-            this.props.updateGame({ ...gameSwitches, isOpenShutters: true }, 'HIT_GAME_SWITCHES');
+            this.props.updateSingleProp({ ...gameSwitches, isOpenShutters: true }, 'HIT_GAME_SWITCHES');
 
             // stop controls coming up until shutters complete transition
             setTimeout(() => this.showControls(true), 1000);
@@ -96,16 +98,16 @@ class App extends Component {
                     showHints={this.showHints}
                     isFirstGame={this.isFirstGame}
                 />
-                <GameControls 
+                <GameControls
                     isShowing={isShowingControls}
-                    isShowingHints={isShowingHints} 
-                    showHints={this.showHints} 
+                    isShowingHints={isShowingHints}
+                    showHints={this.showHints}
                     showControls={this.showControls}
                     isFirstGame={this.isFirstGame}
-                />                
+                />
             </div>
         );
-    }    
+    }
 }
 
 const mapStateToProps = state => (
@@ -117,6 +119,7 @@ const mapStateToProps = state => (
 );
 
 export default connect(mapStateToProps, {
-    updateGame,
+    updateGameState,
+    updateSingleProp,
     updateStats
 })(App);
