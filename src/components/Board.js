@@ -54,13 +54,11 @@ class Board extends Component {
                 spaces[x][y] = {
                     x: x,
                     y: y,
-                    occupant: false,
+                    occupant: null,
                     isEdge: x === 0 || y === 0 || x === (width - 1) || y === (height - 1),
-                    className: null
                 };
             }
         }
-
         spaces = this.setObstructions(spaces);
         return spaces;
 	}
@@ -71,7 +69,6 @@ class Board extends Component {
         for (let i = 0; i < noOfObstructions; i++) {
             let ranX = Math.floor(Math.random() * this.props.width);
             let ranY = Math.floor(Math.random() * this.props.height);
-
             if (!spaces[ranX][ranY].isEdge) {
                 spaces[ranX][ranY].occupant = 'OBSTRUCTION';
             }
