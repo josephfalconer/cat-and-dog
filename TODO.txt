@@ -1,18 +1,12 @@
 - Find any document.getElementById and replace with React equivalent
 
-- Food items are a simpleComponent and fade themselves and pop up
-
 - Spaces without occupant should be null not false
 
 - Tidy up actions so that not making one call after another: just pass one payload. Eg lines 41-3 of App
 
 - Maybe eliminate passed functions like endTheGame and find a way to do this through store?
 
-- Investigate how rendering slows performance with food appearing:
-	- Create a new component FoodLayer
-	- Food appearing/disappearing doesn't cause Board re-renders
-
-- Consider using React.SimpleComponent to increase performance
+- Consider using React.PureComponent to increase performance
 
 - Just use one basic store update function in actions/index.js
 
