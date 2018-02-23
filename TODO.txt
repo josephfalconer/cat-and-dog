@@ -1,7 +1,5 @@
 - Find any document.getElementById and replace with React equivalent
 
-- Spaces without occupant should be null not false
-
 - Tidy up actions so that not making one call after another: just pass one payload. Eg lines 41-3 of App
 
 - Maybe eliminate passed functions like endTheGame and find a way to do this through store?
