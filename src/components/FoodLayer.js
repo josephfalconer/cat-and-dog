@@ -54,7 +54,7 @@ class FoodLayer extends PureComponent {
 
 	render() {
 		const { currentFoods } = this.props;
-		let spaceWidth = document.getElementById('sample-space').clientWidth;
+		const spaceWidth = document.getElementById('sample-space').clientWidth;
 
 		return currentFoods.length ? (
 			<div className="foodlayer">

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { updateGame } from '../actions/actions_game';
+import { updateSingleProp } from '../actions/actions_game';
 import { updateStats } from '../actions/actions_stats';
 
 class GameControls extends Component {
@@ -15,58 +15,58 @@ class GameControls extends Component {
 
 	startGame = () => {
         const { showHints, showControls, isFirstGame } = this.props;
-        
+
         showControls(false);
         setTimeout(() => {
             showHints(false);
         }, 100);
-        this.props.updateGame('Starting a new game...', 'UPDATE_SHUTTERS_MESSAGE');
+        this.props.updateSingleProp('Starting a new game...', 'UPDATE_SHUTTERS_MESSAGE');
 
         if (isFirstGame) {
             this.playFirstGame();
 
         } else {
             this.playNewGame();
-        }     
+        }
     }
 
     playFirstGame = () => {
         setTimeout(() => {
-            this.props.updateGame({ 
-                ...this.props.gameSwitches, 
-                isInGame: true, 
-                isOpenShutters: true 
+            this.props.updateSingleProp({
+                ...this.props.gameSwitches,
+                isInGame: true,
+                isOpenShutters: true
             }, 'HIT_GAME_SWITCHES');
 
         }, 500);
     }
 
     playNewGame = () => {
-        this.props.updateGame({ 
-            ...this.props.gameSwitches, 
-            isOpenShutters: false 
+        this.props.updateSingleProp({
+            ...this.props.gameSwitches,
+            isOpenShutters: false
         }, 'HIT_GAME_SWITCHES');
 
         setTimeout(() => {
             this.props.updateStats(false, 'SHOW_STATS');
-            this.props.updateStats({ 
-                mealsEaten: 0, 
-                energy: 10, 
+            this.props.updateStats({
+                mealsEaten: 0,
+                energy: 10,
                 secondsRemaining: 60 }, 'UPDATE_STATS');
         }, 1000);
 
         setTimeout(() => {
-            this.props.updateGame({
-                isInGame: true, 
-                isOpenShutters: true, 
-                isGameOver: false 
+            this.props.updateSingleProp({
+                isInGame: true,
+                isOpenShutters: true,
+                isGameOver: false
             }, 'HIT_GAME_SWITCHES');
 
         }, 1500);
     }
 
     setDifficulty = e => {
-        this.props.updateGame(parseInt(e.target.value, 10), 'UPDATE_DIFFICULTY');
+        this.props.updateSingleProp(parseInt(e.target.value, 10), 'UPDATE_DIFFICULTY');
     }
 
     render() {
@@ -93,6 +93,6 @@ const mapStateToProps = state => (
 );
 
 export default connect(mapStateToProps, {
-    updateGame,
+    updateSingleProp,
     updateStats
 })(GameControls);

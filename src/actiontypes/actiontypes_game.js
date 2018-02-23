@@ -1,3 +1,4 @@
+export const UPDATE_GAME_STATE = 'game/UPDATE_GAME_STATE';
 export const HIT_GAME_SWITCHES = 'game/HIT_GAME_SWITCHES';
 export const UPDATE_DIFFICULTY = 'game/UPDATE_DIFFICULTY';
 export const UPDATE_MESSAGE = 'game/UPDATE_MESSAGE';
