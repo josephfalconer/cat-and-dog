@@ -1,11 +1,11 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { updateBoardState } from '../actions/actions_board'
+import { updateSimpleState } from '../actions/'
 
 class FoodLayer extends PureComponent {
 	static propTypes = {
-		freeSpaces: PropTypes.array.isRequired,
+		freeBoardSpaces: PropTypes.array.isRequired,
 		currentFoods: PropTypes.array.isRequired,
 	}
 
@@ -14,36 +14,45 @@ class FoodLayer extends PureComponent {
 	}
 
 	componentDidMount() {
+		this.isInGame = true;
 		setTimeout(this.generateFood, 100);
 		this.intervalID = setInterval(this.generateFood, 10000);
 	}
 
 	componentWillUnmount() {
+		this.isInGame = false;
 		clearInterval(this.intervalID);
 	}
 
 	generateFood = () => {
-		let { freeSpaces } = this.props;
-		let newFoods = [];
-
-		for (let i = 0; i < 3; i++) {
-			// cut a random space out of freeSpaces
-			let random = Math.floor(Math.random() * freeSpaces.length);
-			let space = freeSpaces.splice(random, 1)[0];
-			newFoods.push({
-				x: space.x,
-				y: space.y,
-				className: this.getFoodType()
-			});
+		let { freeBoardSpaces } = this.props;
+		let currentFoods = [];
+		if (this.isInGame) {
+			for (let i = 0; i < 3; i++) {
+				// cut a random space from freeBoardSpaces
+				let random = Math.floor(Math.random() * freeBoardSpaces.length);
+				let space = freeBoardSpaces.splice(random, 1)[0];
+				currentFoods.push({
+					x: space.x,
+					y: space.y,
+					className: this.getFoodType()
+				});
+			}
+			this.props.updateSimpleState({currentFoods});
+			this.setState({isFullSizeFoods: true})
+			setTimeout(() => {
+				if (this.isInGame) {
+					this.setState({isFullSizeFoods: false})
+				}
+			}, 4000);
+			setTimeout(this.removeFoods, 5000);
 		}
-		this.props.updateBoardState({currentFoods: newFoods});
-		this.setState({isFullSizeFoods: true})
-		setTimeout(() => this.setState({isFullSizeFoods: false}), 4000);
-		setTimeout(this.removeFoods, 5000);
 	}
 
 	removeFoods = () => {
-		this.props.updateBoardState({currentFoods: []});
+		if (this.isInGame) {
+			this.props.updateSimpleState({currentFoods: []});
+		}
 	}
 
 	getFoodType = () => {
@@ -82,11 +91,11 @@ class FoodLayer extends PureComponent {
 
 const mapStateToProps = state => {
 	return {
-		freeSpaces: state.board.freeSpaces,
-		currentFoods: state.board.currentFoods
+		freeBoardSpaces: state.freeBoardSpaces,
+		currentFoods: state.currentFoods
 	}
 }
 
 export default connect(mapStateToProps, {
-	updateBoardState
+	updateSimpleState
 })(FoodLayer);

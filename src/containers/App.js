@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { updateGameState, updateSingleProp } from '../actions/actions_game';
-import { updateStats } from '../actions/actions_stats';
+import { updateSimpleState } from '../actions/';
 import Board from '../components/Board';
 import Shutters from '../components/Shutters';
 import Hints from '../components/Hints';
@@ -20,7 +19,7 @@ class App extends Component {
 
     static propTypes = {
         gameSwitches: PropTypes.object.isRequired,
-        message: PropTypes.string.isRequired,
+        endGameMessage: PropTypes.string.isRequired,
         isShowingStats: PropTypes.bool.isRequired
     }
 
@@ -38,29 +37,44 @@ class App extends Component {
         }
 
         // freeze game, display reason, change bg colour
-        this.props.updateGameState({
-            switches: { ...gameSwitches, isGameOver: true },
-            message,
+        this.props.updateSimpleState({
+            gameSwitches: {
+                ...gameSwitches,
+                isGameOver: true
+            },
+            endGameMessage: message,
             shuttersMessage: 'Getting game stats...'
         });
 
         // close shutters after time to read reason
         setTimeout(() => {
-            const { gameSwitches } = this.props;
-            this.props.updateSingleProp({ ...gameSwitches, isOpenShutters: false }, 'HIT_GAME_SWITCHES');
+            this.props.updateSimpleState({
+                gameSwitches: {
+                    ...this.props.gameSwitches,
+                    isOpenShutters: false
+                }
+            });
         }, 3000);
 
         // destroy board and live info, show stats when shutters complete transition
         setTimeout(() => {
-            const { gameSwitches } = this.props;
-            this.props.updateSingleProp({ ...gameSwitches, isInGame: false }, 'HIT_GAME_SWITCHES');
-            this.props.updateStats(true, 'SHOW_STATS');
+            this.props.updateSimpleState({
+                gameSwitches: {
+                    ...this.props.gameSwitches,
+                    isInGame: false
+                },
+                isShowingStats: true,
+            });
         }, 4000);
 
         // open shutters
         setTimeout(() => {
-            const { gameSwitches } = this.props;
-            this.props.updateSingleProp({ ...gameSwitches, isOpenShutters: true }, 'HIT_GAME_SWITCHES');
+            this.props.updateSimpleState({
+                gameSwitches: {
+                    ...this.props.gameSwitches,
+                    isOpenShutters: true
+                }
+            });
 
             // stop controls coming up until shutters complete transition
             setTimeout(() => this.showControls(true), 1000);
@@ -76,7 +90,7 @@ class App extends Component {
     }
 
     render() {
-        const { gameSwitches, isShowingStats, message } = this.props;
+        const { gameSwitches, isShowingStats, endGameMessage } = this.props;
         const { isShowingHints, isShowingControls } = this.state;
         const backgroundStyle = { backgroundColor: gameSwitches.isGameOver ? '#ad9549' : '#fff'};
 
@@ -89,7 +103,7 @@ class App extends Component {
                     {gameSwitches.isInGame && <LiveInfo endTheGame={this.endTheGame} />}
                     {isShowingStats && <EndStats />}
                     <div className={`garden__message ${gameSwitches.isGameOver ? 'js-visible-message' : ''}`}>
-                        <p>{message}</p>
+                        <p>{endGameMessage}</p>
                     </div>
                 </div>
                 <Shutters isOpen={gameSwitches.isOpenShutters} />
@@ -110,16 +124,14 @@ class App extends Component {
     }
 }
 
-const mapStateToProps = state => (
-    {
-        gameSwitches: state.game.switches,
-        message: state.game.message,
-        isShowingStats: state.stats.isShowing,
+const mapStateToProps = state => {
+    return {
+        gameSwitches: state.gameSwitches,
+        endGameMessage: state.endGameMessage,
+        isShowingStats: state.isShowingStats,
     }
-);
+};
 
 export default connect(mapStateToProps, {
-    updateGameState,
-    updateSingleProp,
-    updateStats
+    updateSimpleState
 })(App);

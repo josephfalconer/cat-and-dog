@@ -54,7 +54,3 @@ export default class Hints extends Component {
         );
     };
 }
-
-
-
-

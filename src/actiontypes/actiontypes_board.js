@@ -1,2 +1,0 @@
-export const UPDATE_BOARD_STATE = 'board/UPDATE_BOARD_STATE';
-export const UPDATE_ROBOT_POSITION = 'board/UPDATE_ROBOT_POSITION';

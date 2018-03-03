@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { updateStats } from '../actions/actions_stats';
+import { updateSimpleState } from '../actions/';
 
 class LiveInfo extends Component {
     static propTypes = {
@@ -31,11 +31,13 @@ class LiveInfo extends Component {
         if (secondsRemaining === 0) {
             this.props.endTheGame('You finished 60 seconds, well done!');
         } else {
-            this.props.updateStats({
-                ...this.props.stats,
-                secondsRemaining: secondsRemaining - 1
-            }, 'UPDATE_STATS');
-            this.setState({ ...this.state, secondsRemaining: secondsRemaining - 1 });
+            this.props.updateSimpleState({
+                stats: {
+                    ...this.props.stats,
+                    secondsRemaining: secondsRemaining - 1
+                }
+            });
+            this.setState({secondsRemaining: secondsRemaining - 1});
         }
     }
 
@@ -53,11 +55,11 @@ class LiveInfo extends Component {
 
 const mapStateToProps = state => (
     {
-        stats: state.stats.stats,
-        gameSwitches: state.game.switches
+        stats: state.stats,
+        gameSwitches: state.gameSwitches
     }
 )
 
 export default connect(mapStateToProps, {
-    updateStats
+    updateSimpleState
 })(LiveInfo);

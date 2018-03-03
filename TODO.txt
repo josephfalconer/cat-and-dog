@@ -1,11 +1,7 @@
 - Find any document.getElementById and replace with React equivalent
 
-- Tidy up actions so that not making one call after another: just pass one payload. Eg lines 41-3 of App
-
 - Maybe eliminate passed functions like endTheGame and find a way to do this through store?
 
 - Consider using React.PureComponent to increase performance
-
-- Just use one basic store update function in actions/index.js
 
 - Consider replacing for (var of array) loops with forEach - then Symbol polyfill isn't needed?

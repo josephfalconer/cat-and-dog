@@ -1,9 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { updateStats } from '../actions/actions_stats';
-import { updateBoardState } from '../actions/actions_board';
-import * as helpers from '../actions/helpers';
+import { updateSimpleState } from '../actions/';
+import * as helpers from '../helpers';
 import DirectionButtons from './DirectionButtons';
 import Player from './Player';
 
@@ -30,7 +29,7 @@ class Human extends Player {
     componentDidMount() {
         this.isInGame = true;
         this.moveForward(9, 7, 'LEFT');
-        this.props.updateBoardState({human: {x: 9, y: 7}});
+        this.props.updateSimpleState({human: {x: 9, y: 7}});
         this.intervalID = setInterval(() => {
             this.updateEnergy(-1);
         }, 2500);
@@ -93,14 +92,14 @@ class Human extends Player {
 
             robots.forEach((robot) => {
                 if (robot.x === validXY.x && robot.y === validXY.y) {
-                    this.endTheGame('You ran into the dog!')
+                    this.endTheGame('You ran into a dog!')
                     isDogNextSpace = true;
                 }
             });
 
             if (!isDogNextSpace) {
                 this.moveForward(validXY.x, validXY.y, direction);
-                this.props.updateBoardState({
+                this.props.updateSimpleState({
                     human: {x: validXY.x, y: validXY.y}
                 });
             }
@@ -118,11 +117,13 @@ class Human extends Player {
             return;
         }
 
-        this.props.updateStats({
-            ...stats,
-            mealsEaten: change === 1 ? stats.mealsEaten + 1 : stats.mealsEaten,
-            energy: stats.energy + change
-        }, 'UPDATE_STATS');
+        this.props.updateSimpleState({
+            stats: {
+                ...stats,
+                mealsEaten: change === 1 ? stats.mealsEaten + 1 : stats.mealsEaten,
+                energy: stats.energy + change
+            }
+        });
     }
 
     render() {
@@ -142,15 +143,14 @@ class Human extends Player {
 
 const mapStateToProps = state => {
     return {
-        currentFoods: state.board.currentFoods,
-        gameSwitches: state.game.switches,
-        robots: state.board.robots,
-        spaces: state.board.spaces,
-        stats: state.stats.stats
+        currentFoods: state.currentFoods,
+        gameSwitches: state.gameSwitches,
+        robots: state.robots,
+        boardSpaces: state.boardSpaces,
+        stats: state.stats
     }
 }
 
 export default connect(mapStateToProps, {
-    updateBoardState,
-    updateStats
+    updateSimpleState
 })(Human);

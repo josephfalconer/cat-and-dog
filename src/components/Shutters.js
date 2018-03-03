@@ -40,7 +40,7 @@ class Shutters extends Component {
 
 const mapStateToProps = state => (
     {
-        shuttersMessage: state.game.shuttersMessage
+        shuttersMessage: state.shuttersMessage
     }
 );
 

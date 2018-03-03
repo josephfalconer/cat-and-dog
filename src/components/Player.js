@@ -1,11 +1,11 @@
 import { Component } from 'react';
 
-import * as helpers from '../actions/helpers';
+import * as helpers from '../helpers';
 
 export default class extends Component {
     moveForward(x, y, newdirection){
         const spaceWidth = document.getElementById('sample-space').clientWidth;
-        const { currentFoods, updateBoardState } = this.props;
+        const { currentFoods, updateSimpleState } = this.props;
         let eatenIndex = 0;
 
         currentFoods.forEach((food, index) => {
@@ -18,7 +18,7 @@ export default class extends Component {
             const newFoods = currentFoods.filter((food, index) =>
                 index !== eatenIndex - 1
             );
-            updateBoardState({currentFoods: newFoods});
+            updateSimpleState({currentFoods: newFoods});
         }
 
         this.setState({
@@ -31,7 +31,7 @@ export default class extends Component {
     }
 
     checkMove(x, y, direction) {
-        const { spaces } = this.props;
+        const { boardSpaces } = this.props;
         let forwardX = x, forwardY = y, nextSpace;
 
         if (direction === 'RIGHT') {
@@ -45,10 +45,10 @@ export default class extends Component {
         }
 
         // limited to garden dimensions
-        if (forwardX < 0 || forwardY < 0 || forwardX > spaces.length - 1 || forwardY > spaces[0].length - 1)
+        if (forwardX < 0 || forwardY < 0 || forwardX > boardSpaces.length - 1 || forwardY > boardSpaces[0].length - 1)
             return false;
 
-        nextSpace = spaces[forwardX][forwardY];
+        nextSpace = boardSpaces[forwardX][forwardY];
 
         if (nextSpace.occupant === 'OBSTRUCTION')
             return false;

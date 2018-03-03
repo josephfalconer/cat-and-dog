@@ -1,13 +1,35 @@
-import { combineReducers } from 'redux';
+import { 
+	boardInitialState,
+	gameInitialState,
+	statsInitialState
+} from '../constants';
+import * as actionTypes from '../actiontypes/';
 
-import BoardReducer from './reducer_board';
-import StatsReducer from './reducer_stats';
-import GameReducer from './reducer_game';
+const initialState = {
+	...boardInitialState,
+	...gameInitialState,
+	...statsInitialState
+}
 
-const rootReducer = combineReducers({
-	board: BoardReducer,
-	stats: StatsReducer,
-	game: GameReducer
-});
+function simpleReducer(state=initialState, action) {
+	switch (action.type) {
+		case actionTypes.UPDATE_SIMPLE_STATE: {
+			return {
+				...state,
+				...action.payload
+			}
+		}
+		case actionTypes.UPDATE_ROBOT_POSITION: {
+			let newRobotsState = state.robots;
+			newRobotsState[action.index] = {x: action.x, y: action.y};
+			return {
+				...state,
+				robots: newRobotsState
+			}
+		}
+		default:
+			return state;
+	}
+}
 
-export default rootReducer;
+export default simpleReducer;

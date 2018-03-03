@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { updateBoardState } from '../actions/actions_board';
+import { updateSimpleState } from '../actions/';
 import { humanStart, robotsStart } from '../constants';
 import FoodLayer from './FoodLayer';
 import Human from './Human';
@@ -21,23 +21,23 @@ class Board extends Component {
 		width: PropTypes.number.isRequired,
 		height: PropTypes.number.isRequired,
         endTheGame: PropTypes.func.isRequired,
-        spaces: PropTypes.array.isRequired,
+        boardSpaces: PropTypes.array.isRequired,
 	}
 
 	componentDidMount() {
         this.isInGame = true;
-        const spaces = this.getSpaces();
-        const freeSpaces = this.getFreeSpaces(spaces);
+        const boardSpaces = this.getSpaces();
+        const freeBoardSpaces = this.getFreeSpaces(boardSpaces);
 
-        this.props.updateBoardState({
-            spaces,
-            freeSpaces
+        this.props.updateSimpleState({
+            boardSpaces,
+            freeBoardSpaces
         });
 	}
 
     componentWillUnmount() {
         this.isInGame = false;
-        this.props.updateBoardState({
+        this.props.updateSimpleState({
             human: humanStart,
             robots: robotsStart
         });
@@ -87,11 +87,10 @@ class Board extends Component {
     }
 
     render() {
-        const { spaces, endTheGame } = this.props;
-
+        const { boardSpaces, endTheGame } = this.props;
     	return (
     		<div className="garden">
-                {spaces.length && spaces.map((column, index) => {
+                {boardSpaces.length && boardSpaces.map((column, index) => {
                     return (
                         <div className="garden__column" key={index}>
                             {column.map((space, index) => {
@@ -124,10 +123,10 @@ class Board extends Component {
 
 const mapStateToProps = state => {
     return {
-        spaces: state.board.spaces,
+        boardSpaces: state.boardSpaces,
     }
 };
 
 export default connect(mapStateToProps, {
-    updateBoardState
+    updateSimpleState
 })(Board);

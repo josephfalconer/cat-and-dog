@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { updateBoardState, updateRobotPosition } from '../actions/actions_board';
-import * as helpers from '../actions/helpers';
+import { updateRobotPosition, updateSimpleState } from '../actions/';
+import * as helpers from '../helpers';
 import Player from './Player';
 
 class Robot extends Player {
@@ -22,7 +22,7 @@ class Robot extends Player {
         delay: PropTypes.number.isRequired,
         human: PropTypes.object.isRequired,
         endTheGame: PropTypes.func.isRequired,
-        spaces: PropTypes.array.isRequired,
+        boardSpaces: PropTypes.array.isRequired,
         start: PropTypes.array.isRequired
     }
 
@@ -142,7 +142,7 @@ class Robot extends Player {
             return;
         }
 
-        this.props.updateRobotPosition([x, y, this.index]);
+        this.props.updateRobotPosition(this.index, x, y);
         this.moveForward(x, y, face);
     }
 
@@ -178,15 +178,15 @@ class Robot extends Player {
 
 const mapStateToProps = state => (
     {
-        currentFoods: state.board.currentFoods,
-        spaces: state.board.spaces,
-        gameSwitches: state.game.switches,
-        delay: state.game.difficulty,
-        human: state.board.human,
+        currentFoods: state.currentFoods,
+        boardSpaces: state.boardSpaces,
+        gameSwitches: state.gameSwitches,
+        delay: state.difficulty,
+        human: state.human,
     }
 );
 
 export default connect(mapStateToProps, {
-    updateBoardState,
-    updateRobotPosition
+    updateRobotPosition,
+    updateSimpleState
 })(Robot);

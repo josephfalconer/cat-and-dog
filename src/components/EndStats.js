@@ -27,7 +27,7 @@ class EndStats extends Component {
 
 const mapStateToProps = state => (
     {
-        stats: state.stats.stats
+        stats: state.stats
     }
 );
 

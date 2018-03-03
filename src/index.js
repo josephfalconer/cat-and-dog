@@ -3,11 +3,11 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
-import reducers from './reducers';
+import reducer from './reducers';
 import App from './containers/App.js';
 
 const store = createStore(
-	reducers,
+	reducer,
 	window.devToolsExtension && window.devToolsExtension()
 );
 
