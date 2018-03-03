@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 
 import { updateSimpleState } from '../actions/';
 import Board from '../components/Board';
-import Shutters from '../components/Shutters';
-import Hints from '../components/Hints';
-import LiveInfo from '../components/LiveInfo';
 import EndStats from '../components/EndStats';
 import GameControls from '../components/GameControls';
+import Hints from '../components/Hints';
+import LiveInfo from '../components/LiveInfo';
+import Shutters from '../components/Shutters';
+import { GETTING_STATS_MESSAGE } from '../constants';
 
 import '../scss/garden.css';
 
@@ -43,7 +44,7 @@ class App extends Component {
                 isGameOver: true
             },
             endGameMessage: message,
-            shuttersMessage: 'Getting game stats...'
+            shuttersMessage: GETTING_STATS_MESSAGE
         });
 
         // close shutters after time to read reason
@@ -75,7 +76,6 @@ class App extends Component {
                     isOpenShutters: true
                 }
             });
-
             // stop controls coming up until shutters complete transition
             setTimeout(() => this.showControls(true), 1000);
         }, 5000);

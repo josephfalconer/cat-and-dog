@@ -1,4 +1,5 @@
 export const STARTING_NEW_GAME_MESSAGE = 'Starting a new game...';
+export const GETTING_STATS_MESSAGE = 'Getting game stats...';
 
 export const humanStart = { x: 5, y: 4 }
 
