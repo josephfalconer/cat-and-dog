@@ -1,12 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { updateSimpleState } from '../actions/';
+import { endTheGame, updateSimpleState } from '../actions/';
 
 class LiveInfo extends Component {
     static propTypes = {
         stats: PropTypes.object.isRequired,
-        endTheGame: PropTypes.func.isRequired,
         gameSwitches: PropTypes.object.isRequired,
     }
 
@@ -25,19 +24,19 @@ class LiveInfo extends Component {
     }
 
     countDown = () => {
-        if (!this.isInGame || this.props.gameSwitches.isGameOver) return
         const { secondsRemaining } = this.state;
-
-        if (secondsRemaining === 0) {
-            this.props.endTheGame('You finished 60 seconds, well done!');
-        } else {
-            this.props.updateSimpleState({
-                stats: {
-                    ...this.props.stats,
-                    secondsRemaining: secondsRemaining - 1
-                }
-            });
-            this.setState({secondsRemaining: secondsRemaining - 1});
+        if (this.isInGame || !this.props.gameSwitches.isGameOver) {
+            if (secondsRemaining === 0) {
+                endTheGame('You finished 60 seconds, well done!');
+            } else {
+                this.props.updateSimpleState({
+                    stats: {
+                        ...this.props.stats,
+                        secondsRemaining: secondsRemaining - 1
+                    }
+                });
+                this.setState({secondsRemaining: secondsRemaining - 1});
+            }
         }
     }
 

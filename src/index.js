@@ -6,7 +6,7 @@ import { createStore } from 'redux';
 import reducer from './reducers';
 import App from './containers/App.js';
 
-const store = createStore(
+export const store = createStore(
 	reducer,
 	window.devToolsExtension && window.devToolsExtension()
 );

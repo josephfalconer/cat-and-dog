@@ -2,28 +2,24 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { updateSimpleState } from '../actions/';
-import { STARTING_NEW_GAME_MESSAGE } from '../constants';
+import { inGameSwitches, STARTING_NEW_GAME_MESSAGE } from '../constants';
 
 class GameControls extends Component {
     static propTypes = {
         gameSwitches: PropTypes.object.isRequired,
         showHints: PropTypes.func.isRequired,
-        showControls: PropTypes.func.isRequired,
         isShowing: PropTypes.bool.isRequired,
         isFirstGame: PropTypes.bool.isRequired
     }
 
 	startGame = () => {
-        const { showHints, showControls, isFirstGame } = this.props;
+        const { showHints, isFirstGame, updateSimpleState } = this.props;
 
-        showControls(false);
-        setTimeout(() => {
-            showHints(false);
-        }, 100);
+        updateSimpleState({isShowingControls: false});
+        setTimeout(() => showHints(false), 100);
 
         if (isFirstGame) {
             this.playFirstGame();
-
         } else {
             this.playNewGame();
         }
@@ -31,17 +27,12 @@ class GameControls extends Component {
 
     playFirstGame = () => {
         setTimeout(() => {
-            this.props.updateSimpleState({
-                gameSwitches: {
-                    ...this.props.gameSwitches,
-                    isInGame: true,
-                    isOpenShutters: true
-                }
-            });
+            this.props.updateSimpleState({gameSwitches: inGameSwitches});
         }, 500);
     }
 
     playNewGame = () => {
+        // close the shutters
         this.props.updateSimpleState({
             gameSwitches: {
                 ...this.props.gameSwitches,
@@ -50,6 +41,7 @@ class GameControls extends Component {
             shuttersMessage: STARTING_NEW_GAME_MESSAGE
         });
 
+        // reset the game
         setTimeout(() => {
             this.props.updateSimpleState({
                 stats: {
@@ -61,13 +53,10 @@ class GameControls extends Component {
             });
         }, 1000);
 
+        // start the new game
         setTimeout(() => {
             this.props.updateSimpleState({
-                gameSwitches: {
-                    isInGame: true,
-                    isOpenShutters: true,
-                    isGameOver: false
-                }
+                gameSwitches: inGameSwitches
             });
         }, 1500);
     }
@@ -97,7 +86,8 @@ class GameControls extends Component {
 
 const mapStateToProps = state => (
     {
-        gameSwitches: state.gameSwitches
+        gameSwitches: state.gameSwitches,
+        isShowing: state.isShowingControls
     }
 );
 

@@ -20,7 +20,6 @@ class Board extends Component {
 	static propTypes = {
 		width: PropTypes.number.isRequired,
 		height: PropTypes.number.isRequired,
-        endTheGame: PropTypes.func.isRequired,
         boardSpaces: PropTypes.array.isRequired,
 	}
 
@@ -87,7 +86,7 @@ class Board extends Component {
     }
 
     render() {
-        const { boardSpaces, endTheGame } = this.props;
+        const { boardSpaces } = this.props;
     	return (
     		<div className="garden">
                 {boardSpaces.length && boardSpaces.map((column, index) => {
@@ -104,12 +103,11 @@ class Board extends Component {
                         </div>
                     );
                 })}
-                <Human endTheGame={endTheGame} />
+                <Human />
                 {ROBOTS.map((robot, index) =>
                     <Robot
                         key={robot.name}
                         index={index}
-                        endTheGame={this.props.endTheGame}
                         start={robot.start}
                         uniqueName={robot.name}
                         startDelay={robot.startDelay}

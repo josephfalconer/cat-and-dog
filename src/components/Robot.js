@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { updateRobotPosition, updateSimpleState } from '../actions/';
+import * as actions from '../actions/';
 import * as helpers from '../helpers';
 import Player from './Player';
 
@@ -10,7 +10,6 @@ class Robot extends Player {
         super(props);
         this.isBlocked = false;
         this.name = 'ROBOT';
-        this.endTheGame = props.endTheGame;
         this.isDoneTwoBlockedMoves = false;
         this.index = props.index;
     }
@@ -21,7 +20,6 @@ class Robot extends Player {
         gameSwitches: PropTypes.object.isRequired,
         delay: PropTypes.number.isRequired,
         human: PropTypes.object.isRequired,
-        endTheGame: PropTypes.func.isRequired,
         boardSpaces: PropTypes.array.isRequired,
         start: PropTypes.array.isRequired
     }
@@ -135,14 +133,13 @@ class Robot extends Player {
 
     moveRobotForward = (nextSpace, face) => {
         const { x, y } = nextSpace;
-        const { human } = this.props;
+        const { human, updateRobotPosition } = this.props;
 
         if (x === human.x && y === human.y) {
-            this.endTheGame('A dog caught you!');
+            actions.endTheGame('A dog caught you!');
             return;
         }
-
-        this.props.updateRobotPosition(this.index, x, y);
+        updateRobotPosition(this.index, x, y);
         this.moveForward(x, y, face);
     }
 
@@ -187,6 +184,6 @@ const mapStateToProps = state => (
 );
 
 export default connect(mapStateToProps, {
-    updateRobotPosition,
-    updateSimpleState
+    updateRobotPosition: actions.updateRobotPosition,
+    updateSimpleState: actions.updateSimpleState
 })(Robot);

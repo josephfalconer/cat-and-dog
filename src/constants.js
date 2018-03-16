@@ -13,14 +13,37 @@ export const boardInitialState = {
 	robots: robotsStart,
 }
 
+export const inGameSwitches = {
+	isInGame: true,
+    isOpenShutters: true,
+    isGameOver: false
+}
+
+export const endingSwitches = {
+	...inGameSwitches,
+    isGameOver: true
+}
+
+export const endedClosingSwitches = {
+	...endingSwitches,
+	isOpenShutters: false
+}
+
+export const endedClosedDestroyingSwitches = {
+	...endedClosingSwitches,
+	isInGame: false
+}
+
 export const gameInitialState = {
 	difficulty: 600,
+	endGameMessage: '',
 	gameSwitches: {
 		isInGame: false,
 		isOpenShutters: false,
 		isGameOver: false
 	},
-	endGameMessage: '',
+	isFirstGame: true,
+	isShowingControls: true,
 	shuttersMessage: STARTING_NEW_GAME_MESSAGE
 }
 

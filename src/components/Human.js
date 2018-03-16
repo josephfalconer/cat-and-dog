@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { updateSimpleState } from '../actions/';
+import { endTheGame, updateSimpleState } from '../actions/';
 import * as helpers from '../helpers';
 import DirectionButtons from './DirectionButtons';
 import Player from './Player';
@@ -10,13 +10,11 @@ class Human extends Player {
     constructor(props) {
         super(props);
         this.name = 'HUMAN';
-        this.endTheGame = props.endTheGame;
     }
 
     static propTypes = {
         currentFoods: PropTypes.array.isRequired,
         stats: PropTypes.object.isRequired,
-        endTheGame: PropTypes.func.isRequired,
         gameSwitches: PropTypes.object.isRequired,
         robots: PropTypes.array.isRequired,
     }
@@ -43,87 +41,80 @@ class Human extends Player {
     }
 
     handleKeyPress = e => {
-        if (this.props.gameSwitches.isGameOver) {
-            return;
-        }
         let direction = null;
+        if (!this.props.gameSwitches.isGameOver) {
+            switch (e.which) {
+                case 37:
+                    direction = 'LEFT';
+                    break;
 
-        switch (e.which) {
-            case 37:
-                direction = 'LEFT';
-                break;
+                case 38:
+                    direction = 'UP';
+                    break;
 
-            case 38:
-                direction = 'UP';
-                break;
+                case 39:
+                    direction = 'RIGHT';
+                    break;
 
-            case 39:
-                direction = 'RIGHT';
-                break;
+                case 40:
+                    direction = 'DOWN';
+                    break;
 
-            case 40:
-                direction = 'DOWN';
-                break;
-
-            default:
-                return false;
+                default:
+                    return false;
+            }
+            this.moveHumanForward(direction);
         }
-
-        this.moveHumanForward(direction);
     }
 
     moveHumanForward = direction => {
-        const { robots, currentFoods } = this.props;
+        const { currentFoods, robots, updateSimpleState } = this.props;
         const validXY = this.checkMove(this.state.x, this.state.y, direction);
-        let isDogNextSpace = false;
+        let isRobotNextSpace = false;
 
-        if (!this.isInGame) {
-            return;
-        }
-        // always face new direction
-        this.setState({ ...this.state, face: direction });
+        if (this.isInGame) {
+            // always face new direction
+            this.setState({ ...this.state, face: direction });
 
-        if (validXY) {
-            currentFoods.forEach(food => {
-                if (food.x === validXY.x && food.y === validXY.y) {
-                    this.updateEnergy(1);
-                }
-            });
-
-            robots.forEach((robot) => {
-                if (robot.x === validXY.x && robot.y === validXY.y) {
-                    this.endTheGame('You ran into a dog!')
-                    isDogNextSpace = true;
-                }
-            });
-
-            if (!isDogNextSpace) {
-                this.moveForward(validXY.x, validXY.y, direction);
-                this.props.updateSimpleState({
-                    human: {x: validXY.x, y: validXY.y}
+            if (validXY) {
+                currentFoods.forEach(food => {
+                    if (food.x === validXY.x && food.y === validXY.y) {
+                        this.updateEnergy(1);
+                    }
                 });
+
+                robots.forEach((robot) => {
+                    if (robot.x === validXY.x && robot.y === validXY.y) {
+                        endTheGame('You ran into a dog!')
+                        isRobotNextSpace = true;
+                    }
+                });
+
+                if (!isRobotNextSpace) {
+                    this.moveForward(validXY.x, validXY.y, direction);
+                    updateSimpleState({
+                        human: {x: validXY.x, y: validXY.y}
+                    });
+                }
             }
         }
     }
 
     updateEnergy = change => {
-        if (!this.isInGame || this.props.gameSwitches.isGameOver) {
-            return;
-        }
-        const { stats } = this.props;
-
-        if (stats.energy === 0) {
-            this.endTheGame('You ran out of energy!');
-            return;
-        }
-
-        this.props.updateSimpleState({
-            stats: {
-                ...stats,
-                mealsEaten: change === 1 ? stats.mealsEaten + 1 : stats.mealsEaten,
-                energy: stats.energy + change
+        const { gameSwitches, stats, updateSimpleState } = this.props;
+        if (this.isInGame && ! gameSwitches.isGameOver) {
+            if (stats.energy === 0) {
+                endTheGame('You ran out of energy!');
+                return;
             }
-        });
+            updateSimpleState({
+                stats: {
+                    ...stats,
+                    mealsEaten: change === 1 ? stats.mealsEaten + 1 : stats.mealsEaten,
+                    energy: stats.energy + change
+                }
+            });
+        }
     }
 
     render() {
