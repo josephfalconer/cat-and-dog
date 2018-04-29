@@ -180,6 +180,7 @@ const mapStateToProps = state => (
         gameSwitches: state.gameSwitches,
         delay: state.difficulty,
         human: state.human,
+        sampleSpaceWidth: state.sampleSpaceWidth
     }
 );
 

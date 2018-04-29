@@ -4,8 +4,7 @@ import * as helpers from '../helpers';
 
 export default class extends PureComponent {
     moveForward(x, y, newdirection){
-        const spaceWidth = document.getElementById('sample-space').clientWidth;
-        const { currentFoods, updateSimpleState } = this.props;
+        const { currentFoods, sampleSpaceWidth, updateSimpleState } = this.props;
         let eatenIndex = 0;
 
         currentFoods.forEach((food, index) => {
@@ -25,7 +24,7 @@ export default class extends PureComponent {
             ...this.state,
             x: x,
             y: y,
-            style: helpers.writeTransform(x * spaceWidth, y * spaceWidth),
+            style: helpers.writeTransform(x * sampleSpaceWidth, y * sampleSpaceWidth),
             face: newdirection ? newdirection : this.state.face
         });
     }

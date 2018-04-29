@@ -24,6 +24,22 @@ class App extends PureComponent {
         isReadyShutters: false,
     }
 
+    constructor(props) {
+        super(props)
+        this.setSampleSpaceRef = element => {
+            this.sampleSpace = element;
+        }
+    }
+
+    componentDidMount() {
+        this.updateSampleSpaceWidth();
+        window.addEventListener('resize', this.updateSampleSpaceWidth);
+    }
+
+    updateSampleSpaceWidth = () => {
+        this.props.updateSimpleState({sampleSpaceWidth: this.sampleSpace.offsetWidth});
+    }
+
     showHints = status => {
         this.setState({ ...this.state, isShowingHints: status });
     }
@@ -37,7 +53,7 @@ class App extends PureComponent {
             <div className="main-container">
                 <div className="garden__bg" style={backgroundStyle}></div>
                 <div className="garden__container">
-                    <div id="sample-space" className="garden__space garden__space--sample"></div>
+                    <span ref={this.setSampleSpaceRef} id="sample-space" className="garden__space garden__space--sample"></span>
                     {gameSwitches.isInGame && <Board width={10} height={8} />}
                     {gameSwitches.isInGame && <LiveInfo />}
                     {isShowingStats && <EndStats />}

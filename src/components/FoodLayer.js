@@ -62,17 +62,15 @@ class FoodLayer extends PureComponent {
     }
 
 	render() {
-		const { currentFoods } = this.props;
-		const spaceWidth = document.getElementById('sample-space').clientWidth;
-
+		const { currentFoods, sampleSpaceWidth } = this.props;
 		return currentFoods.length ? (
 			<div className="foodlayer">
 				{currentFoods.map((food, index) => {
 					const foodStyles = {
-						left: `${(food.x * spaceWidth) / 16}rem`,
-						top: `${(food.y * spaceWidth) / 16}rem`,
-						width: `${spaceWidth / 16}rem`,
-						height: `${spaceWidth / 16}rem`,
+						left: `${(food.x * sampleSpaceWidth) / 16}rem`,
+						top: `${(food.y * sampleSpaceWidth) / 16}rem`,
+						width: `${sampleSpaceWidth / 16}rem`,
+						height: `${sampleSpaceWidth / 16}rem`,
 					}
 					let className = food.className;
 					className += this.state.isFullSizeFoods ? ' grow' : '';
@@ -92,7 +90,8 @@ class FoodLayer extends PureComponent {
 const mapStateToProps = state => {
 	return {
 		freeBoardSpaces: state.freeBoardSpaces,
-		currentFoods: state.currentFoods
+		currentFoods: state.currentFoods,
+		sampleSpaceWidth: state.sampleSpaceWidth
 	}
 }
 

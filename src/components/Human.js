@@ -138,7 +138,8 @@ const mapStateToProps = state => {
         gameSwitches: state.gameSwitches,
         robots: state.robots,
         boardSpaces: state.boardSpaces,
-        stats: state.stats
+        stats: state.stats,
+        sampleSpaceWidth: state.sampleSpaceWidth
     }
 }
 
