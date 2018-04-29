@@ -2,7 +2,11 @@ import React, { PureComponent, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { updateSimpleState } from '../actions/';
-import { inGameSwitches, STARTING_NEW_GAME_MESSAGE } from '../constants';
+import { 
+    GAME_STYLE_OPTIONS,
+    inGameSwitches,
+    STARTING_NEW_GAME_MESSAGE
+} from '../constants';
 
 class GameControls extends PureComponent {
     static propTypes = {
@@ -67,11 +71,27 @@ class GameControls extends PureComponent {
         });
     }
 
+    setGameStyle = e => {
+        this.props.updateSimpleState({
+            gameStyle: e.target.value
+        });
+    }
+
     render() {
         const { isShowing, showHints } = this.props;
 
         return (
             <div className={`gamecontrols ${isShowing ? 'js-showing-controls' : ''}`}>
+                <select onChange={this.setGameStyle}>
+                    {GAME_STYLE_OPTIONS.map((style, index) => {
+                        return (
+                            <option 
+                                key={`option-${style.name}`} 
+                                value={style.name}
+                            >{style.displayName}</option>
+                        )
+                    })}
+                </select>
                 <select className="" onChange={this.setDifficulty} >
                     <option value="800">Easy</option>
                     <option value="600">Medium</option>

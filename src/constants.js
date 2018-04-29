@@ -5,6 +5,19 @@ export const humanStart = { x: 5, y: 4 }
 
 export const robotsStart = [{x: 0, y: 0}]
 
+export const GAME_STYLE_OPTIONS = [
+	{
+		name: 'PURSUIT',
+		displayName: 'Pursuit'
+	},
+	{
+		name: 'PACMAN',
+		displayName: 'Pacman style'
+	}
+];
+
+export const GAME_STYLE_DEFAULT = 'PURSUIT';
+
 export const boardInitialState = {
 	boardSpaces: [],
 	currentFoods: [],
