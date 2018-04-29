@@ -7,21 +7,21 @@ $svg: '.svg';
 %animal {
 	display: block;
 	position: absolute;
-	top: remcalc(1);
-	left: remcalc(-2);
-	@include square(remcalc($space-width-sm - 3));
+	top: 0;
+	left: 0;
+	@include square(remcalc($space-width-sm));
 	transition: transform 0.2s;
 
 	@media screen and (min-width: remcalc(660)) and (min-height: remcalc(375)) {
-    	@include square(remcalc($space-width-ip6 - 3));
+    	@include square(remcalc($space-width-ip6));
     }
 
     @media screen and (min-width: remcalc(1024)) and (min-height: remcalc(768)) {
-    	@include square(remcalc($space-width-md - 3));
+    	@include square(remcalc($space-width-md));
     }
 
     @include mq(large) {
-    	@include square(remcalc($space-width-lg - 3));
+    	@include square(remcalc($space-width-lg));
     }
 }
 
