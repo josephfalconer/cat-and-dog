@@ -1,1 +1,16 @@
 - Find any document.getElementById and replace with React equivalent
+
+- Refactor out this.setState in Player.js...? Find a cleaner way to set/reference one store data set for positions/face etc of players.
+
+- Tidy up classnames/CSS - still using 'garden-' classnames.
+
+- Consider refactoring out App.js's 
+state = {
+        isShowingHints: false,
+        isReadyShutters: false,
+    }
+and state setting functions - use store for this?
+
+- upgrade react/react dom etc and use createRef?
+
+- create sprites for cat/dog
