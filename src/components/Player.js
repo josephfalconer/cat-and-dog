@@ -32,7 +32,9 @@ export default class extends PureComponent {
 
     checkMove(x, y, direction) {
         const { boardSpaces } = this.props;
-        let forwardX = x, forwardY = y, nextSpace;
+        let forwardX = x;
+        let forwardY = y;
+        let nextSpace;
 
         if (direction === 'RIGHT') {
             forwardX++;
