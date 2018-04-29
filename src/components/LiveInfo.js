@@ -1,9 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { endTheGame, updateSimpleState } from '../actions/';
 
-class LiveInfo extends Component {
+class LiveInfo extends PureComponent {
     static propTypes = {
         stats: PropTypes.object.isRequired,
         gameSwitches: PropTypes.object.isRequired,

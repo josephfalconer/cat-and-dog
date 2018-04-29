@@ -1,8 +1,8 @@
-import { Component } from 'react';
+import { PureComponent } from 'react';
 
 import * as helpers from '../helpers';
 
-export default class extends Component {
+export default class extends PureComponent {
     moveForward(x, y, newdirection){
         const spaceWidth = document.getElementById('sample-space').clientWidth;
         const { currentFoods, updateSimpleState } = this.props;

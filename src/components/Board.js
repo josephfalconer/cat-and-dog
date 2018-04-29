@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { updateSimpleState } from '../actions/';
@@ -16,7 +16,7 @@ const ROBOTS = [
     }
 ]
 
-class Board extends Component {
+class Board extends PureComponent {
 	static propTypes = {
 		width: PropTypes.number.isRequired,
 		height: PropTypes.number.isRequired,

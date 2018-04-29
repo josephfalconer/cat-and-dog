@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { updateSimpleState } from '../actions/';
@@ -11,7 +11,7 @@ import Shutters from '../components/Shutters';
 
 import '../scss/garden.css';
 
-class App extends Component {
+class App extends PureComponent {
     static propTypes = {
         endGameMessage: PropTypes.string.isRequired,
         gameSwitches: PropTypes.object.isRequired,

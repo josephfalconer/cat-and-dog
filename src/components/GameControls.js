@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { updateSimpleState } from '../actions/';
 import { inGameSwitches, STARTING_NEW_GAME_MESSAGE } from '../constants';
 
-class GameControls extends Component {
+class GameControls extends PureComponent {
     static propTypes = {
         gameSwitches: PropTypes.object.isRequired,
         showHints: PropTypes.func.isRequired,

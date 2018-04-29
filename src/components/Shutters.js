@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-class Shutters extends Component {
+class Shutters extends PureComponent {
     static propTypes = {
         isOpen: PropTypes.bool.isRequired,
         shuttersMessage: PropTypes.string.isRequired

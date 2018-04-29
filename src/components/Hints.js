@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 
 const hints = [
     { hint: "Get the yummy food.", className: "get-food" },
@@ -10,7 +10,7 @@ const hints = [
     { hint: "Ready?", className: 'get-ready' }
 ];
 
-export default class Hints extends Component {
+export default class Hints extends PureComponent {
     static propTypes = {
         showHints: PropTypes.func.isRequired,
         isShowing: PropTypes.bool.isRequired,
