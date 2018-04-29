@@ -1,5 +1,1 @@
 - Find any document.getElementById and replace with React equivalent
-
-- Consider using React.PureComponent to increase performance
-
-- Consider replacing for (var of array) loops with forEach - then Symbol polyfill isn't needed?
