@@ -46,16 +46,13 @@ class Robot extends Player {
     }
 
     findPath = () => {
-        if (!this.isInGame || this.props.gameSwitches.isGameOver) {
-            return;
-        }
-
-        if (this.isBlocked) {
-            this.isDoneTwoBlockedMoves = false;
-            this.doBlockedMove('LEFT');
-
-        } else {
-            this.doNormalMove();
+        if (this.isInGame && !this.props.gameSwitches.isGameOver) {
+            if (this.isBlocked) {
+                this.isDoneTwoBlockedMoves = false;
+                this.doBlockedMove('LEFT');
+            } else {
+                this.doNormalMove();
+            }
         }
     }
 
