@@ -2,8 +2,23 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import * as actions from '../actions/';
+import { GAME_STYLE_DEFAULT } from '../constants';
 import * as helpers from '../helpers';
 import Player from './Player';
+
+const LEFTS = {
+    UP: 'LEFT',
+    RIGHT: 'UP',
+    DOWN: 'RIGHT',
+    LEFT: 'DOWN'
+}
+
+const RIGHTS = {
+    UP: 'RIGHT',
+    RIGHT: 'DOWN',
+    DOWN: 'LEFT',
+    LEFT: 'UP'
+}
 
 class Robot extends Player {
     constructor(props) {
@@ -21,7 +36,8 @@ class Robot extends Player {
         delay: PropTypes.number.isRequired,
         human: PropTypes.object.isRequired,
         boardSpaces: PropTypes.array.isRequired,
-        start: PropTypes.array.isRequired
+        start: PropTypes.array.isRequired,
+        gameStyle: PropTypes.string.isRequired
     }
 
     state = {
@@ -31,10 +47,8 @@ class Robot extends Player {
 
     componentDidMount() {
         const { start, delay } = this.props;
-
         this.moveForward(start[0], start[1], 'RIGHT');
         this.isInGame = true;
-
         // set movement interval
         this.intervalID = setInterval(this.findPath, delay);
     }
@@ -60,23 +74,19 @@ class Robot extends Player {
         const { x, y, face } = this.state;
         const newFace = direction === 'LEFT' ? this.getLeft(face) : this.getRight(face);
         const validXY = this.checkMove(x, y, newFace);
-
         this.turn(newFace);
-
-        if (!validXY) {
+        if (validXY) {
+            this.isBlocked = false;
+            this.moveRobotForward(validXY, newFace);
+            // prevent infinite setTimeout
+            if (!this.isDoneTwoBlockedMoves) {
+                setTimeout(() => {
+                    this.isDoneTwoBlockedMoves = true;
+                    this.doBlockedMove('RIGHT');
+                }, this.props.delay / 2);
+            }
+        } else {
             this.isBlocked = true;
-            return;
-        }
-
-        this.isBlocked = false;
-        this.moveRobotForward(validXY, newFace);
-
-        // prevent infinite setTimeout
-        if (!this.isDoneTwoBlockedMoves) {
-            setTimeout(() => {
-                this.isDoneTwoBlockedMoves = true;
-                this.doBlockedMove('RIGHT');
-            }, this.props.delay / 2);
         }
     }
 
@@ -86,15 +96,14 @@ class Robot extends Player {
             // pursue on x axis
             this.isBlocked = this.pursueHuman('x');
         }
-
         setTimeout(() => {
-            if (!this.isInGame) {
-                return;
+            if (this.isInGame) {
+                // if human's y position is different to robot's y position
+                if (this.props.human.y !== this.state.y) {
+                    // pursue on y axis
+                    this.isBlocked = this.pursueHuman('y');
+                }
             }
-            // if human's y position is different to robot's y position
-            if (this.props.human.y !== this.state.y)
-                // pursue on y axis
-                this.isBlocked = this.pursueHuman('y');
         }, this.props.delay / 2);
     }
 
@@ -102,11 +111,10 @@ class Robot extends Player {
         const { x, y } = this.state;
         const newDirection = axis === 'x' ? this.checkHumanPositionX(x) : this.checkHumanPositionY(y);
         const validXY = this.checkMove(x, y, newDirection);
-
         // turn robot whether can move or not
-        if (this.isInGame)
+        if (this.isInGame) {
             this.turn(newDirection);
-
+        }
         if (validXY) {
             this.moveRobotForward(validXY, newDirection);
             return false;
@@ -131,33 +139,20 @@ class Robot extends Player {
     moveRobotForward = (nextSpace, face) => {
         const { x, y } = nextSpace;
         const { human, updateRobotPosition } = this.props;
-
         if (x === human.x && y === human.y) {
             actions.endTheGame('A dog caught you!');
-            return;
+        } else {
+            updateRobotPosition(this.index, x, y);
+            this.moveForward(x, y, face);
         }
-        updateRobotPosition(this.index, x, y);
-        this.moveForward(x, y, face);
     }
 
     getLeft = face => {
-        const lefts = {
-            UP: 'LEFT',
-            RIGHT: 'UP',
-            DOWN: 'RIGHT',
-            LEFT: 'DOWN'
-        }
-        return lefts[face];
+        return LEFTS[face];
     }
 
     getRight = face => {
-        const rights = {
-            UP: 'RIGHT',
-            RIGHT: 'DOWN',
-            DOWN: 'LEFT',
-            LEFT: 'UP'
-        }
-        return rights[face];
+        return RIGHTS[face];
     }
 
     render() {
@@ -177,7 +172,8 @@ const mapStateToProps = state => (
         gameSwitches: state.gameSwitches,
         delay: state.difficulty,
         human: state.human,
-        sampleSpaceWidth: state.sampleSpaceWidth
+        sampleSpaceWidth: state.sampleSpaceWidth,
+        gameStyle: state.gameStyle || GAME_STYLE_DEFAULT
     }
 );
 
