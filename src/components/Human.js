@@ -2,9 +2,21 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { endTheGame, updateSimpleState } from '../actions/';
+import { GAME_STYLE_DEFAULT } from '../constants';
 import * as helpers from '../helpers';
 import DirectionButtons from './DirectionButtons';
 import Player from './Player';
+
+const HUMAN_START_POSITIONS = {
+    PURSUIT_STYLE: {
+        x: 9,
+        y: 7
+    },
+    PACMAN_STYLE: {
+        x: 5,
+        y: 4
+    }
+}
 
 class Human extends Player {
     constructor(props) {
@@ -17,6 +29,7 @@ class Human extends Player {
         stats: PropTypes.object.isRequired,
         gameSwitches: PropTypes.object.isRequired,
         robots: PropTypes.array.isRequired,
+        gameStyle: PropTypes.string.isRequired
     }
 
     state = {
@@ -26,8 +39,9 @@ class Human extends Player {
 
     componentDidMount() {
         this.isInGame = true;
-        this.moveForward(9, 7, 'LEFT');
-        this.props.updateSimpleState({human: {x: 9, y: 7}});
+        const startPosition = HUMAN_START_POSITIONS[this.props.gameStyle]
+        this.moveForward(startPosition.x, startPosition.y, 'LEFT');
+        this.props.updateSimpleState({human: {x: startPosition.x, y: startPosition.y}});
         this.intervalID = setInterval(() => {
             this.updateEnergy(-1);
         }, 2500);
@@ -139,7 +153,8 @@ const mapStateToProps = state => {
         robots: state.robots,
         boardSpaces: state.boardSpaces,
         stats: state.stats,
-        sampleSpaceWidth: state.sampleSpaceWidth
+        sampleSpaceWidth: state.sampleSpaceWidth,
+        gameStyle: state.gameStyle || GAME_STYLE_DEFAULT
     }
 }
 

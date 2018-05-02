@@ -3,7 +3,12 @@ export const GETTING_STATS_MESSAGE = 'Getting game stats...';
 
 export const humanStart = { x: 5, y: 4 }
 
-export const robotsStart = [{x: 0, y: 0}]
+export const robotsStart = [
+	{x: 0, y: 0},
+	{x: 0, y: 7},
+	{x: 9, y: 0},
+	{x: 9, y: 7}
+]
 
 export const GAME_STYLE_OPTIONS = [
 	{
