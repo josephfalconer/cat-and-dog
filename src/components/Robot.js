@@ -27,6 +27,10 @@ class Robot extends Player {
         this.name = 'ROBOT';
         this.isDoneTwoBlockedMoves = false;
         this.index = props.index;
+        this.followPathMethods = {
+            PURSUIT_STYLE: this.followPursuitPath,
+            PACMAN_STYLE: this.followPatrolPath
+        }
     }
 
     static propTypes = {
@@ -46,11 +50,11 @@ class Robot extends Player {
     }
 
     componentDidMount() {
-        const { start, delay } = this.props;
+        const { gameStyle, start, delay } = this.props;
         this.moveForward(start.x, start.y, 'RIGHT');
         this.isInGame = true;
         // set movement interval
-        this.intervalID = setInterval(this.findPath, delay);
+        this.intervalID = setInterval(this.followPathMethods[gameStyle], delay);
     }
 
     componentWillUnmount() {
@@ -59,18 +63,31 @@ class Robot extends Player {
     	clearInterval(this.intervalID);
     }
 
-    findPath = () => {
+    followPatrolPath = () => {
+        if (this.isInGame && !this.props.gameSwitches.isGameOver) {
+            const { x, y, face } = this.state;
+            const validXY = this.checkMove(x, y, face);
+            if (validXY) {
+                this.moveRobotForward(validXY, face); 
+                this.turn(this.getLeft(face), false);
+            } else {
+                this.turn(this.getRight(face));
+            }        
+        }
+    }
+
+    followPursuitPath = () => {
         if (this.isInGame && !this.props.gameSwitches.isGameOver) {
             if (this.isBlocked) {
                 this.isDoneTwoBlockedMoves = false;
-                this.doBlockedMove('LEFT');
+                this.doBlockedPursuitStep('LEFT');
             } else {
-                this.doNormalMove();
+                this.doNormalPursuitStep();
             }
         }
     }
 
-    doBlockedMove = direction => {
+    doBlockedPursuitStep = direction => {
         const { x, y, face } = this.state;
         const newFace = direction === 'LEFT' ? this.getLeft(face) : this.getRight(face);
         const validXY = this.checkMove(x, y, newFace);
@@ -82,7 +99,7 @@ class Robot extends Player {
             if (!this.isDoneTwoBlockedMoves) {
                 setTimeout(() => {
                     this.isDoneTwoBlockedMoves = true;
-                    this.doBlockedMove('RIGHT');
+                    this.doBlockedPursuitStep('RIGHT');
                 }, this.props.delay / 2);
             }
         } else {
@@ -90,7 +107,7 @@ class Robot extends Player {
         }
     }
 
-    doNormalMove = () => {
+    doNormalPursuitStep = () => {
         // if human's x position is different to robot's x position
         if (this.props.human.x !== this.state.x) {
             // pursue on x axis
