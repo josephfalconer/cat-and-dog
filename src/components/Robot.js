@@ -46,7 +46,8 @@ class Robot extends Player {
 
     state = {
         style: helpers.writeTransform(9, 7),
-        face: 'RIGHT'
+        currentFace: 'RIGHT',
+        currentVisualFace: 'RIGHT'
     }
 
     componentDidMount() {
@@ -65,13 +66,14 @@ class Robot extends Player {
 
     followPatrolPath = () => {
         if (this.isInGame && !this.props.gameSwitches.isGameOver) {
-            const { x, y, face } = this.state;
-            const validXY = this.checkMove(x, y, face);
+            const { x, y, currentFace } = this.state;
+            const validXY = this.checkMove(x, y, currentFace);
             if (validXY) {
-                this.moveRobotForward(validXY, face); 
-                this.turn(this.getLeft(face), false);
+                this.setState({...this.state, currentVisualFace: currentFace});
+                this.moveRobotForward(validXY, currentFace); 
+                this.turn(this.getLeft(currentFace), false);
             } else {
-                this.turn(this.getRight(face));
+                this.turn(this.getRight(currentFace));
             }        
         }
     }
@@ -88,8 +90,8 @@ class Robot extends Player {
     }
 
     doBlockedPursuitStep = direction => {
-        const { x, y, face } = this.state;
-        const newFace = direction === 'LEFT' ? this.getLeft(face) : this.getRight(face);
+        const { x, y, currentFace } = this.state;
+        const newFace = direction === 'LEFT' ? this.getLeft(currentFace) : this.getRight(currentFace);
         const validXY = this.checkMove(x, y, newFace);
         this.turn(newFace);
         if (validXY) {
@@ -147,34 +149,38 @@ class Robot extends Player {
         return this.props.human.y > y ? 'DOWN' : 'UP';
     }
 
-    turn = direction => {
+    turn = (newFace, isVisualTurn=true) => {
         if (this.isInGame) {
-            this.setState({ ...this.state, face: direction });
+            this.setState({ 
+                ...this.state, 
+                currentFace: newFace,
+                currentVisualFace: isVisualTurn ? newFace : this.state.currentVisualFace
+            });
         }
     }
 
-    moveRobotForward = (nextSpace, face) => {
+    moveRobotForward = (nextSpace, newFace) => {
         const { x, y } = nextSpace;
         const { human, updateRobotPosition } = this.props;
         if (x === human.x && y === human.y) {
             actions.endTheGame('A dog caught you!');
         } else {
             updateRobotPosition(this.index, x, y);
-            this.moveForward(x, y, face);
+            this.moveForward(x, y, newFace);
         }
     }
 
-    getLeft = face => {
-        return LEFTS[face];
+    getLeft = currentFace => {
+        return LEFTS[currentFace];
     }
 
-    getRight = face => {
-        return RIGHTS[face];
+    getRight = currentFace => {
+        return RIGHTS[currentFace];
     }
 
     render() {
-    	const { style, face } = this.state;
-        const className = `dog dog-${face.toLowerCase()}`;
+    	const { style, currentVisualFace } = this.state;
+        const className = `dog dog-${currentVisualFace.toLowerCase()}`;
     	style.backgroundSize = '95%';
     	return (
 	        <span className={className} style={style}></span>
