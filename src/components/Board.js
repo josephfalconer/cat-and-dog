@@ -18,11 +18,26 @@ const ROBOTS = [
         startDelay: 1000,
         start: [0, 0],
         name: 'Rover'
+    },
+    {
+        startDelay: 2000,
+        start: [0, 7],
+        name: 'Spot'
+    },
+    {
+        startDelay: 3000,
+        start: [9, 0],
+        name: 'Pixie'
+    },
+    {
+        startDelay: 4000,
+        start: [9, 7],
+        name: 'Angel'
     }
-];
+]
 
-const getObstructions = {
-    PURSUIT: spaces => {
+const OBSTRUCTIONS_BY_GAME_STYLE = {
+    PURSUIT_STYLE: spaces => {
         const noOfObstructions = 10;
         for (let i = 0; i < noOfObstructions; i++) {
             let ranX = Math.floor(Math.random() * spaces.length);
@@ -33,12 +48,17 @@ const getObstructions = {
         }
         return spaces;
     },
-    PACMAN: spaces => {
+    PACMAN_STYLE: spaces => {
         obstructionsSet.forEach((obstruction, index) => {
             spaces[obstruction[0]][obstruction[1]].occupant = 'OBSTRUCTION';
         });
         return spaces;
     }
+}
+
+const ROBOTS_BY_GAME_STYLE = {
+    PURSUIT_STYLE: () => [ROBOTS[Math.floor(Math.random() * ROBOTS.length)]],
+    PACMAN_STYLE: () => ROBOTS
 }
 
 class Board extends PureComponent {
@@ -48,6 +68,11 @@ class Board extends PureComponent {
         boardSpaces: PropTypes.array.isRequired,
         gameStyle: PropTypes.string.isRequired
 	}
+
+    constructor(props) {
+        super(props);
+        this.robots = ROBOTS_BY_GAME_STYLE[props.gameStyle]();
+    }
 
 	componentDidMount() {
         const { gameStyle } = this.props;
@@ -86,7 +111,7 @@ class Board extends PureComponent {
                 };
             }
         }
-        spaces = getObstructions[gameStyle](spaces);
+        spaces = OBSTRUCTIONS_BY_GAME_STYLE[gameStyle](spaces);
         return spaces;
 	}
 
@@ -119,7 +144,7 @@ class Board extends PureComponent {
                     );
                 })}
                 <Human />
-                {ROBOTS.map((robot, index) =>
+                {this.robots.map((robot, index) =>
                     <Robot
                         key={robot.name}
                         index={index}

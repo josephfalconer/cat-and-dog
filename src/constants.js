@@ -7,16 +7,16 @@ export const robotsStart = [{x: 0, y: 0}]
 
 export const GAME_STYLE_OPTIONS = [
 	{
-		name: 'PURSUIT',
+		name: 'PURSUIT_STYLE',
 		displayName: 'Pursuit'
 	},
 	{
-		name: 'PACMAN',
+		name: 'PACMAN_STYLE',
 		displayName: 'Pacman style'
 	}
 ];
 
-export const GAME_STYLE_DEFAULT = 'PURSUIT';
+export const GAME_STYLE_DEFAULT = 'PURSUIT_STYLE';
 
 export const boardInitialState = {
 	boardSpaces: [],
