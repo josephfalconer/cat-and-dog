@@ -47,7 +47,7 @@ class Robot extends Player {
 
     componentDidMount() {
         const { start, delay } = this.props;
-        this.moveForward(start[0], start[1], 'RIGHT');
+        this.moveForward(start.x, start.y, 'RIGHT');
         this.isInGame = true;
         // set movement interval
         this.intervalID = setInterval(this.findPath, delay);

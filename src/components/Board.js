@@ -16,22 +16,34 @@ import { obstructionsSet } from '../scenarios/';
 const ROBOTS = [
     {
         startDelay: 1000,
-        start: [0, 0],
+        start: {
+            x: 0,
+            y: 0
+        },
         name: 'Rover'
     },
     {
         startDelay: 2000,
-        start: [0, 7],
+        start: {
+            x: 0,
+            y: 7
+        },
         name: 'Spot'
     },
     {
         startDelay: 3000,
-        start: [9, 0],
+        start: {
+            x: 9,
+            y: 0
+        },
         name: 'Pixie'
     },
     {
         startDelay: 4000,
-        start: [9, 7],
+        start: {
+            x: 9,
+            y: 7
+        },
         name: 'Angel'
     }
 ]
