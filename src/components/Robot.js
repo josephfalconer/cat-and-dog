@@ -57,9 +57,9 @@ class Robot extends Player {
       if (validXY) {
         this.setState({...this.state, currentVisualFace: currentFace});
         this.moveRobotForward(validXY, currentFace); 
-        this.turn(this.getLeft(currentFace), false);
+        this.turn(this.getRight(currentFace), false);
       } else {
-        this.turn(this.getRight(currentFace));
+        this.turn(this.getLeft(currentFace));
       }        
     }
   }
