@@ -56,10 +56,10 @@ class FoodLayer extends PureComponent {
 	}
 
 	getFoodType = () => {
-        const foods = [ 'fish', 'meat', 'steak', 'slice', 'drumstick', 'salami', 'sausage' ];
-        const ran = Math.floor(Math.random() * foods.length);
-        return `foodlayer__food ${foods[ran]}`;
-    }
+		const foods = [ 'fish', 'meat', 'steak', 'slice', 'drumstick', 'salami', 'sausage' ];
+		const ran = Math.floor(Math.random() * foods.length);
+		return `foodlayer__food ${foods[ran]}`;
+	}
 
 	render() {
 		const { currentFoods, sampleSpaceWidth } = this.props;
@@ -83,7 +83,7 @@ class FoodLayer extends PureComponent {
 					)
 				})}
 			</div>
-		) : null
+		) : null;
 	}
 }
 

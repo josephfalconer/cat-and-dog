@@ -14,5 +14,3 @@ and state setting functions - use store for this?
 - upgrade react/react dom etc and use createRef?
 
 - create sprites for cat/dog
-
-- capitalise all global const names

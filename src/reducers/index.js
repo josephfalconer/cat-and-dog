@@ -1,17 +1,17 @@
 import { 
-	boardInitialState,
-	gameInitialState,
-	statsInitialState
+	BOARD_INITIAL_STATE,
+	GAME_INITIAL_STATE,
+	STATS_INITIAL_STATE
 } from '../constants';
 import * as actionTypes from '../actiontypes/';
 
-const initialState = {
-	...boardInitialState,
-	...gameInitialState,
-	...statsInitialState
+const INITIAL_STATE = {
+	...BOARD_INITIAL_STATE,
+	...GAME_INITIAL_STATE,
+	...STATS_INITIAL_STATE
 }
 
-function simpleReducer(state=initialState, action) {
+function simpleReducer(state=INITIAL_STATE, action) {
 	switch (action.type) {
 		case actionTypes.UPDATE_SIMPLE_STATE: {
 			return {

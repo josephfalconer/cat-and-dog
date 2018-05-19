@@ -7,14 +7,13 @@ const DirectionButtons = props => {
 		<div className='directions'>
 			<div className='directions__inner'>
 				{buttonNames.map((name, index) => {
-					return (
-						<button 
-							key={index} 
-							className={`direction direction--${name}`} 
-							onClick={() => { moveHuman(name.toUpperCase()); }}
-						>
-						</button>
-					)
+				return (
+					<button 
+						key={index} 
+						className={`direction direction--${name}`} 
+						onClick={() => { moveHuman(name.toUpperCase()); }}
+					></button>
+				)
 				})}
 			</div>
 		</div>	

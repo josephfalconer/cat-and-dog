@@ -7,13 +7,13 @@ import reducer from './reducers';
 import App from './containers/App.js';
 
 export const store = createStore(
-	reducer,
-	window.devToolsExtension && window.devToolsExtension()
+  reducer,
+  window.devToolsExtension && window.devToolsExtension()
 );
 
 render (
-	<Provider store={store}>
-	    <App />
-	</Provider>,
-    document.getElementById('root')
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
 );

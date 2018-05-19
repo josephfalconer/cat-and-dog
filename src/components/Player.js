@@ -3,61 +3,68 @@ import { PureComponent } from 'react';
 import * as helpers from '../helpers';
 
 export default class extends PureComponent {
-    moveForward(x, y, newdirection){
-        const { currentFoods, sampleSpaceWidth, updateSimpleState } = this.props;
-        let eatenIndex = 0;
+  moveForward(x, y, newdirection){
+    const { currentFoods, sampleSpaceWidth, updateSimpleState } = this.props;
+    let eatenIndex = 0;
 
-        currentFoods.forEach((food, index) => {
-            if (food.x === x && food.y === y) {
-                eatenIndex = index + 1;
-            }
-        });
+    currentFoods.forEach((food, index) => {
+      if (food.x === x && food.y === y) {
+        eatenIndex = index + 1;
+      }
+    });
 
-        if (eatenIndex) {
-            const newFoods = currentFoods.filter((food, index) =>
-                index !== eatenIndex - 1
-            );
-            updateSimpleState({currentFoods: newFoods});
-        }
-
-        this.setState({
-            ...this.state,
-            x: x,
-            y: y,
-            style: helpers.writeTransform(x * sampleSpaceWidth, y * sampleSpaceWidth),
-            face: newdirection ? newdirection : this.state.face
-        });
+    if (eatenIndex) {
+      const newFoods = currentFoods.filter((food, index) =>
+        index !== eatenIndex - 1
+      );
+      updateSimpleState({currentFoods: newFoods});
     }
 
-    checkMove(x, y, direction) {
-        const { boardSpaces } = this.props;
-        let forwardX = x;
-        let forwardY = y;
-        let nextSpace;
+    this.setState({
+      ...this.state,
+      x: x,
+      y: y,
+      style: helpers.writeTransform(x * sampleSpaceWidth, y * sampleSpaceWidth),
+      face: newdirection ? newdirection : this.state.face
+    });
+  }
 
-        if (direction === 'RIGHT') {
-            forwardX++;
-        } else if (direction === 'LEFT') {
-            forwardX--;
-        } else if (direction === 'UP') {
-            forwardY--;
-        } else if (direction === 'DOWN') {
-            forwardY++;
-        }
+  checkMove(x, y, direction) {
+    const { boardSpaces } = this.props;
+    let forwardX = x;
+    let forwardY = y;
+    let nextSpace;
 
-        // limited to garden dimensions
-        if (forwardX < 0 || forwardY < 0 || forwardX > boardSpaces.length - 1 || forwardY > boardSpaces[0].length - 1)
-            return false;
-
-        nextSpace = boardSpaces[forwardX][forwardY];
-
-        if (nextSpace.occupant === 'OBSTRUCTION')
-            return false;
-
-        return {
-            x: forwardX,
-            y: forwardY,
-            occupant: nextSpace.occupant
-        };
+    if (direction === 'RIGHT') {
+      forwardX++;
+    } else if (direction === 'LEFT') {
+      forwardX--;
+    } else if (direction === 'UP') {
+      forwardY--;
+    } else if (direction === 'DOWN') {
+      forwardY++;
     }
+
+    // limited to garden dimensions
+    if (
+      forwardX < 0 || 
+      forwardY < 0 || 
+      forwardX > boardSpaces.length - 1 || 
+      forwardY > boardSpaces[0].length - 1
+    ) {
+      return false;
+    }
+
+    nextSpace = boardSpaces[forwardX][forwardY];
+
+    if (nextSpace.occupant === 'OBSTRUCTION') {
+      return false;
+    }
+
+    return {
+      x: forwardX,
+      y: forwardY,
+      occupant: nextSpace.occupant
+    };
+  }
 }

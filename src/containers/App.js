@@ -12,80 +12,83 @@ import Shutters from '../components/Shutters';
 import '../scss/garden.css';
 
 class App extends PureComponent {
-    static propTypes = {
-        endGameMessage: PropTypes.string.isRequired,
-        gameSwitches: PropTypes.object.isRequired,
-        isFirstGame: PropTypes.bool.isRequired,
-        isShowingStats: PropTypes.bool.isRequired
-    }
+  static propTypes = {
+    endGameMessage: PropTypes.string.isRequired,
+    gameSwitches: PropTypes.object.isRequired,
+    isFirstGame: PropTypes.bool.isRequired,
+    isShowingStats: PropTypes.bool.isRequired
+  }
 
-    state = {
-        isShowingHints: false,
-        isReadyShutters: false,
-    }
+  state = {
+    isShowingHints: false,
+    isReadyShutters: false,
+  }
 
-    constructor(props) {
-        super(props)
-        this.setSampleSpaceRef = element => {
-            this.sampleSpace = element;
-        }
+  constructor(props) {
+    super(props)
+      this.setSampleSpaceRef = element => {
+      this.sampleSpace = element;
     }
+  }
 
-    componentDidMount() {
-        this.updateSampleSpaceWidth();
-        window.addEventListener('resize', this.updateSampleSpaceWidth);
-    }
+  componentDidMount() {
+    this.updateSampleSpaceWidth();
+    window.addEventListener('resize', this.updateSampleSpaceWidth);
+  }
 
-    updateSampleSpaceWidth = () => {
-        this.props.updateSimpleState({sampleSpaceWidth: this.sampleSpace.offsetWidth});
-    }
+  updateSampleSpaceWidth = () => {
+    this.props.updateSimpleState({sampleSpaceWidth: this.sampleSpace.offsetWidth});
+  }
 
-    showHints = status => {
-        this.setState({ ...this.state, isShowingHints: status });
-    }
+  showHints = status => {
+    this.setState({ ...this.state, isShowingHints: status });
+  }
 
-    render() {
-        const { gameSwitches, isFirstGame, isShowingStats, endGameMessage } = this.props;
-        const { isShowingHints } = this.state;
-        const backgroundStyle = { backgroundColor: gameSwitches.isGameOver ? '#ad9549' : '#fff'};
-
-        return (
-            <div className="main-container">
-                <div className="garden__bg" style={backgroundStyle}></div>
-                <div className="garden__container">
-                    <span ref={this.setSampleSpaceRef} id="sample-space" className="garden__space garden__space--sample"></span>
-                    {gameSwitches.isInGame && <Board width={10} height={8} />}
-                    {gameSwitches.isInGame && <LiveInfo />}
-                    {isShowingStats && <EndStats />}
-                    <div className={`garden__message ${gameSwitches.isGameOver ? 'js-visible-message' : ''}`}>
-                        <p>{endGameMessage}</p>
-                    </div>
-                </div>
-                <Shutters isOpen={gameSwitches.isOpenShutters} />
-                <Hints
-                    isShowing={isShowingHints}
-                    showHints={this.showHints}
-                    isFirstGame={isFirstGame}
-                />
-                <GameControls
-                    isShowingHints={isShowingHints}
-                    showHints={this.showHints}
-                    isFirstGame={isFirstGame}
-                />
-            </div>
-        );
-    }
+  render() {
+    const { gameSwitches, isFirstGame, isShowingStats, endGameMessage } = this.props;
+    const { isShowingHints } = this.state;
+    const backgroundStyle = { backgroundColor: gameSwitches.isGameOver ? '#ad9549' : '#fff'};
+    return (
+      <div className="main-container">
+        <div className="garden__bg" style={backgroundStyle}></div>
+        <div className="garden__container">
+          <span 
+            ref={this.setSampleSpaceRef} 
+            id="sample-space" 
+            className="garden__space garden__space--sample"
+          ></span>
+          {gameSwitches.isInGame && <Board width={10} height={8} />}
+          {gameSwitches.isInGame && <LiveInfo />}
+          {isShowingStats && <EndStats />}
+          <div className={`garden__message ${gameSwitches.isGameOver ? 'js-visible-message' : ''}`}>
+          <p>{endGameMessage}</p>
+          </div>
+        </div>
+        <Shutters isOpen={gameSwitches.isOpenShutters} />
+        <Hints
+          isShowing={isShowingHints}
+          showHints={this.showHints}
+          isFirstGame={isFirstGame}
+        />
+        <GameControls
+          isShowingHints={isShowingHints}
+          showHints={this.showHints}
+          isFirstGame={isFirstGame}
+        />
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = state => {
-    return {
-        endGameMessage: state.endGameMessage,
-        gameSwitches: state.gameSwitches,
-        isFirstGame: state.isFirstGame,
-        isShowingStats: state.isShowingStats,
-    }
+  return {
+    endGameMessage: state.endGameMessage,
+    gameSwitches: state.gameSwitches,
+    isFirstGame: state.isFirstGame,
+    isShowingStats: state.isShowingStats,
+  }
 };
 
 export default connect(mapStateToProps, {
-    updateSimpleState
+  updateSimpleState
 })(App);
