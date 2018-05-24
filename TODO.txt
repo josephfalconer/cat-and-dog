@@ -4,12 +4,7 @@
 
 - Tidy up classnames/CSS - still using 'garden-' classnames.
 
-- Consider refactoring out App.js's 
-state = {
-        isShowingHints: false,
-        isReadyShutters: false,
-    }
-and state setting functions - use store for this?
+- Consider moving local state into store wherever used.
 
 - upgrade react/react dom etc and use createRef?
 
