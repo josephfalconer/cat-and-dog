@@ -31,6 +31,10 @@ class App extends PureComponent {
     window.addEventListener('resize', this.updateSampleSpaceWidth);
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateSampleSpaceWidth);
+  }
+
   updateSampleSpaceWidth = () => {
     this.props.updateSimpleState({sampleSpaceWidth: this.sampleSpace.offsetWidth});
   }
