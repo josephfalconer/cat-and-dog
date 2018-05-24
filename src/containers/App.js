@@ -15,7 +15,6 @@ class App extends PureComponent {
   static propTypes = {
     endGameMessage: PropTypes.string.isRequired,
     gameSwitches: PropTypes.object.isRequired,
-    isFirstGame: PropTypes.bool.isRequired,
     isShowingStats: PropTypes.bool.isRequired,
   }
 
@@ -40,7 +39,7 @@ class App extends PureComponent {
   }
 
   render() {
-    const { gameSwitches, isFirstGame, isShowingStats, endGameMessage } = this.props;
+    const { gameSwitches, isShowingStats, endGameMessage } = this.props;
     const backgroundStyle = { backgroundColor: gameSwitches.isGameOver ? '#ad9549' : '#fff'};
     return (
       <div className="main-container">
@@ -60,7 +59,7 @@ class App extends PureComponent {
         </div>
         <Shutters isOpen={gameSwitches.isOpenShutters} />
         <Hints />
-        <GameControls isFirstGame={isFirstGame} />
+        <GameControls />
       </div>
     );
   }
@@ -70,7 +69,6 @@ const mapStateToProps = state => {
   return {
     endGameMessage: state.endGameMessage,
     gameSwitches: state.gameSwitches,
-    isFirstGame: state.isFirstGame,
     isShowingStats: state.isShowingStats,
   }
 };

@@ -108,6 +108,7 @@ const mapStateToProps = state => {
   return {
     gameSwitches: state.gameSwitches,
     isShowing: state.isShowingControls,
+    isFirstGame: state.isFirstGame
   }
 };
 
