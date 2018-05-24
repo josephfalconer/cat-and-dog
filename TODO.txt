@@ -1,5 +1,3 @@
-- Find any document.getElementById and replace with React equivalent
-
 - Refactor out this.setState in Player.js...? Find a cleaner way to set/reference one store data set for positions/face etc of players.
 
 - Tidy up classnames/CSS - still using 'garden-' classnames.
