@@ -54,7 +54,7 @@ class App extends PureComponent {
           {gameSwitches.isInGame && <LiveInfo />}
           {isShowingStats && <EndStats />}
           <div className={`garden__message ${gameSwitches.isGameOver ? 'js-visible-message' : ''}`}>
-          <p>{endGameMessage}</p>
+            <p>{endGameMessage}</p>
           </div>
         </div>
         <Shutters />
