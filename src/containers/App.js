@@ -57,7 +57,7 @@ class App extends PureComponent {
           <p>{endGameMessage}</p>
           </div>
         </div>
-        <Shutters isOpen={gameSwitches.isOpenShutters} />
+        <Shutters />
         <Hints />
         <GameControls />
       </div>

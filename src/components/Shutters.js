@@ -35,7 +35,8 @@ class Shutters extends PureComponent {
 
 const mapStateToProps = state => (
   {
-    shuttersMessage: state.shuttersMessage
+    shuttersMessage: state.shuttersMessage,
+    isOpen: state.gameSwitches.isOpenShutters
   }
 );
 
