@@ -19,10 +19,6 @@ class App extends PureComponent {
     isShowingStats: PropTypes.bool.isRequired,
   }
 
-  state = {
-    isReadyShutters: false,
-  }
-
   constructor(props) {
     super(props)
       this.setSampleSpaceRef = element => {
