@@ -1,12 +1,12 @@
 import React, { PureComponent, PropTypes } from 'react';
+import { connect } from 'react-redux';
 
+import { updateSimpleState } from '../actions/'
 import { HINTS } from '../constants';
 
-export default class Hints extends PureComponent {
+class Hints extends PureComponent {
   static propTypes = {
-    showHints: PropTypes.func.isRequired,
     isShowing: PropTypes.bool.isRequired,
-    isFirstGame: PropTypes.bool.isRequired
   }
 
   state = {
@@ -30,16 +30,21 @@ export default class Hints extends PureComponent {
     }
   }
 
+  handleHide = () => {
+    this.getHint(0);
+    this.props.updateSimpleState({isShowingHints: false});
+  }
+
   render() {
     const { currentHint } = this.state;
-    const { isShowing, showHints } = this.props;
+    const { isShowing } = this.props;
     const className = `hints ${currentHint && currentHint.className} ${isShowing ? 'js-showing-hints' : ''}`;
     return (
       <div className={className}>
         <div className="hints__controls">
           <button onClick={()=>{ this.getHint(-1); }}>Previous</button>
           <button onClick={()=>{ this.getHint(1); }}>Next</button>
-          <button onClick={()=>{ this.getHint(0); showHints(false); }}>Hide</button>
+          <button onClick={this.handleHide}>Hide</button>
         </div>
 
         <div className="hints__message">{currentHint && currentHint.hint}</div>
@@ -47,3 +52,13 @@ export default class Hints extends PureComponent {
     );
   };
 }
+
+const mapStateToProps = state => {
+  return {
+    isShowing: state.isShowingHints || false
+  }
+}
+
+export default connect(mapStateToProps, {
+  updateSimpleState
+})(Hints);

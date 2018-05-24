@@ -11,15 +11,14 @@ import {
 class GameControls extends PureComponent {
   static propTypes = {
     gameSwitches: PropTypes.object.isRequired,
-    showHints: PropTypes.func.isRequired,
     isShowing: PropTypes.bool.isRequired,
-    isFirstGame: PropTypes.bool.isRequired
+    isFirstGame: PropTypes.bool.isRequired,
   }
 
   startGame = () => {
-    const { showHints, isFirstGame, updateSimpleState } = this.props;
+    const { isFirstGame, updateSimpleState } = this.props;
     updateSimpleState({isShowingControls: false});
-    setTimeout(() => showHints(false), 100);
+    setTimeout(() => updateSimpleState({isShowingHints: false}), 100);
     if (isFirstGame) {
       this.playFirstGame();
     } else {
@@ -75,8 +74,12 @@ class GameControls extends PureComponent {
     });
   }
 
+  showHints = () => {
+    this.props.updateSimpleState({isShowingHints: true});
+  }
+
   render() {
-    const { isShowing, showHints } = this.props;
+    const { isShowing } = this.props;
     return (
       <div className={`gamecontrols ${isShowing ? 'js-showing-controls' : ''}`}>
         <select onChange={this.setGameStyle}>
@@ -95,18 +98,18 @@ class GameControls extends PureComponent {
           <option value="400">Hard</option>
         </select>
         <button onClick={this.startGame}>Start Game</button>
-        <button onClick={()=>{ showHints(true); }}>Show hints</button>
+        <button onClick={this.showHints}>Show hints</button>
       </div>
     )
   }
 }
 
-const mapStateToProps = state => (
-  {
+const mapStateToProps = state => {
+  return {
     gameSwitches: state.gameSwitches,
-    isShowing: state.isShowingControls
+    isShowing: state.isShowingControls,
   }
-);
+};
 
 export default connect(mapStateToProps, {
   updateSimpleState

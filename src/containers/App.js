@@ -16,11 +16,10 @@ class App extends PureComponent {
     endGameMessage: PropTypes.string.isRequired,
     gameSwitches: PropTypes.object.isRequired,
     isFirstGame: PropTypes.bool.isRequired,
-    isShowingStats: PropTypes.bool.isRequired
+    isShowingStats: PropTypes.bool.isRequired,
   }
 
   state = {
-    isShowingHints: false,
     isReadyShutters: false,
   }
 
@@ -40,13 +39,8 @@ class App extends PureComponent {
     this.props.updateSimpleState({sampleSpaceWidth: this.sampleSpace.offsetWidth});
   }
 
-  showHints = status => {
-    this.setState({ ...this.state, isShowingHints: status });
-  }
-
   render() {
     const { gameSwitches, isFirstGame, isShowingStats, endGameMessage } = this.props;
-    const { isShowingHints } = this.state;
     const backgroundStyle = { backgroundColor: gameSwitches.isGameOver ? '#ad9549' : '#fff'};
     return (
       <div className="main-container">
@@ -65,16 +59,8 @@ class App extends PureComponent {
           </div>
         </div>
         <Shutters isOpen={gameSwitches.isOpenShutters} />
-        <Hints
-          isShowing={isShowingHints}
-          showHints={this.showHints}
-          isFirstGame={isFirstGame}
-        />
-        <GameControls
-          isShowingHints={isShowingHints}
-          showHints={this.showHints}
-          isFirstGame={isFirstGame}
-        />
+        <Hints />
+        <GameControls isFirstGame={isFirstGame} />
       </div>
     );
   }
