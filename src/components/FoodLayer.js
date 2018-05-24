@@ -39,13 +39,15 @@ class FoodLayer extends PureComponent {
 				});
 			}
 			this.props.updateSimpleState({currentFoods});
-			setTimeout(() => this.setState({isFullSizeFoods: true}), 50);
-			setTimeout(() => {
-				if (this.isInGame) {
-					this.setState({isFullSizeFoods: false})
-				}
-			}, 4000);
+			setTimeout(this.toggleFullSizeFoods, 50);
+			setTimeout(this.toggleFullSizeFoods, 4000);
 			setTimeout(this.removeFoods, 5000);
+		}
+	}
+
+	toggleFullSizeFoods = () => {
+		if (this.isInGame) {
+			this.setState({isFullSizeFoods: !this.state.isFullSizeFoods})
 		}
 	}
 
