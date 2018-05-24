@@ -6,11 +6,7 @@ import { endTheGame, updateSimpleState } from '../actions/';
 class LiveInfo extends PureComponent {
   static propTypes = {
     stats: PropTypes.object.isRequired,
-    gameSwitches: PropTypes.object.isRequired,
-  }
-
-  state = {
-    secondsRemaining: 60
+    isGameOver: PropTypes.bool.isRequired,
   }
 
   componentDidMount() {
@@ -24,28 +20,28 @@ class LiveInfo extends PureComponent {
   }
 
   countDown = () => {
-    const { secondsRemaining } = this.state;
-    if (this.isInGame || !this.props.gameSwitches.isGameOver) {
-      if (secondsRemaining === 0) {
+    const { isGameOver, stats } = this.props;
+    if (this.isInGame && !isGameOver) {
+      if (stats.secondsRemaining === 0) {
         endTheGame('You finished 60 seconds, well done!');
       } else {
         this.props.updateSimpleState({
           stats: {
-            ...this.props.stats,
-            secondsRemaining: secondsRemaining - 1
+            ...stats,
+            secondsRemaining: stats.secondsRemaining - 1
           }
         });
-        this.setState({secondsRemaining: secondsRemaining - 1});
       }
     }
   }
 
   render() {
+    const { stats } = this.props;
     return (
       <div className="info">
-        <span>{`${this.state.secondsRemaining} seconds to go`}</span>
+        <span>{`${stats.secondsRemaining} seconds to go`}</span>
         <span>|</span>
-        <span>{`Energy: ${this.props.stats.energy}`}</span>
+        <span>{`Energy: ${stats.energy}`}</span>
       </div>
     );
   };
@@ -54,7 +50,7 @@ class LiveInfo extends PureComponent {
 const mapStateToProps = state => (
   {
     stats: state.stats,
-    gameSwitches: state.gameSwitches
+    isGameOver: state.gameSwitches.isGameOver
   }
 )
 
