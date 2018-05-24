@@ -1,14 +1,20 @@
+import * as helpers from './helpers';
+
 export const STARTING_NEW_GAME_MESSAGE = 'Starting a new game...';
 export const GETTING_STATS_MESSAGE = 'Getting game stats...';
 
-export const HUMAN_START = { x: 5, y: 4 }
+export const HUMAN_START = { 
+  face: 'LEFT'
+}
 
 export const HUMAN_START_POSITIONS = {
   PURSUIT_STYLE: {
+    ...HUMAN_START,
     x: 9,
-    y: 7
+    y: 7,
   },
   PACMAN_STYLE: {
+    ...HUMAN_START,
     x: 5,
     y: 4
   }
@@ -73,7 +79,6 @@ export const BOARD_INITIAL_STATE = {
 	boardSpaces: [],
 	currentFoods: [],
 	freeBoardSpaces: [],
-	human: HUMAN_START,
 	robots: ROBOT_START,
 }
 

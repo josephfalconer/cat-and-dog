@@ -11,7 +11,7 @@ class LiveInfo extends PureComponent {
 
   componentDidMount() {
     this.isInGame = true;
-    this.intervalID = setInterval(this.countDown, 1000);
+    // this.intervalID = setInterval(this.countDown, 1000);
   }
 
   componentWillUnmount() {

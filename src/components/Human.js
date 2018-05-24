@@ -18,7 +18,8 @@ class Human extends Player {
     stats: PropTypes.object.isRequired,
     gameSwitches: PropTypes.object.isRequired,
     robots: PropTypes.array.isRequired,
-    gameStyle: PropTypes.string.isRequired
+    gameStyle: PropTypes.string.isRequired,
+    human: PropTypes.object,
   }
 
   state = {
@@ -28,12 +29,20 @@ class Human extends Player {
 
   componentDidMount() {
     this.isInGame = true;
-    const startPosition = HUMAN_START_POSITIONS[this.props.gameStyle]
-    this.moveForward(startPosition.x, startPosition.y, 'LEFT');
-    this.props.updateSimpleState({human: {x: startPosition.x, y: startPosition.y}});
-    this.intervalID = setInterval(() => {
-      this.updateEnergy(-1);
-    }, 2500);
+    const { sampleSpaceWidth } = this.props;
+    const startPosition = HUMAN_START_POSITIONS[this.props.gameStyle];
+    this.props.updateSimpleState({
+      human: {
+        ...startPosition,
+        style: helpers.writeTransform(
+          startPosition.x * sampleSpaceWidth, 
+          startPosition.y * sampleSpaceWidth
+        )
+      }
+    });
+    // this.intervalID = setInterval(() => {
+    //   this.updateEnergy(-1);
+    // }, 2500);
     document.addEventListener('keydown', this.handleKeyPress);
   }
 
@@ -67,13 +76,12 @@ class Human extends Player {
   }
 
   moveHumanForward = direction => {
-    const { currentFoods, robots, updateSimpleState } = this.props;
-    const validXY = this.checkMove(this.state.x, this.state.y, direction);
+    const { currentFoods, robots, updateSimpleState, human, sampleSpaceWidth } = this.props;
+    const validXY = this.checkMove(human.x, human.y, direction);
     let isRobotNextSpace = false;
-
     if (this.isInGame) {
       // always face new direction
-      this.setState({ ...this.state, face: direction });
+      updateSimpleState({human: {...human, face: direction}});
 
       if (validXY) {
         currentFoods.forEach(food => {
@@ -92,7 +100,16 @@ class Human extends Player {
         if (!isRobotNextSpace) {
           this.moveForward(validXY.x, validXY.y, direction);
           updateSimpleState({
-            human: {x: validXY.x, y: validXY.y}
+            human: {
+              // make sure to include new face direction
+              ...this.props.human, 
+              style: helpers.writeTransform(
+                validXY.x * sampleSpaceWidth, 
+                validXY.y * sampleSpaceWidth
+              ),
+              x: validXY.x, 
+              y: validXY.y
+            }
           });
         }
       }
@@ -117,17 +134,23 @@ class Human extends Player {
   }
 
   render() {
-  	const { style, face } = this.state;
-    const className = `cat cat-${face.toLowerCase()}`;
-    style.backgroundSize = '75%';
-  	return (
-      <div>
-        <span className={className} style={style}></span>
-        {'ontouchstart' in document.documentElement &&
-          <DirectionButtons moveHuman={this.moveHumanForward} />
-        }
-      </div>
-    )
+  	const { human } = this.props;
+    if (human) {
+      const className = `cat cat-${human.face.toLowerCase()}`;
+      const displayStyle = {
+        ...human.style,
+        backgroundSize: '75%'
+      }
+    	return (
+        <div>
+          <span className={className} style={displayStyle}></span>
+          {'ontouchstart' in document.documentElement &&
+            <DirectionButtons moveHuman={this.moveHumanForward} />
+          }
+        </div>
+      )
+    }
+    return null;
   }
 }
 
@@ -139,7 +162,8 @@ const mapStateToProps = state => {
     boardSpaces: state.boardSpaces,
     stats: state.stats,
     sampleSpaceWidth: state.sampleSpaceWidth,
-    gameStyle: state.gameStyle || GAME_STYLE_DEFAULT
+    gameStyle: state.gameStyle || GAME_STYLE_DEFAULT,
+    human: state.human || HUMAN_START_POSITIONS[GAME_STYLE_DEFAULT]
   }
 }
 

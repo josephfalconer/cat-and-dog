@@ -1,10 +1,8 @@
 import { PureComponent } from 'react';
 
-import * as helpers from '../helpers';
-
 export default class extends PureComponent {
   moveForward(x, y, newdirection){
-    const { currentFoods, sampleSpaceWidth, updateSimpleState } = this.props;
+    const { currentFoods, updateSimpleState } = this.props;
     let eatenIndex = 0;
 
     currentFoods.forEach((food, index) => {
@@ -19,14 +17,6 @@ export default class extends PureComponent {
       );
       updateSimpleState({currentFoods: newFoods});
     }
-
-    this.setState({
-      ...this.state,
-      x: x,
-      y: y,
-      style: helpers.writeTransform(x * sampleSpaceWidth, y * sampleSpaceWidth),
-      face: newdirection ? newdirection : this.state.face
-    });
   }
 
   checkMove(x, y, direction) {

@@ -11,6 +11,7 @@ import {
 } from '../constants';
 
 export function updateSimpleState(payload) {
+  // console.log(payload);
 	return {
 		type: actionTypes.UPDATE_SIMPLE_STATE,
 		payload

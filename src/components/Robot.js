@@ -26,7 +26,7 @@ class Robot extends Player {
     delay: PropTypes.number.isRequired,
     human: PropTypes.object.isRequired,
     boardSpaces: PropTypes.array.isRequired,
-    start: PropTypes.array.isRequired,
+    start: PropTypes.object.isRequired,
     gameStyle: PropTypes.string.isRequired
   }
 
@@ -37,8 +37,14 @@ class Robot extends Player {
   }
 
   componentDidMount() {
-    const { gameStyle, start, delay } = this.props;
-    this.moveForward(start.x, start.y, 'RIGHT');
+    const { gameStyle, start, delay, sampleSpaceWidth } = this.props;
+    this.setState({
+      ...this.state, 
+      x: start.x, 
+      y: start.y,
+      style: helpers.writeTransform(start.x * sampleSpaceWidth, start.y * sampleSpaceWidth)
+    });
+    // this.moveForward(start.x, start.y, 'RIGHT');
     this.isInGame = true;
     // set movement interval
     this.intervalID = setInterval(this.followPathMethods[gameStyle], delay);
@@ -147,12 +153,19 @@ class Robot extends Player {
 
   moveRobotForward = (nextSpace, newFace) => {
     const { x, y } = nextSpace;
-    const { human, updateRobotPosition } = this.props;
+    const { human, updateRobotPosition, sampleSpaceWidth } = this.props;
     if (x === human.x && y === human.y) {
       actions.endTheGame('A dog caught you!');
     } else {
       updateRobotPosition(this.index, x, y);
       this.moveForward(x, y, newFace);
+      this.setState({
+        ...this.state,
+        x,
+        y,
+        style: helpers.writeTransform(x * sampleSpaceWidth, y * sampleSpaceWidth),
+        face: newFace ? newFace : this.state.face
+      });
     }
   }
 
@@ -180,7 +193,7 @@ const mapStateToProps = state => (
     boardSpaces: state.boardSpaces,
     gameSwitches: state.gameSwitches,
     delay: state.difficulty,
-    human: state.human,
+    human: state.human || {x: 0, y: 0},
     sampleSpaceWidth: state.sampleSpaceWidth,
     gameStyle: state.gameStyle || GAME_STYLE_DEFAULT
   }
