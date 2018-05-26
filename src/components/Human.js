@@ -40,9 +40,9 @@ class Human extends Player {
         )
       }
     });
-    // this.intervalID = setInterval(() => {
-    //   this.updateEnergy(-1);
-    // }, 2500);
+    this.intervalID = setInterval(() => {
+      this.updateEnergy(-1);
+    }, 2500);
     document.addEventListener('keydown', this.handleKeyPress);
   }
 
