@@ -7,7 +7,7 @@ import { HINTS } from '../constants';
 class Hints extends PureComponent {
   static propTypes = {
     isShowing: PropTypes.bool.isRequired,
-    currentHint: PropTypes.string.isRequired,
+    currentHint: PropTypes.object.isRequired,
     currentHintIndex: PropTypes.number.isRequired
   }
 
