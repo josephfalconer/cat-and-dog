@@ -11,19 +11,17 @@ import {
 } from '../constants';
 
 export function updateSimpleState(payload) {
-  // console.log(payload);
 	return {
 		type: actionTypes.UPDATE_SIMPLE_STATE,
 		payload
 	}
 }
 
-export function updateRobotPosition(index, x, y) {
+export function updateRobot(index, payload) {
 	return {
 		type: actionTypes.UPDATE_ROBOT_POSITION,
-		index,
-		x,
-		y,
+    index,
+		payload,
 	}
 }
 

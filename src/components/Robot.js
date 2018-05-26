@@ -2,7 +2,11 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import * as actions from '../actions/';
-import { GAME_STYLE_DEFAULT, LEFTS, RIGHTS } from '../constants';
+import { 
+  GAME_STYLE_DEFAULT, 
+  LEFTS, 
+  RIGHTS
+} from '../constants';
 import * as helpers from '../helpers';
 import Player from './Player';
 
@@ -12,56 +16,42 @@ class Robot extends Player {
     this.isBlocked = false;
     this.name = 'ROBOT';
     this.isDoneTwoBlockedMoves = false;
-    this.index = props.index;
     this.followPathMethods = {
       PURSUIT_STYLE: this.followPursuitPath,
       PACMAN_STYLE: this.followPatrolPath
-    }
+    };
+    this.isReadyToRender = false;
   }
 
   static propTypes = {
-    currentFoods: PropTypes.array.isRequired,
     index: PropTypes.number.isRequired,
+    data: PropTypes.object.isRequired,
+    currentFoods: PropTypes.array.isRequired,
     gameSwitches: PropTypes.object.isRequired,
     delay: PropTypes.number.isRequired,
     human: PropTypes.object.isRequired,
     boardSpaces: PropTypes.array.isRequired,
-    start: PropTypes.object.isRequired,
-    gameStyle: PropTypes.string.isRequired
-  }
-
-  state = {
-    style: helpers.writeTransform(9, 7),
-    currentFace: 'RIGHT',
-    currentVisualFace: 'RIGHT'
+    gameStyle: PropTypes.string.isRequired,
   }
 
   componentDidMount() {
-    const { gameStyle, start, delay, sampleSpaceWidth } = this.props;
-    this.setState({
-      ...this.state, 
-      x: start.x, 
-      y: start.y,
-      style: helpers.writeTransform(start.x * sampleSpaceWidth, start.y * sampleSpaceWidth)
-    });
-    // this.moveForward(start.x, start.y, 'RIGHT');
+    const { gameStyle, delay } = this.props;
     this.isInGame = true;
-    // set movement interval
     this.intervalID = setInterval(this.followPathMethods[gameStyle], delay);
   }
 
   componentWillUnmount() {
-    // clear movement interval
     this.isInGame = false;
     clearInterval(this.intervalID);
   }
 
   followPatrolPath = () => {
-    if (this.isInGame && !this.props.gameSwitches.isGameOver) {
-      const { x, y, currentFace } = this.state;
+    const { data, gameSwitches, index, updateRobot } = this.props;
+    if (this.isInGame && !gameSwitches.isGameOver && data) {
+      const { x, y, currentFace } = data;
       const validXY = this.checkMove(x, y, currentFace);
       if (validXY) {
-        this.setState({...this.state, currentVisualFace: currentFace});
+        updateRobot(index, {...data, currentVisualFace: currentFace});
         this.moveRobotForward(validXY, currentFace); 
         this.turn(this.getRight(currentFace), false);
       } else {
@@ -71,7 +61,7 @@ class Robot extends Player {
   }
 
   followPursuitPath = () => {
-    if (this.isInGame && !this.props.gameSwitches.isGameOver) {
+    if (this.isInGame && !this.props.gameSwitches.isGameOver && this.props.data) {
       if (this.isBlocked) {
         this.isDoneTwoBlockedMoves = false;
         this.doBlockedPursuitStep('LEFT');
@@ -82,7 +72,7 @@ class Robot extends Player {
   }
 
   doBlockedPursuitStep = direction => {
-    const { x, y, currentFace } = this.state;
+    const { data: { x, y, currentFace } } = this.props;
     const newFace = direction === 'LEFT' ? this.getLeft(currentFace) : this.getRight(currentFace);
     const validXY = this.checkMove(x, y, newFace);
     this.turn(newFace);
@@ -102,35 +92,29 @@ class Robot extends Player {
   }
 
   doNormalPursuitStep = () => {
-    // if human's x position is different to robot's x position
-    if (this.props.human.x !== this.state.x) {
-      // pursue on x axis
-      this.isBlocked = this.pursueHuman('x');
+    if (this.isInGame && this.props.human.x !== this.props.data.x) {
+      this.pursueHuman('x');
     }
     setTimeout(() => {
-      if (this.isInGame) {
-        // if human's y position is different to robot's y position
-        if (this.props.human.y !== this.state.y) {
-          // pursue on y axis
-          this.isBlocked = this.pursueHuman('y');
-        }
+      if (this.isInGame && this.props.human.y !== this.props.data.y) {
+        this.pursueHuman('y');
       }
     }, this.props.delay / 2);
   }
 
   pursueHuman = axis => {
-    const { x, y } = this.state;
+    const { x, y } = this.props.data;
     const newDirection = axis === 'x' ? this.checkHumanPositionX(x) : this.checkHumanPositionY(y);
     const validXY = this.checkMove(x, y, newDirection);
-    // turn robot whether can move or not
     if (this.isInGame) {
       this.turn(newDirection);
+      if (validXY) {
+        this.moveRobotForward(validXY, newDirection);
+        this.isBlocked = false;
+      } else {
+        this.isBlocked = true;
+      }
     }
-    if (validXY) {
-      this.moveRobotForward(validXY, newDirection);
-      return false;
-    }
-    return true;
   }
 
   checkHumanPositionX = x => {
@@ -143,29 +127,21 @@ class Robot extends Player {
 
   turn = (newFace, isVisualTurn=true) => {
     if (this.isInGame) {
-      this.setState({ 
-        ...this.state, 
+      this.props.updateRobot(this.props.index, {
         currentFace: newFace,
-        currentVisualFace: isVisualTurn ? newFace : this.state.currentVisualFace
+        currentVisualFace: isVisualTurn ? newFace : this.props.data.currentVisualFace
       });
     }
   }
 
   moveRobotForward = (nextSpace, newFace) => {
+    const { human, updateRobot, data, index } = this.props;
     const { x, y } = nextSpace;
-    const { human, updateRobotPosition, sampleSpaceWidth } = this.props;
     if (x === human.x && y === human.y) {
-      actions.endTheGame('A dog caught you!');
+      actions.endTheGame(`${data.name} caught you!`);
     } else {
-      updateRobotPosition(this.index, x, y);
-      this.moveForward(x, y, newFace);
-      this.setState({
-        ...this.state,
-        x,
-        y,
-        style: helpers.writeTransform(x * sampleSpaceWidth, y * sampleSpaceWidth),
-        face: newFace ? newFace : this.state.face
-      });
+      updateRobot(index, { x, y });
+      this.checkForFood(x, y, newFace);
     }
   }
 
@@ -178,28 +154,31 @@ class Robot extends Player {
   }
 
   render() {
-    const { style, currentVisualFace } = this.state;
+    const { data: { currentVisualFace, x, y }, sampleSpaceWidth } = this.props;
     const className = `dog dog-${currentVisualFace.toLowerCase()}`;
+    let style = helpers.writeTransform(x * sampleSpaceWidth, y * sampleSpaceWidth);
     style.backgroundSize = '95%';
     return (
       <span className={className} style={style}></span>
-    )
+    );
   }
 }
 
-const mapStateToProps = state => (
-  {
+const mapStateToProps = (state, props) => {
+  const data = state.robots[props.index];
+  return {
     currentFoods: state.currentFoods,
     boardSpaces: state.boardSpaces,
     gameSwitches: state.gameSwitches,
     delay: state.difficulty,
     human: state.human || {x: 0, y: 0},
     sampleSpaceWidth: state.sampleSpaceWidth,
-    gameStyle: state.gameStyle || GAME_STYLE_DEFAULT
+    gameStyle: state.gameStyle || GAME_STYLE_DEFAULT,
+    data
   }
-);
+};
 
 export default connect(mapStateToProps, {
-  updateRobotPosition: actions.updateRobotPosition,
+  updateRobot: actions.updateRobot,
   updateSimpleState: actions.updateSimpleState
 })(Robot);

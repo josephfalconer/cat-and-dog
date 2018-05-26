@@ -1,8 +1,4 @@
-- Refactor out this.setState in Player.js...? Find a cleaner way to set/reference one store data set for positions/face etc of players.
-
 - Tidy up classnames/CSS - still using 'garden-' classnames.
-
-- Consider moving local state into store wherever used.
 
 - upgrade react/react dom etc and use createRef?
 

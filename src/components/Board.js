@@ -4,15 +4,13 @@ import { connect } from 'react-redux';
 import { updateSimpleState } from '../actions/';
 import { 
   GAME_STYLE_DEFAULT,
-  HUMAN_START, 
-  ROBOTS,
-  ROBOT_START 
+  ROBOTS_BY_GAME_STYLE
 } from '../constants';
+import { obstructionsSet } from '../scenarios/';
 import FoodLayer from './FoodLayer';
 import Human from './Human';
 import Robot from './Robot';
 import Space from './Space';
-import { obstructionsSet } from '../scenarios/';
 
 const OBSTRUCTIONS_BY_GAME_STYLE = {
   PURSUIT_STYLE: spaces => {
@@ -34,22 +32,13 @@ const OBSTRUCTIONS_BY_GAME_STYLE = {
   }
 }
 
-const ROBOTS_BY_GAME_STYLE = {
-  PURSUIT_STYLE: () => [ROBOTS[Math.floor(Math.random() * ROBOTS.length)]],
-  PACMAN_STYLE: () => ROBOTS
-}
-
 class Board extends PureComponent {
   static propTypes = {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     boardSpaces: PropTypes.array.isRequired,
-    gameStyle: PropTypes.string.isRequired
-  }
-
-  constructor(props) {
-    super(props);
-    this.robots = ROBOTS_BY_GAME_STYLE[props.gameStyle]();
+    gameStyle: PropTypes.string.isRequired,
+    robots: PropTypes.array.isRequired
   }
 
   componentDidMount() {
@@ -59,16 +48,13 @@ class Board extends PureComponent {
     this.isInGame = true;
     this.props.updateSimpleState({
       boardSpaces,
-      freeBoardSpaces
+      freeBoardSpaces,
+      robots: ROBOTS_BY_GAME_STYLE[gameStyle]()
     });
   }
 
   componentWillUnmount() {
     this.isInGame = false;
-    this.props.updateSimpleState({
-      human: HUMAN_START,
-      robots: ROBOT_START
-    });
   }
 
   getSpaces = isStyledEdges => {
@@ -103,7 +89,7 @@ class Board extends PureComponent {
   }
 
   render() {
-    const { boardSpaces } = this.props;
+    const { boardSpaces, robots } = this.props;
     return (
       <div className="garden">
         {boardSpaces.length && boardSpaces.map((column, index) => {
@@ -121,15 +107,13 @@ class Board extends PureComponent {
           );
         })}
         <Human />
-        {this.robots.map((robot, index) =>
+        {robots.length ? robots.map((robot, index) =>
           <Robot
-          key={robot.name}
-          index={index}
-          start={robot.start}
-          uniqueName={robot.name}
-          startDelay={robot.startDelay}
+            key={`robot-${index}`}
+            index={index}
+            data={robot}
           />
-        )}
+        ) : null}
         <FoodLayer />
       </div>
     );
@@ -139,7 +123,8 @@ class Board extends PureComponent {
 const mapStateToProps = state => {
   return {
     boardSpaces: state.boardSpaces,
-    gameStyle: state.gameStyle || GAME_STYLE_DEFAULT
+    gameStyle: state.gameStyle || GAME_STYLE_DEFAULT,
+    robots: state.robots || []
   }
 };
 

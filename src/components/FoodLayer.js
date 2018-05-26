@@ -7,10 +7,7 @@ class FoodLayer extends PureComponent {
 	static propTypes = {
 		freeBoardSpaces: PropTypes.array.isRequired,
 		currentFoods: PropTypes.array.isRequired,
-	}
-
-	state = {
-		isFullSizeFoods: false
+		isFullSizeFoods: PropTypes.bool.isRequired,
 	}
 
 	componentDidMount() {
@@ -47,7 +44,7 @@ class FoodLayer extends PureComponent {
 
 	toggleFullSizeFoods = () => {
 		if (this.isInGame) {
-			this.setState({isFullSizeFoods: !this.state.isFullSizeFoods})
+			this.props.updateSimpleState({isFullSizeFoods: !this.props.isFullSizeFoods});
 		}
 	}
 
@@ -64,7 +61,7 @@ class FoodLayer extends PureComponent {
 	}
 
 	render() {
-		const { currentFoods, sampleSpaceWidth } = this.props;
+		const { currentFoods, sampleSpaceWidth, isFullSizeFoods } = this.props;
 		return currentFoods.length ? (
 			<div className="foodlayer">
 				{currentFoods.map((food, index) => {
@@ -75,7 +72,7 @@ class FoodLayer extends PureComponent {
 						height: `${sampleSpaceWidth / 16}rem`,
 					}
 					let className = food.className;
-					className += this.state.isFullSizeFoods ? ' grow' : '';
+					className += isFullSizeFoods ? ' grow' : '';
 					return (
 						<span
 							style={foodStyles}
@@ -93,7 +90,8 @@ const mapStateToProps = state => {
 	return {
 		freeBoardSpaces: state.freeBoardSpaces,
 		currentFoods: state.currentFoods,
-		sampleSpaceWidth: state.sampleSpaceWidth
+		sampleSpaceWidth: state.sampleSpaceWidth,
+		isFullSizeFoods: state.isFullSizeFoods || false
 	}
 }
 

@@ -1,16 +1,14 @@
 import { PureComponent } from 'react';
 
 export default class extends PureComponent {
-  moveForward(x, y, newdirection){
+  checkForFood(x, y, newdirection){
     const { currentFoods, updateSimpleState } = this.props;
     let eatenIndex = 0;
-
     currentFoods.forEach((food, index) => {
       if (food.x === x && food.y === y) {
         eatenIndex = index + 1;
       }
     });
-
     if (eatenIndex) {
       const newFoods = currentFoods.filter((food, index) =>
         index !== eatenIndex - 1

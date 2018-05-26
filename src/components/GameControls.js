@@ -5,7 +5,7 @@ import { updateSimpleState } from '../actions/';
 import { 
   GAME_STYLE_OPTIONS,
   IN_GAME_SWITCHES,
-  STARTING_NEW_GAME_MESSAGE
+  STARTING_NEW_GAME_MESSAGE,
 } from '../constants';
 
 class GameControls extends PureComponent {
@@ -56,22 +56,16 @@ class GameControls extends PureComponent {
 
     // start the new game
     setTimeout(() => {
-      this.props.updateSimpleState({
-        gameSwitches: IN_GAME_SWITCHES
-      });
+      this.props.updateSimpleState({gameSwitches: IN_GAME_SWITCHES});
     }, 1500);
   }
 
   setDifficulty = e => {
-  this.props.updateSimpleState({
-  difficulty: parseInt(e.target.value, 10)
-  });
+    this.props.updateSimpleState({difficulty: parseInt(e.target.value, 10)});
   }
 
   setGameStyle = e => {
-    this.props.updateSimpleState({
-      gameStyle: e.target.value
-    });
+    this.props.updateSimpleState({gameStyle: e.target.value});
   }
 
   showHints = () => {

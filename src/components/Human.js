@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { endTheGame, updateSimpleState } from '../actions/';
-import { GAME_STYLE_DEFAULT, HUMAN_START_POSITIONS } from '../constants';
+import { GAME_STYLE_DEFAULT, HUMAN } from '../constants';
 import * as helpers from '../helpers';
 import DirectionButtons from './DirectionButtons';
 import Player from './Player';
@@ -30,7 +30,7 @@ class Human extends Player {
   componentDidMount() {
     this.isInGame = true;
     const { sampleSpaceWidth } = this.props;
-    const startPosition = HUMAN_START_POSITIONS[this.props.gameStyle];
+    const startPosition = HUMAN[this.props.gameStyle];
     this.props.updateSimpleState({
       human: {
         ...startPosition,
@@ -54,7 +54,7 @@ class Human extends Player {
 
   handleKeyPress = e => {
     let direction = null;
-    if (!this.props.gameSwitches.isGameOver) {
+    if (!this.props.gameSwitches.isGameOver && this.props.human) {
       switch (e.which) {
         case 37:
           direction = 'LEFT';
@@ -76,7 +76,7 @@ class Human extends Player {
   }
 
   moveHumanForward = direction => {
-    const { currentFoods, robots, updateSimpleState, human, sampleSpaceWidth } = this.props;
+    const { currentFoods, robots, updateSimpleState, human } = this.props;
     const validXY = this.checkMove(human.x, human.y, direction);
     let isRobotNextSpace = false;
     if (this.isInGame) {
@@ -92,21 +92,16 @@ class Human extends Player {
 
         robots.forEach((robot) => {
           if (robot.x === validXY.x && robot.y === validXY.y) {
-            endTheGame('You ran into a dog!')
+            endTheGame(`You ran into ${robot.name}!`);
             isRobotNextSpace = true;
           }
         });
 
         if (!isRobotNextSpace) {
-          this.moveForward(validXY.x, validXY.y, direction);
+          this.checkForFood(validXY.x, validXY.y, direction);
           updateSimpleState({
             human: {
-              // make sure to include new face direction
               ...this.props.human, 
-              style: helpers.writeTransform(
-                validXY.x * sampleSpaceWidth, 
-                validXY.y * sampleSpaceWidth
-              ),
               x: validXY.x, 
               y: validXY.y
             }
@@ -134,16 +129,14 @@ class Human extends Player {
   }
 
   render() {
-  	const { human } = this.props;
+  	const { human, sampleSpaceWidth } = this.props;
     if (human) {
       const className = `cat cat-${human.face.toLowerCase()}`;
-      const displayStyle = {
-        ...human.style,
-        backgroundSize: '75%'
-      }
+      let style = helpers.writeTransform(human.x * sampleSpaceWidth, human.y * sampleSpaceWidth);;
+      style.backgroundSize = '75%';
     	return (
         <div>
-          <span className={className} style={displayStyle}></span>
+          <span className={className} style={style}></span>
           {'ontouchstart' in document.documentElement &&
             <DirectionButtons moveHuman={this.moveHumanForward} />
           }
@@ -158,12 +151,12 @@ const mapStateToProps = state => {
   return {
     currentFoods: state.currentFoods,
     gameSwitches: state.gameSwitches,
-    robots: state.robots,
+    robots: state.robots || [],
     boardSpaces: state.boardSpaces,
     stats: state.stats,
     sampleSpaceWidth: state.sampleSpaceWidth,
     gameStyle: state.gameStyle || GAME_STYLE_DEFAULT,
-    human: state.human || HUMAN_START_POSITIONS[GAME_STYLE_DEFAULT]
+    human: state.human || HUMAN[GAME_STYLE_DEFAULT]
   }
 }
 

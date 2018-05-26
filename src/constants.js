@@ -1,5 +1,3 @@
-import * as helpers from './helpers';
-
 export const STARTING_NEW_GAME_MESSAGE = 'Starting a new game...';
 export const GETTING_STATS_MESSAGE = 'Getting game stats...';
 
@@ -7,7 +5,7 @@ export const HUMAN_START = {
   face: 'LEFT'
 }
 
-export const HUMAN_START_POSITIONS = {
+export const HUMAN = {
   PURSUIT_STYLE: {
     ...HUMAN_START,
     x: 9,
@@ -20,47 +18,45 @@ export const HUMAN_START_POSITIONS = {
   }
 }
 
-export const ROBOT_START = [
-	{x: 0, y: 0},
-	{x: 0, y: 7},
-	{x: 9, y: 0},
-	{x: 9, y: 7}
-]
-
 export const ROBOTS = [
   {
     startDelay: 1000,
-    start: {
-      x: 0,
-      y: 0
-    },
-    name: 'Rover'
+    x: 0,
+    y: 0,
+    name: 'Rover',
+    currentFace: 'RIGHT',
+    currentVisualFace: 'RIGHT'
   },
   {
     startDelay: 2000,
-    start: {
-      x: 0,
-      y: 7
-    },
-    name: 'Spot'
+    x: 0,
+    y: 7,
+    name: 'Spot',
+    currentFace: 'RIGHT',
+    currentVisualFace: 'RIGHT'
   },
   {
     startDelay: 3000,
-    start: {
-      x: 9,
-      y: 0
-    },
-    name: 'Pixie'
+    x: 9,
+    y: 0,
+    name: 'Pixie',
+    currentFace: 'LEFT',
+    currentVisualFace: 'LEFT'
     },
   {
     startDelay: 4000,
-    start: {
-      x: 9,
-      y: 7
-    },
-    name: 'Angel'
+    x: 9,
+    y: 7,
+    name: 'Angel',
+    currentFace: 'LEFT',
+    currentVisualFace: 'LEFT'
   }
 ]
+
+export const ROBOTS_BY_GAME_STYLE = {
+  PURSUIT_STYLE: () => [ROBOTS[Math.floor(Math.random() * ROBOTS.length)]],
+  PACMAN_STYLE: () => ROBOTS.map(robot => robot)
+}
 
 export const GAME_STYLE_OPTIONS = [
 	{
@@ -79,18 +75,18 @@ export const BOARD_INITIAL_STATE = {
 	boardSpaces: [],
 	currentFoods: [],
 	freeBoardSpaces: [],
-	robots: ROBOT_START,
+  robots: []
 }
 
 export const IN_GAME_SWITCHES = {
 	isInGame: true,
-    isOpenShutters: true,
-    isGameOver: false
+  isOpenShutters: true,
+  isGameOver: false
 }
 
 export const ENDING_SWITCHES = {
 	...IN_GAME_SWITCHES,
-    isGameOver: true
+  isGameOver: true
 }
 
 export const ENDED_CLOSING_SWITCHES = {
@@ -104,7 +100,7 @@ export const ENDED_CLOSED_DESTROYING_SWITCHES = {
 }
 
 export const GAME_INITIAL_STATE = {
-	difficulty: 600,
+	difficulty: 800,
 	endGameMessage: '',
 	gameSwitches: {
 		isInGame: false,

@@ -21,7 +21,10 @@ function simpleReducer(state=INITIAL_STATE, action) {
 		}
 		case actionTypes.UPDATE_ROBOT_POSITION: {
 			let newRobotsState = state.robots;
-			newRobotsState[action.index] = {x: action.x, y: action.y};
+			newRobotsState[action.index] = {
+				...newRobotsState[action.index],
+				...action.payload
+			}
 			return {
 				...state,
 				robots: newRobotsState
