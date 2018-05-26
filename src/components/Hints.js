@@ -7,44 +7,43 @@ import { HINTS } from '../constants';
 class Hints extends PureComponent {
   static propTypes = {
     isShowing: PropTypes.bool.isRequired,
-  }
-
-  state = {
-    hintIndex: 0,
-  }
-
-  componentDidMount() {
-    this.getHint(0);
+    currentHint: PropTypes.string.isRequired,
+    currentHintIndex: PropTypes.number.isRequired
   }
 
   getHint = increment => {
-    const newIndex = this.state.hintIndex + increment;
+    const newIndex = this.props.currentHintIndex + increment;
     const nextHint = HINTS[newIndex];
-
     if (nextHint) {
-      this.setState({
-        ...this.state, 
-        currentHint: HINTS[newIndex],
-        hintIndex: newIndex
+      this.props.updateSimpleState({
+        currentHint: nextHint,
+        currentHintIndex: newIndex
       });
     }
   }
 
-  handleHide = () => {
+  getNextHint = () => {
+    this.getHint(1);
+  }
+
+  getPreviousHint = () => {
+    this.getHint(-1);
+  }
+
+  hideHints = () => {
     this.getHint(0);
     this.props.updateSimpleState({isShowingHints: false});
   }
 
   render() {
-    const { currentHint } = this.state;
-    const { isShowing } = this.props;
+    const { currentHint, isShowing } = this.props;
     const className = `hints ${currentHint && currentHint.className} ${isShowing ? 'js-showing-hints' : ''}`;
     return (
       <div className={className}>
         <div className="hints__controls">
-          <button onClick={()=>{ this.getHint(-1); }}>Previous</button>
-          <button onClick={()=>{ this.getHint(1); }}>Next</button>
-          <button onClick={this.handleHide}>Hide</button>
+          <button onClick={this.getPreviousHint}>Previous</button>
+          <button onClick={this.getNextHint}>Next</button>
+          <button onClick={this.hideHints}>Hide</button>
         </div>
 
         <div className="hints__message">{currentHint && currentHint.hint}</div>
@@ -55,7 +54,9 @@ class Hints extends PureComponent {
 
 const mapStateToProps = state => {
   return {
-    isShowing: state.isShowingHints || false
+    isShowing: state.isShowingHints || false,
+    currentHint: state.currentHint || HINTS[0],
+    currentHintIndex: state.currentHintIndex || 0
   }
 }
 
