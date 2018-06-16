@@ -20,7 +20,7 @@ export const HUMAN = {
 
 export const ROBOTS = [
   {
-    startDelay: 1000,
+    startDelay: 2000,
     x: 0,
     y: 0,
     name: 'Rover',
@@ -28,7 +28,7 @@ export const ROBOTS = [
     currentVisualFace: 'RIGHT'
   },
   {
-    startDelay: 2000,
+    startDelay: 1000,
     x: 0,
     y: 7,
     name: 'Spot',
@@ -36,7 +36,7 @@ export const ROBOTS = [
     currentVisualFace: 'RIGHT'
   },
   {
-    startDelay: 3000,
+    startDelay: 4000,
     x: 9,
     y: 0,
     name: 'Pixie',
@@ -44,7 +44,7 @@ export const ROBOTS = [
     currentVisualFace: 'LEFT'
     },
   {
-    startDelay: 4000,
+    startDelay: 3000,
     x: 9,
     y: 7,
     name: 'Angel',

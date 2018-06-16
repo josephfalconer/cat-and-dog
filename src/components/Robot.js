@@ -37,7 +37,10 @@ class Robot extends Player {
   componentDidMount() {
     const { gameStyle, delay } = this.props;
     this.isInGame = true;
+    setTimeout(() => {
     this.intervalID = setInterval(this.followPathMethods[gameStyle], delay);
+      
+    }, this.props.data.startDelay);
   }
 
   componentWillUnmount() {

@@ -32,7 +32,7 @@ class FoodLayer extends PureComponent {
 				currentFoods.push({
 					x: space.x,
 					y: space.y,
-					className: this.getFoodType()
+					backgroundPosition: this.getFoodType()
 				});
 			}
 			this.props.updateSimpleState({currentFoods});
@@ -55,13 +55,14 @@ class FoodLayer extends PureComponent {
 	}
 
 	getFoodType = () => {
-		const foods = [ 'fish', 'meat', 'steak', 'slice', 'drumstick', 'salami', 'sausage' ];
-		const ran = Math.floor(Math.random() * foods.length);
-		return `foodlayer__food ${foods[ran]}`;
+		const foodBackgroundPositions = ['0%', '16.6666%', '33.3333%', '50%', '66.6666%', '83.3333%', '100%' ];
+		const ran = Math.floor(Math.random() * foodBackgroundPositions.length);
+		return foodBackgroundPositions[ran];
 	}
 
 	render() {
 		const { currentFoods, sampleSpaceWidth, isFullSizeFoods } = this.props;
+		const foodItemClassName = 'foodlayer__food' + (isFullSizeFoods ? ' grow' : '');
 		return currentFoods.length ? (
 			<div className="foodlayer">
 				{currentFoods.map((food, index) => {
@@ -70,14 +71,13 @@ class FoodLayer extends PureComponent {
 						top: `${(food.y * sampleSpaceWidth) / 16}rem`,
 						width: `${sampleSpaceWidth / 16}rem`,
 						height: `${sampleSpaceWidth / 16}rem`,
+						backgroundPosition: food.backgroundPosition
 					}
-					let className = food.className;
-					className += isFullSizeFoods ? ' grow' : '';
 					return (
 						<span
 							style={foodStyles}
-							key={`${food.className}-${index}`}
-							className={className}
+							key={`${food.backgroundPosition}-${index}`}
+							className={foodItemClassName}
 						></span>
 					)
 				})}

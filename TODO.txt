@@ -2,4 +2,6 @@
 
 - upgrade react/react dom etc and use createRef?
 
-- create sprites for cat/dog
+- sprite for hints
+
+- more food in pacman style
