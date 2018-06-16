@@ -2,14 +2,37 @@
 // Dog, cat, obstacles and food
 // ===================================
 
-$svg: '.svg';
+$player-faces: 'left', 'up', 'right', 'down';
 
-%animal {
+@mixin food-bgs($foods...) {
+	@each $food in $foods {
+		&.#{$food} {
+			$url: #{$static-image-path}food/#{$food}#{$svg};
+			/*background: url('../img/food/#{$food}.png') no-repeat center;*/
+			background: url($url) no-repeat center;
+			background-size: 50%;
+		}
+	}
+}
+
+@mixin player-background-positions($faces) {
+	$background-offset: 0;
+	@each $face in $faces {
+		&-#{$face} {
+			background-position: #{$background-offset}#{'%'};
+		}
+		$background-offset: $background-offset + (100 / 3);
+	} 
+}
+
+%player {
 	display: block;
 	position: absolute;
 	top: 0;
 	left: 0;
 	@include square(remcalc($space-width-sm));
+	background-size: 400%;
+	background-repeat: no-repeat;
 	transition: transform 0.2s;
 
 	@media screen and (min-width: remcalc(660)) and (min-height: remcalc(375)) {
@@ -24,31 +47,6 @@ $svg: '.svg';
     	@include square(remcalc($space-width-lg));
     }
 }
-
-@mixin food-bgs($foods...) {
-	@each $food in $foods {
-		&.#{$food} {
-			$url: #{$static-image-path}food/#{$food}#{$svg};
-			/*background: url('../img/food/#{$food}.png') no-repeat center;*/
-			background: url($url) no-repeat center;
-			background-size: 50%;
-		}
-	}
-}
-@mixin animal-bgs($animals, $angles) {
-	@each $animal in $animals {
-		@each $angle in $angles {
-			.#{$animal}-#{$angle} {
-				$url: #{$static-image-path}#{$animal}/#{$animal}-#{$angle}#{$svg};
-				// background: url(#{$static-image-path}#{$animal}-#{$angle}.png) no-repeat center;
-				background: url($url) no-repeat center;
-			}
-		}
-	}	
-}
-
-$animals	: dog, cat;
-$angles		: up, down, left, right;
 
 i {
 	@include square(100%);
@@ -68,14 +66,16 @@ i {
 }
 
 .cat {
-	@extend %animal;
+	@extend %player;
+	background-image: url('#{$static-image-path}/cat.svg');
+	@include player-background-positions($player-faces);
 }
 
 .dog {
-	@extend %animal;
+	@extend %player;
+	background-image: url('#{$static-image-path}/dog.svg');
+	@include player-background-positions($player-faces);
 }
-
-@include animal-bgs($animals, $angles);
 
 .foodlayer {
 	position: absolute;

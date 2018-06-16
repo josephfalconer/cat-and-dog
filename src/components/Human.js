@@ -132,8 +132,7 @@ class Human extends Player {
   	const { human, sampleSpaceWidth } = this.props;
     if (human) {
       const className = `cat cat-${human.face.toLowerCase()}`;
-      let style = helpers.writeTransform(human.x * sampleSpaceWidth, human.y * sampleSpaceWidth);;
-      style.backgroundSize = '75%';
+      const style = helpers.writeTransform(human.x * sampleSpaceWidth, human.y * sampleSpaceWidth);;
     	return (
         <div>
           <span className={className} style={style}></span>

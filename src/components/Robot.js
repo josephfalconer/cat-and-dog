@@ -156,8 +156,7 @@ class Robot extends Player {
   render() {
     const { data: { currentVisualFace, x, y }, sampleSpaceWidth } = this.props;
     const className = `dog dog-${currentVisualFace.toLowerCase()}`;
-    let style = helpers.writeTransform(x * sampleSpaceWidth, y * sampleSpaceWidth);
-    style.backgroundSize = '95%';
+    const style = helpers.writeTransform(x * sampleSpaceWidth, y * sampleSpaceWidth);
     return (
       <span className={className} style={style}></span>
     );
