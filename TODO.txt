@@ -3,5 +3,3 @@
 - upgrade react/react dom etc and use createRef?
 
 - sprite for hints
-
-- more food in pacman style
