@@ -2,12 +2,15 @@ import React, { PureComponent, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { updateSimpleState } from '../actions/'
+import { GAME_STYLE_DEFAULT } from '../constants';
 
 class FoodLayer extends PureComponent {
 	static propTypes = {
 		freeBoardSpaces: PropTypes.array.isRequired,
 		currentFoods: PropTypes.array.isRequired,
+		gameStyle: PropTypes.string.isRequired,
 		isFullSizeFoods: PropTypes.bool.isRequired,
+		secondsRemaining: PropTypes.number.isRequired,
 	}
 
 	componentDidMount() {
@@ -22,10 +25,11 @@ class FoodLayer extends PureComponent {
 	}
 
 	generateFood = () => {
+		const noOfFoods = this.props.gameStyle === GAME_STYLE_DEFAULT ? 3 : 5;
 		let { freeBoardSpaces } = this.props;
 		let currentFoods = [];
-		if (this.isInGame) {
-			for (let i = 0; i < 3; i++) {
+		if (this.isInGame && this.props.secondsRemaining >= 10) {
+			for (let i = 0; i < noOfFoods; i++) {
 				// cut a random space from freeBoardSpaces
 				let random = Math.floor(Math.random() * freeBoardSpaces.length);
 				let space = freeBoardSpaces.splice(random, 1)[0];
@@ -90,8 +94,10 @@ const mapStateToProps = state => {
 	return {
 		freeBoardSpaces: state.freeBoardSpaces,
 		currentFoods: state.currentFoods,
+		gameStyle: state.gameStyle || GAME_STYLE_DEFAULT,
 		sampleSpaceWidth: state.sampleSpaceWidth,
-		isFullSizeFoods: state.isFullSizeFoods || false
+		isFullSizeFoods: state.isFullSizeFoods || false,
+		secondsRemaining: state.stats.secondsRemaining,
 	}
 }
 
