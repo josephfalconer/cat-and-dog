@@ -44,11 +44,10 @@ class Board extends PureComponent {
   componentDidMount() {
     const { gameStyle } = this.props;
     const boardSpaces = this.getSpaces(gameStyle === GAME_STYLE_DEFAULT);
-    const freeBoardSpaces = this.getFreeSpaces(boardSpaces);
     this.isInGame = true;
     this.props.updateSimpleState({
       boardSpaces,
-      freeBoardSpaces,
+      freeBoardSpaces: this.getFreeSpaces(boardSpaces),
       robots: ROBOTS_BY_GAME_STYLE[gameStyle]()
     });
   }
@@ -79,13 +78,8 @@ class Board extends PureComponent {
   }
 
   getFreeSpaces = spaces => {
-    let allSpaces = [];
-    spaces.forEach(column => {
-      column.forEach(space => {
-        allSpaces.push(space);
-      });
-    });
-    return allSpaces.filter(space => !space.occupant);
+    return spaces.reduce((a, b) => a.concat(b))
+      .filter(space => !space.occupant);
   }
 
   render() {
