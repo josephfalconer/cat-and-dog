@@ -1,0 +1,46 @@
+// ========================================
+// Global Config
+// ========================================
+
+// Font Stacks 
+$font-url--google        : 'https://fonts.googleapis.com/css?family=Proza+Libre';
+$font-family--primary    : 'Proza Libre', Helvetica, Arial, sans-serif;
+
+// Colors 
+$white			: #fff;
+$black			: #000;
+$black-c-thru	: rgba(0,0,0,.5);
+
+// Path to Assets
+$static-image-path      : "../img/";
+$svg: '.svg';
+$png: '.png';
+
+// Breakpoints
+$breakpoint-iphone6: 375;
+$breakpoint-sm	: 768;
+$breakpoint-md	: 1100;
+// $breakpoint-lg	: 1100px;
+
+// Garden variables
+$green		: #3c761e;
+$brown		: #65572b;
+$brown-dark : darken($brown, 10%);
+$lightBrown : lighten($brown, 5%);
+$xLightBrown: lighten($brown, 20%);
+
+// board space sizes
+$space-width-sm: 35;
+$space-width-ip6: 40;
+$space-width-md: 70;
+$space-width-lg: 75;
+
+// info bar
+$info-bar-ht-sm: 20px;
+$info-bar-ht-md: 30px;
+$info-bar-ht-lg: 40px;
+
+$hints-z-index: 500;
+
+// offset for direction buttons
+$mobile-offset: 15;

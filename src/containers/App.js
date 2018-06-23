@@ -9,7 +9,7 @@ import Hints from '../components/Hints';
 import LiveInfo from '../components/LiveInfo';
 import Shutters from '../components/Shutters';
 
-import '../scss/garden.css';
+import '../styles/index.css';
 
 class App extends PureComponent {
   static propTypes = {
@@ -42,18 +42,17 @@ class App extends PureComponent {
     const { gameSwitches, isShowingStats, endGameMessage } = this.props;
     const backgroundStyle = { backgroundColor: gameSwitches.isGameOver ? '#ad9549' : '#fff'};
     return (
-      <div className="main-container">
-        <div className="garden__bg" style={backgroundStyle}></div>
-        <div className="garden__container">
+      <div className="main">
+        <div className="main__background" style={backgroundStyle}></div>
+        <div className="main__container">
           <span 
             ref={this.setSampleSpaceRef} 
-            id="sample-space" 
-            className="garden__space garden__space--sample"
+            className="board__space board__space--sample"
           ></span>
           {gameSwitches.isInGame && <Board width={10} height={8} />}
           {gameSwitches.isInGame && <LiveInfo />}
           {isShowingStats && <EndStats />}
-          <div className={`garden__message ${gameSwitches.isGameOver ? 'js-visible-message' : ''}`}>
+          <div className={`main__message ${gameSwitches.isGameOver ? 'js-visible-message' : ''}`}>
             <p>{endGameMessage}</p>
           </div>
         </div>

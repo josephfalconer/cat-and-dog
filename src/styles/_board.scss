@@ -1,0 +1,114 @@
+// ========================================
+// Board
+// ========================================
+
+.board {
+	display: flex;
+	position: relative;
+	margin-left: remcalc($mobile-offset);
+	width: remcalc(10 * $space-width-sm);
+	justify-content: center;
+  vertical-align: top;
+  z-index: 100;
+
+  @media screen and (min-width: remcalc(660)) and (min-height: remcalc(375)) {
+  	width: remcalc(10 * $space-width-ip6);
+  }
+
+  @media screen and (min-width: remcalc(1024)) and (min-height: remcalc(768)) {
+  	width: remcalc(10 * $space-width-md);
+  }
+
+  @include mq(md) {
+  	margin: 0 auto;
+  	width: remcalc(10 * $space-width-lg);
+  }
+
+  &__column {
+  	display: flex;
+  	flex-direction: column;    	
+  }
+
+	&__space {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+    text-align: center;
+    overflow: hidden;
+  	@include square(remcalc($space-width-sm));
+    line-height: remcalc($space-width-sm);
+    font-size: remcalc($space-width-sm);
+    user-select: none;
+
+    @media screen and (min-width: remcalc(660)) and (min-height: remcalc(375)) {
+    	@include square(remcalc($space-width-ip6));
+	    line-height: remcalc($space-width-ip6);
+	    font-size: remcalc($space-width-ip6);
+    }
+
+    @media screen and (min-width: remcalc(1024)) and (min-height: remcalc(768)) {
+    	@include square(remcalc($space-width-md));
+	    line-height: remcalc($space-width-md);
+	    font-size: remcalc($space-width-md);
+    }
+
+    @include mq(md) {
+    	@include square(remcalc($space-width-lg));
+	    line-height: remcalc($space-width-lg);
+	    font-size: remcalc($space-width-lg);
+    }
+    
+    &.edge {
+    	background: $xLightBrown;
+    	border: 1px solid $lightBrown;
+    }
+    &.grass {
+    	background: $green;
+    	border: 1px solid $green;
+    }
+
+    &--sample {
+    	position: absolute;
+    }	
+
+    i {
+			display: block;
+		}
+	}
+}
+
+.obstruction {
+	@include square(90%);
+	background: $brown;
+	border-radius: 50%;
+	border: 4px black solid;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+
+  @include mq(xs, max) {
+  	border: 2px black solid;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.foodlayer {
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	&__food {
+		display: block;
+		position: absolute;
+		@include square(100%);
+		transform: scale(0);
+		transition: transform 1s, opacity 1s;
+		opacity: 0;
+		background-image: url('#{$static-image-path}/foods.svg');
+		background-size: 700%;
+		background-repeat: no-repeat;
+
+		&.grow {
+			transform: scale(1);
+			opacity: 1;
+		}
+	}
+}

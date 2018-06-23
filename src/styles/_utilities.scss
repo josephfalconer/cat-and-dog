@@ -1,0 +1,51 @@
+// ========================================
+// Utilities
+// ========================================
+
+// Import if Google Fonts URL is defined
+@if variable-exists(font-url--google) {
+  @import url($font-url--google);
+}
+
+// convert to rem
+@function remcalc($size) {
+  $rem-size: $size / 16;
+  @return #{$rem-size}rem;
+}
+
+// return a specified breakpoint from the map
+@function break($key) {
+  $pixel-size: map-get((
+    'iphone6-min': $breakpoint-iphone6,
+    'sm-min': $breakpoint-sm,
+    'md-min': $breakpoint-md,
+    'iphone6-max': $breakpoint-sm - 1,
+    'xs-max': $breakpoint-sm - 1,
+    'sm-max': $breakpoint-md - 1,
+  ), $key);
+  @return remcalc($pixel-size);
+}
+
+// Media queries
+@mixin mq($point, $rule: 'min') {
+  // the media query
+  @if $rule == 'only' {
+    @media (min-width: break(#{$point}-min)) and (max-width: break(#{$point}-max)) {
+      @content
+    }
+  } @else {
+    @media (#{$rule}-width: break(#{$point}-#{$rule})) {
+      @content
+    }
+  }
+}
+
+@mixin sides($w, $h) {
+  width: $w;
+  height: $h;
+}
+
+@mixin square($val) {
+  width: $val;
+  height: $val;
+}

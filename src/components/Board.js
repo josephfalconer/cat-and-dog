@@ -85,10 +85,10 @@ class Board extends PureComponent {
   render() {
     const { boardSpaces, robots } = this.props;
     return (
-      <div className="garden">
+      <div className="board">
         {boardSpaces.length && boardSpaces.map((column, index) => {
           return (
-            <div className="garden__column" key={index}>
+            <div className="board__column" key={index}>
               {column.map((space, index) => {
                 return (
                   <Space

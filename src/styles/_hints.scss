@@ -1,0 +1,53 @@
+// ========================================
+// Hints
+// ========================================
+
+$hint-backgrounds: 'get-food', 'too-tired', 'too-big', 'avoid-dog', 'move-cat', 'time-limit', 'get-ready', 'dog-caught',        'ran-into', 'no-stamina', 'you-win';
+
+.hints {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  position: fixed;
+  top: -100%;
+  left: 0;
+  z-index: $hints-z-index;
+  @include square(100%);
+  background-color: $brown;
+  justify-content: center;
+  align-items: center;
+
+  border-bottom: remcalc(5) whitesmoke solid;
+
+  transition: transform 1s;
+
+  &__controls {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+  }
+
+  &__message {
+    max-width: remcalc(850);
+    padding: remcalc(20);
+    font-size: remcalc(18);
+
+    @include mq(sm) {
+      font-size: remcalc(25);
+    }
+
+    @include mq(md) {
+      font-size: remcalc(35);
+    }
+  }
+
+  @each $hint-background in $hint-backgrounds {
+    &.#{$hint-background} {
+      $hint-background: unquote($hint-background);
+      $url: #{$static-image-path}hints/#{$hint-background}#{$png};
+      background: #41381c url($url) no-repeat center;
+        background-size: cover;
+    }
+  }
+}

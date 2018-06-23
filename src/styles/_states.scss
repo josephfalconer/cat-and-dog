@@ -1,0 +1,25 @@
+// ========================================
+// States
+// ========================================
+
+// JS toggle classes
+.js-showing-hints {
+  transform: translateY(100%);
+}
+
+.js-open-shutters {
+  .shutter {
+    width: 0;
+  }
+}
+
+.js-visible-message {
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  transition: opacity 3s;
+}
+
+.js-showing-controls {
+  transform: translate(-50%);
+}

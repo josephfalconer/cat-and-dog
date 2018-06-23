@@ -1,0 +1,110 @@
+// ========================================
+// Shutters
+// ========================================
+
+$font-size-info   : 2em;
+$font-size-info--sm : 1em;
+
+$shutter-edge-border: rgba(0,0,0,.275) solid 1px;
+
+
+%shutter-inner {
+  width: 450px;
+  height: 100%;
+  position: absolute;
+  transition: background .5s;
+
+  @include mq(xs, max) {
+    width: 220px;
+  }
+}
+
+.shutter {
+  @include sides(50%,100%);
+  transition: width 1s;
+  position: fixed;
+  top: 0;
+  z-index: $hints-z-index - 1;
+  overflow: hidden;
+  background: darken($brown, 10%);
+
+  &--left {
+    left: 0;
+
+    .shutter__message {
+      transform: translate3d(50% , -50%, 0);
+      top: 50%;
+      right: 0;
+    }
+  }
+
+  &--right {
+    right: 0;
+
+    .shutter__message {
+      transform: translate3d(-50% , -50%, 0);
+      top: 50%;
+      left: 0;
+    }
+  }
+
+  &__lining {
+    position: absolute;
+    background: rgba(0,0,0,0.25);
+    z-index: 200;
+
+    &.hori {
+      @include sides(100%, 5px);
+      right: 0;
+
+      &.top {
+        top: 0;
+      }
+
+      &.bottom {
+        bottom: 0;
+      }
+    }
+
+    &.vert {
+      @include sides(5px, 100%);
+      top: 0;
+
+      &.right {
+        right: 0;
+        border-right: $shutter-edge-border;
+      }
+
+      &.left {
+        left: 0;
+        border-left: $shutter-edge-border;
+      }
+    }
+  }
+
+  &__inner {
+    &--left {
+      @extend %shutter-inner;
+      right: 0;
+    }
+
+    &--right {
+      @extend %shutter-inner;
+      left: 0;
+    }
+  }
+
+  &__message {
+    position: absolute;
+    top: 50%;
+    margin: 0;
+    width: 500px;
+    font-size: $font-size-info;
+    transform: translateY(-50%);
+    
+    @include mq(xs, max) {
+      font-size: $font-size-info--sm;
+      width: 300px
+    }
+  }
+}
