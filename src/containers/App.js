@@ -19,8 +19,8 @@ class App extends PureComponent {
   }
 
   constructor(props) {
-    super(props)
-      this.setSampleSpaceRef = element => {
+    super(props);
+    this.setSampleSpaceRef = element => {
       this.sampleSpace = element;
     }
   }
