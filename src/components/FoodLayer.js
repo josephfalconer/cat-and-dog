@@ -22,6 +22,10 @@ class FoodLayer extends PureComponent {
 	componentWillUnmount() {
 		this.isInGame = false;
 		clearInterval(this.intervalID);
+		this.props.updateSimpleState({
+			isFullSizeFoods: false,
+			currentFoods: []
+		});
 	}
 
 	generateFood = () => {
