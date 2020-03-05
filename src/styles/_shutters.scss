@@ -101,7 +101,7 @@ $shutter-edge-border: rgba(0,0,0,.275) solid 1px;
     width: 500px;
     font-size: $font-size-info;
     transform: translateY(-50%);
-    
+
     @include mq(xs, max) {
       font-size: $font-size-info--sm;
       width: 300px

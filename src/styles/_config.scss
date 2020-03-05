@@ -2,14 +2,14 @@
 // Global Config
 // ========================================
 
-// Font Stacks 
+// Font Stacks
 $font-url--google        : 'https://fonts.googleapis.com/css?family=Proza+Libre';
 $font-family--primary    : 'Proza Libre', Helvetica, Arial, sans-serif;
 
-// Colors 
-$white			: #fff;
-$black			: #000;
-$black-c-thru	: rgba(0,0,0,.5);
+// Colors
+$white      : #fff;
+$black      : #000;
+$black-c-thru : rgba(0,0,0,.5);
 
 // Path to Assets
 $static-image-path      : "../img/";
@@ -18,13 +18,13 @@ $png: '.png';
 
 // Breakpoints
 $breakpoint-iphone6: 375;
-$breakpoint-sm	: 768;
-$breakpoint-md	: 1100;
-// $breakpoint-lg	: 1100px;
+$breakpoint-sm  : 768;
+$breakpoint-md  : 1100;
+// $breakpoint-lg : 1100px;
 
 // Garden variables
-$green		: #3c761e;
-$brown		: #65572b;
+$green    : #3c761e;
+$brown    : #65572b;
 $brown-dark : darken($brown, 10%);
 $lightBrown : lighten($brown, 5%);
 $xLightBrown: lighten($brown, 20%);

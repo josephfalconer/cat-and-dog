@@ -2,7 +2,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { updateSimpleState } from '../actions/';
-import { 
+import {
   GAME_STYLE_OPTIONS,
   IN_GAME_SWITCHES,
   STARTING_NEW_GAME_MESSAGE,
@@ -79,8 +79,8 @@ class GameControls extends PureComponent {
         <select onChange={this.setGameStyle}>
           {GAME_STYLE_OPTIONS.map((style, index) => {
             return (
-              <option 
-                key={`option-${style.name}`} 
+              <option
+                key={`option-${style.name}`}
                 value={style.name}
               >{style.displayName}</option>
             )

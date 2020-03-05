@@ -3,33 +3,33 @@ import { dispatch } from 'redux';
 
 import { store } from '../';
 import * as actionTypes from '../actiontypes/'
-import { 
-	ENDING_SWITCHES,
-	ENDED_CLOSING_SWITCHES,
-	ENDED_CLOSED_DESTROYING_SWITCHES,
-	GETTING_STATS_MESSAGE, 
+import {
+  ENDING_SWITCHES,
+  ENDED_CLOSING_SWITCHES,
+  ENDED_CLOSED_DESTROYING_SWITCHES,
+  GETTING_STATS_MESSAGE,
 } from '../constants';
 
 export function updateSimpleState(payload) {
-	return {
-		type: actionTypes.UPDATE_SIMPLE_STATE,
-		payload
-	}
+  return {
+    type: actionTypes.UPDATE_SIMPLE_STATE,
+    payload
+  }
 }
 
 export function updateRobot(index, payload) {
-	return {
-		type: actionTypes.UPDATE_ROBOT_POSITION,
+  return {
+    type: actionTypes.UPDATE_ROBOT_POSITION,
     index,
-		payload,
-	}
+    payload,
+  }
 }
 
 export function endTheGame(message) {
   // freeze game, display reason, change bg colour
   store.dispatch(updateSimpleState({
     gameSwitches: {
-    	...ENDING_SWITCHES
+      ...ENDING_SWITCHES
     },
     endGameMessage: message,
     shuttersMessage: GETTING_STATS_MESSAGE,

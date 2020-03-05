@@ -5,7 +5,7 @@ class EndStats extends PureComponent {
   static PropTypes = {
     stats: PropTypes.object.isRequired
   }
-  
+
   render() {
     const { stats } = this.props;
     return (
@@ -15,10 +15,10 @@ class EndStats extends PureComponent {
           <p>{`You lasted for ${60 - stats.secondsRemaining} seconds.`}</p>
           <p>{`You finished with ${stats.energy} energy.`}</p>
           <p>{`You ate ${stats.mealsEaten} meals.`}</p>
-        </div>                
+        </div>
       </div>
     );
-  }    
+  }
 }
 
 const mapStateToProps = state => (

@@ -1,7 +1,7 @@
 export const STARTING_NEW_GAME_MESSAGE = 'Starting a new game...';
 export const GETTING_STATS_MESSAGE = 'Getting game stats...';
 
-export const HUMAN_START = { 
+export const HUMAN_START = {
   face: 'LEFT'
 }
 
@@ -59,66 +59,66 @@ export const ROBOTS_BY_GAME_STYLE = {
 }
 
 export const GAME_STYLE_OPTIONS = [
-	{
-		name: 'PURSUIT_STYLE',
-		displayName: 'Pursuit'
-	},
-	{
-		name: 'PACMAN_STYLE',
-		displayName: 'Pacman style'
-	}
+  {
+    name: 'PURSUIT_STYLE',
+    displayName: 'Pursuit'
+  },
+  {
+    name: 'PACMAN_STYLE',
+    displayName: 'Pacman style'
+  }
 ];
 
 export const GAME_STYLE_DEFAULT = 'PURSUIT_STYLE';
 
 export const BOARD_INITIAL_STATE = {
-	boardSpaces: [],
-	currentFoods: [],
-	freeBoardSpaces: [],
+  boardSpaces: [],
+  currentFoods: [],
+  freeBoardSpaces: [],
   robots: []
 }
 
 export const IN_GAME_SWITCHES = {
-	isInGame: true,
+  isInGame: true,
   isOpenShutters: true,
   isGameOver: false
 }
 
 export const ENDING_SWITCHES = {
-	...IN_GAME_SWITCHES,
+  ...IN_GAME_SWITCHES,
   isGameOver: true
 }
 
 export const ENDED_CLOSING_SWITCHES = {
-	...ENDING_SWITCHES,
-	isOpenShutters: false
+  ...ENDING_SWITCHES,
+  isOpenShutters: false
 }
 
 export const ENDED_CLOSED_DESTROYING_SWITCHES = {
-	...ENDED_CLOSING_SWITCHES,
-	isInGame: false
+  ...ENDED_CLOSING_SWITCHES,
+  isInGame: false
 }
 
 export const GAME_INITIAL_STATE = {
-	difficulty: 800,
-	endGameMessage: '',
-	gameSwitches: {
-		isInGame: false,
-		isOpenShutters: false,
-		isGameOver: false
-	},
-	isFirstGame: true,
-	isShowingControls: true,
-	shuttersMessage: STARTING_NEW_GAME_MESSAGE
+  difficulty: 800,
+  endGameMessage: '',
+  gameSwitches: {
+    isInGame: false,
+    isOpenShutters: false,
+    isGameOver: false
+  },
+  isFirstGame: true,
+  isShowingControls: true,
+  shuttersMessage: STARTING_NEW_GAME_MESSAGE
 }
 
 export const STATS_INITIAL_STATE = {
-	isShowingStats: false,
-	stats: {
-		mealsEaten: 0,
-		energy: 10,
-		secondsRemaining: 60
-	}
+  isShowingStats: false,
+  stats: {
+    mealsEaten: 0,
+    energy: 10,
+    secondsRemaining: 60
+  }
 }
 
 export const HINTS = [

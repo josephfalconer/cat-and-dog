@@ -2,9 +2,9 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import * as actions from '../actions/';
-import { 
-  GAME_STYLE_DEFAULT, 
-  LEFTS, 
+import {
+  GAME_STYLE_DEFAULT,
+  LEFTS,
   RIGHTS
 } from '../constants';
 import * as helpers from '../helpers';
@@ -39,7 +39,7 @@ class Robot extends Player {
     this.isInGame = true;
     setTimeout(() => {
     this.intervalID = setInterval(this.followPathMethods[gameStyle], delay);
-      
+
     }, this.props.data.startDelay);
   }
 
@@ -55,11 +55,11 @@ class Robot extends Player {
       const validXY = this.checkMove(x, y, currentFace);
       if (validXY) {
         updateRobot(index, {...data, currentVisualFace: currentFace});
-        this.moveRobotForward(validXY, currentFace); 
+        this.moveRobotForward(validXY, currentFace);
         this.turn(this.getRight(currentFace), false);
       } else {
         this.turn(this.getLeft(currentFace));
-      }        
+      }
     }
   }
 

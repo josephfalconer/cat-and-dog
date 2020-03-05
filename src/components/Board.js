@@ -2,7 +2,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { updateSimpleState } from '../actions/';
-import { 
+import {
   GAME_STYLE_DEFAULT,
   ROBOTS_BY_GAME_STYLE
 } from '../constants';

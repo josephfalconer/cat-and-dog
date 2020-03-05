@@ -35,9 +35,9 @@ export default class extends PureComponent {
 
     // limited to garden dimensions
     if (
-      forwardX < 0 || 
-      forwardY < 0 || 
-      forwardX > boardSpaces.length - 1 || 
+      forwardX < 0 ||
+      forwardY < 0 ||
+      forwardX > boardSpaces.length - 1 ||
       forwardY > boardSpaces[0].length - 1
     ) {
       return false;

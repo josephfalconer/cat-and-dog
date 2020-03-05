@@ -42,7 +42,7 @@ $direction-size-lg: 30;
   &--left {
     top: remcalc($directions-width / 3);
     left: 0;
-    transform: rotate(-90deg);  
+    transform: rotate(-90deg);
 
     @include mq(sm) {
       left: remcalc(-15);
@@ -51,8 +51,8 @@ $direction-size-lg: 30;
 
   &--right {
     top: remcalc($directions-width / 3);
-    right: 0; 
-    transform: rotate(90deg); 
+    right: 0;
+    transform: rotate(90deg);
   }
 
   &--up {

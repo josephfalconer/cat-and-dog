@@ -6,13 +6,13 @@ $player-faces: 'left', 'up', 'right', 'down';
 
 @mixin player-background-positions($faces) {
   $background-offset: 0;
-  
+
   @each $face in $faces {
     &-#{$face} {
       background-position: #{$background-offset}#{'%'};
     }
     $background-offset: $background-offset + (100 / 3);
-  } 
+  }
 }
 
 %player {

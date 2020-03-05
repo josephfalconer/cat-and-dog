@@ -45,8 +45,8 @@ class App extends PureComponent {
       <div className="main">
         <div className="main__background" style={backgroundStyle}></div>
         <div className="main__container">
-          <span 
-            ref={this.setSampleSpaceRef} 
+          <span
+            ref={this.setSampleSpaceRef}
             className="board__space board__space--sample"
           ></span>
           {gameSwitches.isInGame && <Board width={10} height={8} />}

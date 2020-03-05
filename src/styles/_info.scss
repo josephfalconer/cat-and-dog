@@ -8,7 +8,7 @@
   border: solid 2px $lightBrown;
   @include sides(remcalc($space-width-sm * 10), $info-bar-ht-sm);
   background: $xLightBrown;
-  
+
   @media screen and (min-width: remcalc(660)) and (min-height: remcalc(375)) {
     width: remcalc(10 * $space-width-ip6);
   }
@@ -16,7 +16,7 @@
   @media screen and (min-width: remcalc(1024)) and (min-height: remcalc(768)) {
     width: remcalc(10 * $space-width-md);
   }
-  
+
   @include mq(sm) {
     height: $info-bar-ht-md;
   }
@@ -27,8 +27,8 @@
     height: $info-bar-ht-lg;
     line-height: $info-bar-ht-lg;
   }
-   
-  span { 
+
+  span {
     position: absolute;
     line-height: $info-bar-ht-sm - 2;
     height: $info-bar-ht-sm - 2;
@@ -54,8 +54,8 @@
       padding-right: remcalc(20);
     }
 
-    @include mq(sm) { 
-      font-size: 1.3em; 
+    @include mq(sm) {
+      font-size: 1.3em;
       height: $info-bar-ht-md - 2;
       line-height: $info-bar-ht-md - 2;
     }
@@ -63,7 +63,7 @@
     @include mq(md) {
       height: $info-bar-ht-lg - 2;
       line-height: $info-bar-ht-lg - 2;
-      
+
     }
   }
 }
@@ -78,7 +78,7 @@
   @include square(100%);
   justify-content: center;
   background: white;
-  
+
   &__text {
     color: black;
     margin: 0 auto;
@@ -86,10 +86,10 @@
     text-align: left;
     width: 60%;
 
-    h4 { 
-      margin-top: 0; 
+    h4 {
+      margin-top: 0;
     }
-    
+
     @include mq(xs, max) {
       font-size: $font-size-info--sm;
     }

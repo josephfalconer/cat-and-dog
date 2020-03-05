@@ -35,7 +35,7 @@ class Human extends Player {
       human: {
         ...startPosition,
         style: helpers.writeTransform(
-          startPosition.x * sampleSpaceWidth, 
+          startPosition.x * sampleSpaceWidth,
           startPosition.y * sampleSpaceWidth
         )
       }
@@ -101,8 +101,8 @@ class Human extends Player {
           this.checkForFood(validXY.x, validXY.y, direction);
           updateSimpleState({
             human: {
-              ...this.props.human, 
-              x: validXY.x, 
+              ...this.props.human,
+              x: validXY.x,
               y: validXY.y
             }
           });
@@ -129,11 +129,11 @@ class Human extends Player {
   }
 
   render() {
-  	const { human, sampleSpaceWidth } = this.props;
+    const { human, sampleSpaceWidth } = this.props;
     if (human) {
       const className = `cat cat-${human.face.toLowerCase()}`;
       const style = helpers.writeTransform(human.x * sampleSpaceWidth, human.y * sampleSpaceWidth);;
-    	return (
+      return (
         <div>
           <span className={className} style={style}></span>
           {'ontouchstart' in document.documentElement &&
